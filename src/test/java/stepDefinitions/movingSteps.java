@@ -7,6 +7,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -20,23 +21,22 @@ public class movingSteps {
     }
 
     @And("a knight on {string}")
-    public void aKnightOn(String position) {
+    public void aKnightOn(String square) {
         knight = new Knight();
-        board.put(knight, position);
+        board.put(knight, square);
     }
 
     @When("the knight moves from {string} to {string}")
-    public void theKnightMovesTo(String posFrom, String posTo) {
-        board.move(posFrom, posTo);
+    public void theKnightMovesTo(String squareFrom, String squareTo) {
+        board.move(squareFrom, squareTo);
     }
 
     @Then("the knight is on {string}")
-    public void theKnightIsOn(String position) {
-        assertEquals(board.get(position), knight);
+    public void theKnightIsOn(String square) {
+        assertEquals(knight, board.get(square));
     }
 
-    @And("the knight is not on {string}♦")
-    public void theKnightIsNotOn(String position) {
-        assertNull(board.get(position));
-    }
+
+    @And("the knight is not on {string}")
+    public void theKnightIsNotOn(String square) { assertNull(board.get(square)); }
 }

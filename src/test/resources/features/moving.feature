@@ -5,6 +5,4 @@ Feature: Moving Pieces
     And a knight on "f6"
     When the knight moves from "f6" to "e8"
     Then the knight is on "e8"
-    And the knight is not on "f6"♦
-
-    # put a piece on an invalid square
+    And the knight is not on "f6"
