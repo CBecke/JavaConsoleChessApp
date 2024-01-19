@@ -11,7 +11,33 @@ Feature: Moving Pieces
   Scenario: Putting a knight on an out of bounds file (fail)
     Given an empty board
     And a knight illegally on "i6"
-    Then throw error "Given square 'i6' is not in range a0-h8"
+    Then throw error "Given square 'i6' is not in range a1-h8"
 
-  # test invalid square: 2 letters
-  # test invalid square: 2 numbers
+  Scenario: Putting a knight on an out of bounds rank (fail)
+    Given an empty board
+    And a knight illegally on "a0"
+    Then throw error "Given square 'a0' is not in range a1-h8"
+
+  Scenario: Putting a knight on an invalid file (fail)
+    Given an empty board
+    And a knight illegally on "ab1"
+    Then throw error "Given square 'ab1' is not in range a1-h8"
+
+  Scenario: Putting a knight on an invalid rank (fail)
+    Given an empty board
+    And a knight illegally on "a11"
+    Then throw error "Given square 'a11' is not in range a1-h8"
+
+  Scenario: Moving a knight to an invalid square (fail)
+    Given an empty board
+    And a knight on "a8"
+    When the knight moves illegally from "h8" to "h9"
+    Then throw error "Given square 'h9' is not in range a1-h8"
+
+  Scenario: Trying to move a piece from an empty square (fail)
+  Given an empty board
+  When the non-existent knight moves illegally from "a2" to "b4"
+  Then throw error "The square moved from is empty"
+
+      # trying to move a piece to a square outside the board
+      # trying to move a piece to a square it can't move to

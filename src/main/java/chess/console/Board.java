@@ -1,6 +1,7 @@
 package chess.console;
 
 import chess.console.exceptions.BoardOutOfBoundsException;
+import chess.console.exceptions.IllegalMoveException;
 
 public class Board {
 
@@ -12,31 +13,51 @@ public class Board {
     }
 
     public void put(Knight knight, String square) throws BoardOutOfBoundsException {
-        if (!isWithinBoard(square)) { throw new BoardOutOfBoundsException("Given square '" + square + "' is not in range a0-h8"); }
+        if (!isWithinBoard(square)) { throw new BoardOutOfBoundsException(square); }
 
-        int file = square.charAt(0) - 'a';
-        int rank = square.charAt(1) - '1'; // subtract '1' since board is 0-indexed
+        int file = getFile(square);
+        int rank = getRank(square);
 
         board[rank][file] = knight;
     }
 
-    private boolean isWithinBoard(String square) {
-        return 'a' <= square.charAt(0) && square.charAt(0) <= 'h';
+    private static int getFile(String square) {
+        return square.charAt(0) - 'a';
     }
 
-    public void move(String squareFrom, String squareTo) {
-        int fileFrom = squareFrom.charAt(0) - 'a';
-        int rankFrom = squareFrom.charAt(1) - '1'; // subtract '1' since board is 0-indexed
-        int fileTo   = squareTo.charAt(0) - 'a';
-        int rankTo   = squareTo.charAt(1) - '1';   // subtract '1' since board is 0-indexed
+    private static int getRank(String squareFrom) {
+        return squareFrom.charAt(1) - '1'; // subtract '1' since board is 0-indexed
+    }
+
+    private boolean isWithinBoard(String square) {
+        return square.length() == 2
+                && 'a' <= square.charAt(0) && square.charAt(0) <= 'h'
+                && '1' <= square.charAt(1) && square.charAt(1) <= '8';
+    }
+
+    public void move(String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
+        if (!isWithinBoard(squareTo)) { throw new BoardOutOfBoundsException(squareTo); }
+        if (isEmpty(squareFrom)) { throw new IllegalMoveException("The square moved from is empty"); }
+
+        int fileFrom = getFile(squareFrom);
+        int rankFrom = getRank(squareFrom);
+        int fileTo   = getFile(squareTo);
+        int rankTo   = getRank(squareTo);
 
         board[rankTo][fileTo] = board[rankFrom][fileFrom];
         board[rankFrom][fileFrom] = null;
     }
 
+    private boolean isEmpty(String square) {
+        int file = getFile(square);
+        int rank = getRank(square);
+        return board[rank][file] == null;
+    }
+
+
     public Knight get(String square) {
-        int file = square.charAt(0) - 'a';
-        int rank = square.charAt(1) - '1'; // subtract 1 because board is 0-indexed
+        int file = getFile(square);
+        int rank = getRank(square); // subtract 1 because board is 0-indexed
         return board[rank][file];
     }
 }

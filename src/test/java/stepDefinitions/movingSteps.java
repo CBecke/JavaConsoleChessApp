@@ -3,6 +3,7 @@ package stepDefinitions;
 import chess.console.Board;
 import chess.console.Knight;
 import chess.console.exceptions.BoardOutOfBoundsException;
+import chess.console.exceptions.IllegalMoveException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,7 +17,7 @@ public class movingSteps {
     private Board board;
     private Knight knight;
     private boolean expectException;
-    private BoardOutOfBoundsException exception;
+    private Exception exception;
 
     @Given("an empty board")
     public void anEmptyBoard() {
@@ -30,7 +31,7 @@ public class movingSteps {
     }
 
     @When("the knight moves from {string} to {string}")
-    public void theKnightMovesTo(String squareFrom, String squareTo) {
+    public void theKnightMovesTo(String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
         board.move(squareFrom, squareTo);
     }
 
@@ -59,4 +60,17 @@ public class movingSteps {
         assertEquals(errorMessage, exception.getMessage());
     }
 
+    @When("the knight moves illegally from {string} to {string}")
+    public void theKnightMovesIllegallyFromTo(String squareFrom, String squareTo) throws BoardOutOfBoundsException {
+        exception = assertThrows(BoardOutOfBoundsException.class, () -> {
+            board.move(squareFrom, squareTo);
+        });
+    }
+
+    @When("the non-existent knight moves illegally from {string} to {string}")
+    public void theNonExistentKnightMovesIllegallyFromTo(String squareFrom, String squareTo) {
+        exception = assertThrows(IllegalMoveException.class, () -> {
+            board.move(squareFrom, squareTo);
+        });
+    }
 }
