@@ -1,5 +1,7 @@
 package chess.console;
 
+import chess.console.exceptions.BoardOutOfBoundsException;
+
 public class Board {
 
     // board[7][0] is a1
@@ -9,26 +11,32 @@ public class Board {
         board = new Knight[8][8];
     }
 
-    public void put(Knight knight, String position) {
-        int file = position.charAt(0) - 'a';
-        int rank = position.charAt(1) - '1'; // subtract '1' since board is 0-indexed
+    public void put(Knight knight, String square) throws BoardOutOfBoundsException {
+        if (!isWithinBoard(square)) { throw new BoardOutOfBoundsException("Given square '" + square + "' is not in range a0-h8"); }
+
+        int file = square.charAt(0) - 'a';
+        int rank = square.charAt(1) - '1'; // subtract '1' since board is 0-indexed
 
         board[rank][file] = knight;
     }
 
-    public void move(String posFrom, String posTo) {
-        int fileFrom = posFrom.charAt(0) - 'a';
-        int rankFrom = posFrom.charAt(1) - '1'; // subtract '1' since board is 0-indexed
-        int fileTo   = posTo.charAt(0) - 'a';
-        int rankTo   = posTo.charAt(1) - '1';   // subtract '1' since board is 0-indexed
+    private boolean isWithinBoard(String square) {
+        return 'a' <= square.charAt(0) && square.charAt(0) <= 'h';
+    }
+
+    public void move(String squareFrom, String squareTo) {
+        int fileFrom = squareFrom.charAt(0) - 'a';
+        int rankFrom = squareFrom.charAt(1) - '1'; // subtract '1' since board is 0-indexed
+        int fileTo   = squareTo.charAt(0) - 'a';
+        int rankTo   = squareTo.charAt(1) - '1';   // subtract '1' since board is 0-indexed
 
         board[rankTo][fileTo] = board[rankFrom][fileFrom];
         board[rankFrom][fileFrom] = null;
     }
 
-    public Knight get(String position) {
-        int file = position.charAt(0) - 'a';
-        int rank = position.charAt(1) - '1'; // subtract 1 because board is 0-indexed
+    public Knight get(String square) {
+        int file = square.charAt(0) - 'a';
+        int rank = square.charAt(1) - '1'; // subtract 1 because board is 0-indexed
         return board[rank][file];
     }
 }
