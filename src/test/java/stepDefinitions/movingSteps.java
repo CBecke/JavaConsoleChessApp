@@ -18,6 +18,7 @@ public class movingSteps {
     private Knight knight;
     private boolean expectException;
     private Exception exception;
+    private Knight capturedKnight;
 
     @Given("an empty board")
     public void anEmptyBoard() {
@@ -32,7 +33,7 @@ public class movingSteps {
 
     @When("the knight moves from {string} to {string}")
     public void theKnightMovesTo(String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
-        board.move(squareFrom, squareTo);
+        board.move(knight, squareFrom, squareTo);
     }
 
     @Then("the knight is on {string}")
@@ -63,14 +64,30 @@ public class movingSteps {
     @When("the knight moves illegally from {string} to {string}")
     public void theKnightMovesIllegallyFromTo(String squareFrom, String squareTo) throws BoardOutOfBoundsException {
         exception = assertThrows(BoardOutOfBoundsException.class, () -> {
-            board.move(squareFrom, squareTo);
+            board.move(knight, squareFrom, squareTo);
         });
     }
 
     @When("the non-existent knight moves illegally from {string} to {string}")
     public void theNonExistentKnightMovesIllegallyFromTo(String squareFrom, String squareTo) {
         exception = assertThrows(IllegalMoveException.class, () -> {
-            board.move(squareFrom, squareTo);
+            board.move(knight, squareFrom, squareTo);
         });
+    }
+
+    @And("the square {string} is empty")
+    public void theSquareIsEmpty(String square) {
+        board.isEmpty(square);
+    }
+
+    @And("another knight on {string}")
+    public void anotherKnightOn(String square) throws BoardOutOfBoundsException {
+        capturedKnight = new Knight();
+        board.put(capturedKnight, square);
+    }
+
+    @Then("the knight on {string} captures on {string}")
+    public void theKnightOnCapturesOn(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(knight, squareFrom, squareTo);
     }
 }

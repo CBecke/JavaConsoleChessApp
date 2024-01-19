@@ -3,9 +3,10 @@ Feature: Moving Pieces
   Scenario: Moving a knight
     Given an empty board
     And a knight on "f6"
+    And the square "e8" is empty
     When the knight moves from "f6" to "e8"
     Then the knight is on "e8"
-    And the knight is not on "f6"
+    And the square "e8" is empty
 
 
   Scenario: Putting a knight on an out of bounds file (fail)
@@ -35,9 +36,23 @@ Feature: Moving Pieces
     Then throw error "Given square 'h9' is not in range a1-h8"
 
   Scenario: Trying to move a piece from an empty square (fail)
-  Given an empty board
-  When the non-existent knight moves illegally from "a2" to "b4"
-  Then throw error "The square moved from is empty"
+    Given an empty board
+    When the non-existent knight moves illegally from "a2" to "b4"
+    Then throw error "The square moved from is empty"
 
-      # trying to move a piece to a square outside the board
-      # trying to move a piece to a square it can't move to
+  Scenario: Trying to move a knight to a square it can't move to
+    Given an empty board
+    And a knight on "a1"
+    And the square "b4" is empty
+    When the knight moves from "a1" to "b4"
+    Then the knight is on "a1"
+    And the square "b4" is empty
+
+  Scenario: Capturing a piece
+    Given an empty board
+    And a knight on "a1"
+    And another knight on "c2"
+    When the knight on "a1" captures on "c2"
+    And the square "a1" is empty
+
+      # trying and failing to move past/through another piece [with a piece different than knight]

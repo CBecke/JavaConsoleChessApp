@@ -35,7 +35,7 @@ public class Board {
                 && '1' <= square.charAt(1) && square.charAt(1) <= '8';
     }
 
-    public void move(String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
+    public void move(Knight knight, String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
         if (!isWithinBoard(squareTo)) { throw new BoardOutOfBoundsException(squareTo); }
         if (isEmpty(squareFrom)) { throw new IllegalMoveException("The square moved from is empty"); }
 
@@ -44,11 +44,13 @@ public class Board {
         int fileTo   = getFile(squareTo);
         int rankTo   = getRank(squareTo);
 
+        if (!knight.isValidMove(squareFrom, squareTo)) { return; }
+
         board[rankTo][fileTo] = board[rankFrom][fileFrom];
         board[rankFrom][fileFrom] = null;
     }
 
-    private boolean isEmpty(String square) {
+    public boolean isEmpty(String square) {
         int file = getFile(square);
         int rank = getRank(square);
         return board[rank][file] == null;
