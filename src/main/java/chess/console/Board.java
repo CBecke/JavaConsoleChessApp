@@ -38,6 +38,7 @@ public class Board {
     public void move(Knight knight, String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
         if (!isWithinBoard(squareTo)) { throw new BoardOutOfBoundsException(squareTo); }
         if (isEmpty(squareFrom)) { throw new IllegalMoveException("The square moved from is empty"); }
+        if (!canGoTo(knight, squareTo)) { return; };
 
         int fileFrom = getFile(squareFrom);
         int rankFrom = getRank(squareFrom);
@@ -48,6 +49,16 @@ public class Board {
 
         board[rankTo][fileTo] = board[rankFrom][fileFrom];
         board[rankFrom][fileFrom] = null;
+    }
+
+    private boolean canGoTo(Knight knight, String squareTo) {
+        return isEmpty(squareTo) || isOppositeColor(knight, squareTo);
+    }
+
+    private boolean isOppositeColor(Knight knight, String square) {
+        int file = getFile(square);
+        int rank = getRank(square);
+        return knight.getColor() != board[rank][file].getColor();
     }
 
     public boolean isEmpty(String square) {

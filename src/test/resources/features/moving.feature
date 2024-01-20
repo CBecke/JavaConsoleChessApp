@@ -50,9 +50,20 @@ Feature: Moving Pieces
 
   Scenario: Capturing a piece
     Given an empty board
-    And a knight on "a1"
-    And another knight on "c2"
+    And a white knight on "a1"
+    And a black knight on "c2"
     When the knight on "a1" captures on "c2"
     And the square "a1" is empty
+
+Scenario: Capturing a piece of the same color (fail)
+  Given an empty board
+  And a white knight on "a1"
+  And another white knight on "c2"
+  When the knight on "a1" captures on "c2"
+  Then the knight stays on "a1"
+  And the other knight stays on "c2"
+
+
+
 
       # trying and failing to move past/through another piece [with a piece different than knight]

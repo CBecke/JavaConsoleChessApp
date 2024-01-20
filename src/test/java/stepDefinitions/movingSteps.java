@@ -27,7 +27,7 @@ public class movingSteps {
 
     @And("a knight on {string}")
     public void aKnightOn(String square) throws BoardOutOfBoundsException {
-        knight = new Knight();
+        knight = new Knight(Knight.Color.WHITE);
         board.put(knight, square);
     }
 
@@ -49,7 +49,7 @@ public class movingSteps {
 
     @And("a knight illegally on {string}")
     public void aKnightIllegallyOn(String square) throws BoardOutOfBoundsException {
-        knight = new Knight();
+        knight = new Knight(Knight.Color.WHITE);
         exception = assertThrows(BoardOutOfBoundsException.class, () -> {
             board.put(knight, square);
         });
@@ -80,14 +80,36 @@ public class movingSteps {
         board.isEmpty(square);
     }
 
-    @And("another knight on {string}")
-    public void anotherKnightOn(String square) throws BoardOutOfBoundsException {
-        capturedKnight = new Knight();
+    @And("another white knight on {string}")
+    public void anotherWhiteKnightOn(String square) throws BoardOutOfBoundsException {
+        capturedKnight = new Knight(Knight.Color.WHITE);
         board.put(capturedKnight, square);
     }
 
     @Then("the knight on {string} captures on {string}")
     public void theKnightOnCapturesOn(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
         board.move(knight, squareFrom, squareTo);
+    }
+
+    @And("a white knight on {string}")
+    public void aWhiteKnightOn(String square) throws BoardOutOfBoundsException {
+        knight = new Knight(Knight.Color.WHITE);
+        board.put(knight, square);
+    }
+
+    @And("a black knight on {string}")
+    public void aBlackKnightOn(String square) throws BoardOutOfBoundsException {
+        capturedKnight = new Knight(Knight.Color.BLACK);
+        board.put(capturedKnight, square);
+    }
+
+    @Then("the knight stays on {string}")
+    public void theKnightStaysOn(String square) {
+        assertEquals(knight, board.get(square));
+    }
+
+    @And("the other knight stays on {string}")
+    public void theOtherKnightStaysOn(String square) {
+        assertEquals(capturedKnight, board.get(square));
     }
 }
