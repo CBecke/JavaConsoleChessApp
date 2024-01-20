@@ -2,10 +2,11 @@ package chess.console;
 
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
+import chess.console.pieces.Knight;
 
 public class Board {
 
-    // board[7][0] is a1
+    // board[7][0] is a1 and board[7][7] is a8
     Knight[][] board;
 
     public Board() {

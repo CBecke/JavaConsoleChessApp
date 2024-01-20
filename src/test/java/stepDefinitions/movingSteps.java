@@ -1,7 +1,8 @@
 package stepDefinitions;
 
+import chess.console.pieces.Bishop;
 import chess.console.Board;
-import chess.console.Knight;
+import chess.console.pieces.Knight;
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
 import io.cucumber.java.en.And;
@@ -111,5 +112,19 @@ public class movingSteps {
     @And("the other knight stays on {string}")
     public void theOtherKnightStaysOn(String square) {
         assertEquals(capturedKnight, board.get(square));
+    }
+
+    @And("a black bishop on {string}")
+    public void aBlackBishopOn(String square) {
+        Bishop bishop = new Bishop(Bishop.Color.BLACK);
+    }
+
+    @When("the bishop moves from {string} to {string}")
+    public void theBishopMovesFromTo(String arg0, String arg1) {
+    }
+
+    @Then("the bishop is on {string}")
+    public void theBishopIsOn(String arg0) {
+        fail();
     }
 }

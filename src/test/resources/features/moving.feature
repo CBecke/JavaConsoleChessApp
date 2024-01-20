@@ -1,5 +1,6 @@
 Feature: Moving Pieces
 
+  # Moving with a knight
   Scenario: Moving a knight
     Given an empty board
     And a knight on "f6"
@@ -7,7 +8,6 @@ Feature: Moving Pieces
     When the knight moves from "f6" to "e8"
     Then the knight is on "e8"
     And the square "e8" is empty
-
 
   Scenario: Putting a knight on an out of bounds file (fail)
     Given an empty board
@@ -63,6 +63,12 @@ Scenario: Capturing a piece of the same color (fail)
   Then the knight stays on "a1"
   And the other knight stays on "c2"
 
+  Scenario: Moving a bishop
+  Given an empty board
+  And a black bishop on "a2"
+  When the bishop moves from "a2" to "g7"
+  Then the bishop is on "g7"
+  And the square "a2" is empty
 
 
 
