@@ -86,13 +86,20 @@ Feature: Moving Pieces
     And the square "c1" is empty
 
   Scenario: Trying to move through another piece
-  Given an empty board
-  And a black bishop on "a3"
-  And a white knight on "b2"
-  When the bishop moves from "a3" to "c1"
-  Then the bishop is on "a3"
-  And the knight is on "b2"
-  And the square "c1" is empty
+    Given an empty board
+    And a black bishop on "a3"
+    And a white knight on "b2"
+    When the bishop moves from "a3" to "c1"
+    Then the bishop is on "a3"
+    And the knight is on "b2"
+    And the square "c1" is empty
+
+  Scenario: Moving a king
+    Given an empty board
+    And a white king on "h1"
+    When the king moves from "h1" to "h2"
+    Then the king is on "h2"
+    And the square "h1" is empty
 
 
 

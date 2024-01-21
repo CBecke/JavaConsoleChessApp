@@ -114,6 +114,7 @@ public class movingSteps {
         assertEquals(capturedKnight, board.get(square));
     }
 
+
     @And("a black bishop on {string}")
     public void aBlackBishopOn(String square) throws BoardOutOfBoundsException {
         bishop = new Bishop(Bishop.Color.BLACK);
@@ -134,4 +135,17 @@ public class movingSteps {
     public void theBishopOnCapturesOn(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
         board.move(bishop, squareFrom, squareTo);
     }
+
+    @And("a white king on {string}")
+    public void aWhiteKingOn(String arg0) {
+    }
+
+    @When("the king moves from {string} to {string}")
+    public void theKingMovesFromTo(String arg0, String arg1) {
+    }
+
+    @Then("the king is on {string}")
+    public void theKingIsOn(String arg0) {
+    }
+
 }
