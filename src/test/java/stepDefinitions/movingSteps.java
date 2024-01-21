@@ -1,7 +1,7 @@
 package stepDefinitions;
 
-import chess.console.pieces.Bishop;
 import chess.console.Board;
+import chess.console.pieces.Bishop;
 import chess.console.pieces.Knight;
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
@@ -9,6 +9,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Before;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,11 +21,10 @@ public class movingSteps {
     private boolean expectException;
     private Exception exception;
     private Knight capturedKnight;
+    private Bishop bishop;
 
     @Given("an empty board")
-    public void anEmptyBoard() {
-        board = new Board();
-    }
+    public void anEmptyBoard() { board = new Board(); }
 
     @And("a knight on {string}")
     public void aKnightOn(String square) throws BoardOutOfBoundsException {
@@ -115,16 +115,23 @@ public class movingSteps {
     }
 
     @And("a black bishop on {string}")
-    public void aBlackBishopOn(String square) {
-        Bishop bishop = new Bishop(Bishop.Color.BLACK);
+    public void aBlackBishopOn(String square) throws BoardOutOfBoundsException {
+        bishop = new Bishop(Bishop.Color.BLACK);
+        board.put(bishop, square);
     }
 
     @When("the bishop moves from {string} to {string}")
-    public void theBishopMovesFromTo(String arg0, String arg1) {
+    public void theBishopMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(bishop, squareFrom, squareTo);
     }
 
     @Then("the bishop is on {string}")
-    public void theBishopIsOn(String arg0) {
-        fail();
+    public void theBishopIsOn(String square) {
+        assertEquals(bishop, board.get(square));
+    }
+
+    @When("the bishop on {string} captures on {string}")
+    public void theBishopOnCapturesOn(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(bishop, squareFrom, squareTo);
     }
 }

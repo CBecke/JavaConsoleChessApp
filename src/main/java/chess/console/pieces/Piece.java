@@ -1,6 +1,8 @@
 package chess.console.pieces;
 
-public class Piece {
+import chess.console.Board;
+
+public abstract class Piece {
     public static enum Color {
         WHITE,
         BLACK
@@ -15,4 +17,7 @@ public class Piece {
     public Color getColor() {
         return color;
     }
+
+    public abstract boolean isValidMove(Board board, String squareFrom, String squareTo);
+
 }

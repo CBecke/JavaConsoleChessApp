@@ -55,21 +55,47 @@ Feature: Moving Pieces
     When the knight on "a1" captures on "c2"
     And the square "a1" is empty
 
-Scenario: Capturing a piece of the same color (fail)
-  Given an empty board
-  And a white knight on "a1"
-  And another white knight on "c2"
-  When the knight on "a1" captures on "c2"
-  Then the knight stays on "a1"
-  And the other knight stays on "c2"
+  Scenario: Capturing a piece of the same color (fail)
+    Given an empty board
+    And a white knight on "a1"
+    And another white knight on "c2"
+    When the knight on "a1" captures on "c2"
+    Then the knight stays on "a1"
+    And the other knight stays on "c2"
 
   Scenario: Moving a bishop
+    Given an empty board
+    And a black bishop on "b2"
+    When the bishop moves from "b2" to "g7"
+    Then the bishop is on "g7"
+    And the square "b2" is empty
+
+  Scenario: Moving a bishop to illegal square
+    Given an empty board
+    And a black bishop on "a2"
+    When the bishop moves from "a2" to "g7"
+    Then the bishop is on "a2"
+    And the square "g7" is empty
+
+  Scenario: Capturing with a bishop
+    Given an empty board
+    And a black bishop on "c1"
+    And a white knight on "a3"
+    When the bishop on "c1" captures on "a3"
+    Then the bishop is on "a3"
+    And the square "c1" is empty
+
+  Scenario: Trying to move through another piece
   Given an empty board
-  And a black bishop on "a2"
-  When the bishop moves from "a2" to "g7"
-  Then the bishop is on "g7"
-  And the square "a2" is empty
+  And a black bishop on "a3"
+  And a white knight on "b2"
+  When the bishop moves from "a3" to "c1"
+  Then the bishop is on "a3"
+  And the knight is on "b2"
+  And the square "c1" is empty
+
 
 
 
       # trying and failing to move past/through another piece [with a piece different than knight]
+      # moving a knight to the square it is already at
