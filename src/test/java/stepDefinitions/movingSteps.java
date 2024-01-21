@@ -5,11 +5,11 @@ import chess.console.pieces.Bishop;
 import chess.console.pieces.Knight;
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
+import chess.console.pieces.Piece;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Before;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class movingSteps {
     private Board board;
     private Knight knight;
-    private boolean expectException;
     private Exception exception;
     private Knight capturedKnight;
     private Bishop bishop;
+    private King king;
 
     @Given("an empty board")
     public void anEmptyBoard() { board = new Board(); }
@@ -137,15 +137,19 @@ public class movingSteps {
     }
 
     @And("a white king on {string}")
-    public void aWhiteKingOn(String arg0) {
+    public void aWhiteKingOn(String square) throws BoardOutOfBoundsException {
+        king = new King(Piece.Color.WHITE);
+        board.put(king, square);
     }
 
     @When("the king moves from {string} to {string}")
-    public void theKingMovesFromTo(String arg0, String arg1) {
+    public void theKingMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(king, squareFrom, squareTo);
     }
 
     @Then("the king is on {string}")
-    public void theKingIsOn(String arg0) {
+    public void theKingIsOn(String square) {
+        assertEquals(king, board.get(square));
     }
 
 }

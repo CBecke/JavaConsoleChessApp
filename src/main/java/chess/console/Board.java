@@ -16,7 +16,9 @@ public class Board {
     }
 
     public void put(Piece piece, String square) throws BoardOutOfBoundsException {
-        if (!isWithinBoard(square)) { throw new BoardOutOfBoundsException(square); }
+        if (!isWithinBoard(square)) {
+            throw new BoardOutOfBoundsException(square);
+        }
 
         int file = getFile(square);
         int rank = getRank(square);
@@ -41,17 +43,25 @@ public class Board {
     public void move(Piece piece, String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
         if (!isWithinBoard(squareTo)) { throw new BoardOutOfBoundsException(squareTo); }
         if (isEmpty(squareFrom)) { throw new IllegalMoveException("The square moved from is empty"); }
-        if (!canGoTo(piece, squareTo)) { return; };
+        if (!canGoTo(piece, squareTo)) { return; }
 
         int fileFrom = getFile(squareFrom);
         int rankFrom = getRank(squareFrom);
-        int fileTo   = getFile(squareTo);
-        int rankTo   = getRank(squareTo);
+        int fileTo = getFile(squareTo);
+        int rankTo = getRank(squareTo);
 
-        if (!piece.isValidMove(this, squareFrom, squareTo)) { return; }
+        if (isStillStandingMove(fileTo-fileFrom, rankTo-rankFrom)) { return; }
+
+        if (!piece.isValidMove(this, squareFrom, squareTo)) {
+            return;
+        }
 
         board[rankTo][fileTo] = board[rankFrom][fileFrom];
         board[rankFrom][fileFrom] = null;
+    }
+
+    private boolean isStillStandingMove( int fileDiff, int rankDiff){
+        return (fileDiff == 0) && (rankDiff == 0);
     }
 
     private boolean canGoTo(Piece piece, String squareTo) {
@@ -80,8 +90,8 @@ public class Board {
     public boolean isClearPath(String squareFrom, String squareTo) {
         int startFile = getFile(squareFrom);
         int startRank = getRank(squareFrom);
-        int endFile   = getFile(squareTo);
-        int endRank   = getRank(squareTo);
+        int endFile = getFile(squareTo);
+        int endRank = getRank(squareTo);
         int directionFile = (endFile - startFile > 0) ? 1 : -1;
         int directionRank = (endRank - startRank > 0) ? 1 : -1;
 
@@ -91,13 +101,17 @@ public class Board {
         while (startFile != endFile && startRank != endRank) {
             startFile += directionFile;
             startRank += directionRank;
-            if (!isEmpty(startFile, startRank)) { return false; }
+            if (!isEmpty(startFile, startRank)) {
+                return false;
+            }
         }
 
         return true;
     }
 
-    private boolean isEmpty(int file, int rank) { return board[rank][file] == null; }
+    private boolean isEmpty(int file, int rank) {
+        return board[rank][file] == null;
+    }
 
     public void clear() {
         for (int rank = 0; rank < Board.SIZE; rank++) {
