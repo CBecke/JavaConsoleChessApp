@@ -63,6 +63,13 @@ Feature: Moving Pieces
     Then the knight stays on "a1"
     And the other knight stays on "c2"
 
+  Scenario: Knight jumping over pieces
+    Given an empty board
+    And a white knight on "a1"
+    And another white knight on "a2"
+    When the knight moves from "a1" to "b3"
+    Then the knight is on "b3"
+    And the square "a1" is empty
 
   # Moving with a bishop
   Scenario: Moving a bishop up+right
