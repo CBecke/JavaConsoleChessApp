@@ -84,7 +84,7 @@ public class Board {
 
     public Piece get(String square) {
         int file = getFile(square);
-        int rank = getRank(square); // subtract 1 because board is 0-indexed
+        int rank = getRank(square);
         return board[rank][file];
     }
 

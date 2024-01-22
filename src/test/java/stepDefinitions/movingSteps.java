@@ -6,6 +6,7 @@ import chess.console.pieces.Knight;
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
 import chess.console.pieces.Piece;
+import chess.console.pieces.Rook;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -22,6 +23,7 @@ public class movingSteps {
     private Knight capturedKnight;
     private Bishop bishop;
     private King king;
+    private Rook rook;
 
     @Given("an empty board")
     public void anEmptyBoard() { board = new Board(); }
@@ -152,4 +154,19 @@ public class movingSteps {
         assertEquals(king, board.get(square));
     }
 
+    @And("a black rook on {string}")
+    public void aBlackRookOn(String square) throws BoardOutOfBoundsException {
+        rook = new Rook(Piece.Color.BLACK);
+        board.put(rook, square);
+    }
+
+    @When("the rook moves from {string} to {string}")
+    public void theRookMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(rook, squareFrom, squareTo);
+    }
+
+    @Then("the rook is on {string}")
+    public void theRookIsOn(String square) {
+        assertEquals(rook, board.get(square));
+    }
 }

@@ -63,6 +63,8 @@ Feature: Moving Pieces
     Then the knight stays on "a1"
     And the other knight stays on "c2"
 
+
+  # Moving with a bishop
   Scenario: Moving a bishop
     Given an empty board
     And a black bishop on "b2"
@@ -94,6 +96,8 @@ Feature: Moving Pieces
     And the knight is on "b2"
     And the square "c1" is empty
 
+
+  # Moving with a king
   Scenario: Moving a king vertically
     Given an empty board
     And a white king on "h1"
@@ -152,3 +156,27 @@ Feature: Moving Pieces
     When the king moves from "e4" to "d4"
     Then the king is on "d4"
     And the square "e4" is empty
+
+
+  # Moving with a rook
+  Scenario: Moving a rook horizontally
+    Given an empty board
+    And a black rook on "h8"
+    When the rook moves from "h8" to "h1"
+    Then the rook is on "h1"
+    And the square "h8" is empty
+
+  Scenario: Trying to move rook diagonally
+    Given an empty board
+    And a black rook on "h8"
+    When the rook moves from "h8" to "g7"
+    Then the rook is on "h8"
+    And the square "g7" is empty
+
+  Scenario: Trying to move rook vertically
+    Given an empty board
+    And a black rook on "h8"
+    When the rook moves from "h8" to "h1"
+    Then the rook is on "h1"
+    And the square "h8" is empty
+
