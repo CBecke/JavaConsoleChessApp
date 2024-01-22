@@ -1,12 +1,9 @@
 package stepDefinitions;
 
 import chess.console.Board;
-import chess.console.pieces.Bishop;
-import chess.console.pieces.Knight;
+import chess.console.pieces.*;
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
-import chess.console.pieces.Piece;
-import chess.console.pieces.Rook;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -24,6 +21,8 @@ public class movingSteps {
     private Bishop bishop;
     private King king;
     private Rook rook;
+    private Queen queen;
+
 
     @Given("an empty board")
     public void anEmptyBoard() { board = new Board(); }
@@ -168,5 +167,21 @@ public class movingSteps {
     @Then("the rook is on {string}")
     public void theRookIsOn(String square) {
         assertEquals(rook, board.get(square));
+    }
+
+    @And("a white queen on {string}")
+    public void aWhiteQueenOn(String square) throws BoardOutOfBoundsException {
+        queen = new Queen(Piece.Color.WHITE);
+        board.put(queen, square);
+    }
+
+    @When("the queen moves from {string} to {string}")
+    public void theQueenMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(queen, squareFrom, squareTo);
+    }
+
+    @Then("the queen is on {string}")
+    public void theQueenIsOn(String square) {
+        assertEquals(queen, board.get(square));
     }
 }

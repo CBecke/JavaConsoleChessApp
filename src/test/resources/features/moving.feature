@@ -115,7 +115,7 @@ Feature: Moving Pieces
     Then the bishop is on "a3"
     And the square "c1" is empty
 
-  Scenario: Trying to move through another piece
+  Scenario: Trying to move through another piece with a bishop
     Given an empty board
     And a black bishop on "a3"
     And a white knight on "b2"
@@ -237,3 +237,34 @@ Feature: Moving Pieces
     When the rook moves from "h8" to "h1"
     Then the rook is on "h8"
     And the square "h1" is empty
+
+
+    # Moving with a queen
+    #diagonally
+  Scenario: Moving a queen up+right
+    Given an empty board
+    And a white queen on "b2"
+    When the queen moves from "b2" to "g7"
+    Then the queen is on "g7"
+    And the square "b2" is empty
+
+  Scenario: Moving a queen down+left
+    Given an empty board
+    And a white queen on "g7"
+    When the queen moves from "g7" to "b2"
+    Then the queen is on "b2"
+    And the square "g7" is empty
+
+  Scenario: Moving a queen up+left
+    Given an empty board
+    And a white queen on "g2"
+    When the queen moves from "g2" to "b7"
+    Then the queen is on "b7"
+    And the square "g2" is empty
+
+  Scenario: Moving a queen down+right
+    Given an empty board
+    And a white queen on "b2"
+    When the queen moves from "b2" to "g7"
+    Then the queen is on "g7"
+    And the square "b2" is empty
