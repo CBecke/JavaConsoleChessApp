@@ -10,8 +10,9 @@ public class Rook extends Piece {
 
     @Override
     public boolean isValidMove(Board board, String squareFrom, String squareTo) {
-        return isHorizontalMove(squareFrom, squareTo)
-                || isVerticalMove(squareFrom, squareTo);
+        return (isHorizontalMove(squareFrom, squareTo)
+                || isVerticalMove(squareFrom, squareTo))
+                    && board.isClearPath(squareFrom, squareTo);
     }
 
     private boolean isVerticalMove(String squareFrom, String squareTo) {

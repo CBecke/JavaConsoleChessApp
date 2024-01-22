@@ -93,13 +93,12 @@ public class Board {
         int startRank = getRank(squareFrom);
         int endFile = getFile(squareTo);
         int endRank = getRank(squareTo);
-        int directionFile = (endFile - startFile > 0) ? 1 : -1;
-        int directionRank = (endRank - startRank > 0) ? 1 : -1;
+        int directionFile = Integer.compare(endFile, startFile);
+        int directionRank = Integer.compare(endRank, startRank);
 
-        // To count only squares between squareFrom and squareTo [excluding squareFrom and squareTo] use do-while loop
         endFile -= directionFile;
         endRank -= directionRank;
-        while (startFile != endFile && startRank != endRank) {
+        while (!(startFile == endFile && startRank == endRank)) {
             startFile += directionFile;
             startRank += directionRank;
             if (!isEmpty(startFile, startRank)) {

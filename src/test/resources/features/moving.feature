@@ -65,7 +65,28 @@ Feature: Moving Pieces
 
 
   # Moving with a bishop
-  Scenario: Moving a bishop
+  Scenario: Moving a bishop up+right
+    Given an empty board
+    And a black bishop on "b2"
+    When the bishop moves from "b2" to "g7"
+    Then the bishop is on "g7"
+    And the square "b2" is empty
+
+  Scenario: Moving a bishop down+left
+    Given an empty board
+    And a black bishop on "g7"
+    When the bishop moves from "g7" to "b2"
+    Then the bishop is on "b2"
+    And the square "g7" is empty
+
+  Scenario: Moving a bishop up+left
+    Given an empty board
+    And a black bishop on "g2"
+    When the bishop moves from "g2" to "b7"
+    Then the bishop is on "b7"
+    And the square "g2" is empty
+
+  Scenario: Moving a bishop down+right
     Given an empty board
     And a black bishop on "b2"
     When the bishop moves from "b2" to "g7"
@@ -75,9 +96,9 @@ Feature: Moving Pieces
   Scenario: Moving a bishop to illegal square
     Given an empty board
     And a black bishop on "a2"
-    When the bishop moves from "a2" to "g7"
+    When the bishop moves from "a2" to "a3"
     Then the bishop is on "a2"
-    And the square "g7" is empty
+    And the square "a3" is empty
 
   Scenario: Capturing with a bishop
     Given an empty board
@@ -157,6 +178,12 @@ Feature: Moving Pieces
     Then the king is on "d4"
     And the square "e4" is empty
 
+  Scenario: Trying to move king more than 1 square
+    Given an empty board
+    And a white king on "e4"
+    When the king moves from "e4" to "e2"
+    Then the king is on "e4"
+    And the square "e2" is empty
 
   # Moving with a rook
   Scenario: Moving a rook horizontally
@@ -180,3 +207,26 @@ Feature: Moving Pieces
     Then the rook is on "h1"
     And the square "h8" is empty
 
+  Scenario: Capturing with a rook
+    Given an empty board
+    And a black rook on "h8"
+    And a white knight on "h1"
+    When the rook moves from "h8" to "h1"
+    Then the rook is on "h1"
+    And the square "h8" is empty
+
+  Scenario: Trying to move through an opposite color piece with a rook
+    Given an empty board
+    And a black rook on "h8"
+    And a white knight on "h2"
+    When the rook moves from "h8" to "h1"
+    Then the rook is on "h8"
+    And the square "h1" is empty
+
+  Scenario: Trying to move through a same color piece with a rook
+    Given an empty board
+    And a black rook on "h8"
+    And a black knight on "h2"
+    When the rook moves from "h8" to "h1"
+    Then the rook is on "h8"
+    And the square "h1" is empty
