@@ -320,4 +320,17 @@ Feature: Moving Pieces
     And the square "h8" is empty
 
 
+  Scenario: White Queen side castling
+    Given an empty board
+    And a white king on "e1"
+    And a white rook on "a1"
+    When the king moves from "e1" to "c1"
+    Then the king is on "c1"
+    And the rook is on "d1"
+
+
+    # castling with a rook when the other rook has moved [valid]
+
+
+
 

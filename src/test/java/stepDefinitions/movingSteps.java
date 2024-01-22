@@ -184,4 +184,11 @@ public class movingSteps {
     public void theQueenIsOn(String square) {
         assertEquals(queen, board.get(square));
     }
+
+    @And("a white rook on {string}")
+    public void aWhiteRookOn(String square) throws BoardOutOfBoundsException {
+        rook = new Rook(Piece.Color.WHITE);
+        board.put(rook, square);
+    }
+
 }
