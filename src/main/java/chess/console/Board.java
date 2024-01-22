@@ -15,6 +15,7 @@ public class Board {
         board = new Piece[SIZE][SIZE];
     }
 
+    // potential bug: putting a piece on non-empty square
     public void put(Piece piece, String square) throws BoardOutOfBoundsException {
         if (!isWithinBoard(square)) {
             throw new BoardOutOfBoundsException(square);
@@ -119,5 +120,28 @@ public class Board {
                 board[rank][file] = null;
             }
         }
+    }
+
+    /**
+     * Iterates over entire board to check if piece is attacked on squareTo.
+     */
+    public boolean isAttacked(Piece piece, String squareTo) {
+        for (int rank = 0; rank < Board.SIZE; rank++) {
+            for (int file = 0; file < Board.SIZE; file++) {
+                if (isEmpty(file, rank)) { continue; }
+
+                Piece current = board[rank][file];
+                String squareFrom = toSquare(file, rank);
+                if (current != piece && current.isValidMove(this, squareFrom, squareTo))
+                    { return true; }
+            }
+        }
+        return false;
+    }
+
+    private String toSquare(int file, int rank) {
+        char letter = (char) (file + 'a');
+        char number = (char) (rank+1);
+        return "" + letter + number;
     }
 }

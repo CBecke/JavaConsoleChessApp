@@ -94,15 +94,61 @@ Feature: Moving Pieces
     And the knight is on "b2"
     And the square "c1" is empty
 
-  Scenario: Moving a king
+  Scenario: Moving a king vertically
     Given an empty board
     And a white king on "h1"
     When the king moves from "h1" to "h2"
     Then the king is on "h2"
     And the square "h1" is empty
 
+  Scenario: Moving a king diagonally
+    Given an empty board
+    And a white king on "h2"
+    When the king moves from "h2" to "g1"
+    Then the king is on "g1"
+    And the square "h2" is empty
 
+  Scenario: Moving a king horizontally
+    Given an empty board
+    And a white king on "g2"
+    When the king moves from "g2" to "h2"
+    Then the king is on "h2"
+    And the square "g2" is empty
 
+  Scenario: still-moving a king
+    Given an empty board
+    And a white king on "h1"
+    When the king moves from "h1" to "h1"
+    Then the king is on "h1"
 
-      # trying and failing to move past/through another piece [with a piece different than knight]
-      # moving a knight to the square it is already at
+  Scenario: Capturing with a king
+    Given an empty board
+    And a white king on "h1"
+    And a black knight on "h2"
+    When the king moves from "h1" to "h2"
+    Then the king is on "h2"
+    And the square "h1" is empty
+
+  Scenario: Trying to capture same color piece with king
+    Given an empty board
+    And a white king on "h1"
+    And a white knight on "h2"
+    When the king moves from "h1" to "h2"
+    Then the king is on "h1"
+    And the knight is on "h2"
+
+  Scenario: Trying to move king horizontally into check
+    Given an empty board
+    And a black bishop on "b2"
+    And a white king on "c2"
+    When the king moves from "c2" to "c3"
+    Then the king is on "c3"
+    And the square "c2" is empty
+
+  Scenario: trying to move king vertically into check
+    Given an empty board
+    And a black bishop on "b2"
+    And a white king on "e4"
+    When the king moves from "e4" to "d4"
+    Then the king is on "d4"
+    And the square "e4" is empty
