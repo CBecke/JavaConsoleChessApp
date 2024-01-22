@@ -207,7 +207,7 @@ Feature: Moving Pieces
     Then the rook is on "h8"
     And the square "g7" is empty
 
-  Scenario: Trying to move rook vertically
+  Scenario: Moving a rook vertically
     Given an empty board
     And a black rook on "h8"
     When the rook moves from "h8" to "h1"
@@ -240,7 +240,7 @@ Feature: Moving Pieces
 
 
     # Moving with a queen
-    #diagonally
+    # diagonally
   Scenario: Moving a queen up+right
     Given an empty board
     And a white queen on "b2"
@@ -268,3 +268,56 @@ Feature: Moving Pieces
     When the queen moves from "b2" to "g7"
     Then the queen is on "g7"
     And the square "b2" is empty
+
+  Scenario: Trying to move through another piece with a queen
+    Given an empty board
+    And a white queen on "a3"
+    And a white knight on "b2"
+    When the queen moves from "a3" to "c1"
+    Then the queen is on "a3"
+    And the knight is on "b2"
+    And the square "c1" is empty
+
+
+  # horizontally / vertically
+  Scenario: Moving a queen horizontally
+    Given an empty board
+    And a white queen on "h8"
+    When the queen moves from "h8" to "h1"
+    Then the queen is on "h1"
+    And the square "h8" is empty
+
+  Scenario: Moving a queen vertically
+    Given an empty board
+    And a white queen on "h8"
+    When the queen moves from "h8" to "h1"
+    Then the queen is on "h1"
+    And the square "h8" is empty
+
+  Scenario: Trying to move through an opposite color piece with a queen
+    Given an empty board
+    And a white queen on "h8"
+    And a white knight on "h2"
+    When the queen moves from "h8" to "h1"
+    Then the queen is on "h8"
+    And the square "h1" is empty
+
+  Scenario: Trying to move through a same color piece with a queen
+    Given an empty board
+    And a white queen on "h8"
+    And a black knight on "h2"
+    When the queen moves from "h8" to "h1"
+    Then the queen is on "h8"
+    And the square "h1" is empty
+
+  # Misc
+  Scenario: Capturing with a queen
+    Given an empty board
+    And a white queen on "h8"
+    And a black rook on "h1"
+    When the queen moves from "h8" to "h1"
+    Then the queen is on "h1"
+    And the square "h8" is empty
+
+
+
