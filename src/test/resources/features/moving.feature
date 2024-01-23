@@ -323,7 +323,9 @@ Feature: Moving Pieces
   Scenario: White Queen side castling
     Given an empty board
     And a white king on "e1"
+    And the king can castle
     And a white rook on "a1"
+    And the rook can castle
     When the king moves from "e1" to "c1"
     Then the king is on "c1"
     And the rook is on "d1"

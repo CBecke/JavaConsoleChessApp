@@ -113,14 +113,6 @@ public class Board {
         return board[rank][file] == null;
     }
 
-    public void clear() {
-        for (int rank = 0; rank < Board.SIZE; rank++) {
-            for (int file = 0; file < Board.SIZE; file++) {
-                board[rank][file] = null;
-            }
-        }
-    }
-
     /**
      * Iterates over entire board to check if piece is attacked on squareTo.
      */
