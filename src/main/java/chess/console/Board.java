@@ -2,6 +2,7 @@ package chess.console;
 
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
+import chess.console.pieces.King;
 import chess.console.pieces.Piece;
 
 import java.util.ArrayList;
@@ -49,25 +50,41 @@ public class Board {
     public void move(Piece piece, String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
         if (!isWithinBoard(squareTo)) { throw new BoardOutOfBoundsException(squareTo); }
         if (isEmpty(squareFrom)) { throw new IllegalMoveException("The square moved from is empty"); }
-        if (!canGoTo(piece, squareTo)) { return; }
+        if (!canGoTo(piece, squareTo)
+                || isStillStandingMove(squareFrom, squareTo)
+                || !piece.isValidMove(this, squareFrom, squareTo))
+            { return; }
 
         int fileFrom = getFile(squareFrom);
         int rankFrom = getRank(squareFrom);
         int fileTo = getFile(squareTo);
         int rankTo = getRank(squareTo);
 
-        if (isStillStandingMove(fileTo-fileFrom, rankTo-rankFrom)) { return; }
-
-        if (!piece.isValidMove(this, squareFrom, squareTo)) {
-            return;
-        }
-
         board[rankTo][fileTo] = board[rankFrom][fileFrom];
         board[rankFrom][fileFrom] = null;
+
+        // If this point is reached, the king could castle, so we can "manually" move the rook
+        if (isCastles(piece, squareFrom, squareTo)) {
+            // set destination square based on the king's move
+            fileTo = fileFrom + ((fileFrom < fileTo) ? 1 : -1);
+            rankTo = getRank(squareFrom);
+            // then set square where rook is coming from
+            char cornerFile = squareTo.charAt(0) < squareFrom.charAt(0) ? getFirstFile() : getLastFile();
+            String cornerSquare = "" + cornerFile + squareTo.charAt(1);
+            fileFrom = getFile(cornerSquare);
+            rankFrom = getRank(cornerSquare);
+            board[rankTo][fileTo] = board[rankFrom][fileFrom];
+            board[rankFrom][fileFrom] = null;
+        }
     }
 
-    private boolean isStillStandingMove( int fileDiff, int rankDiff){
-        return (fileDiff == 0) && (rankDiff == 0);
+    private boolean isCastles(Piece piece, String squareFrom, String squareTo) {
+        return piece instanceof King
+                && Math.abs(squareTo.charAt(0) - squareFrom.charAt(0)) == 2;
+    }
+
+    private boolean isStillStandingMove( String squareFrom, String squareTo){
+        return squareFrom.equals(squareTo);
     }
 
     private boolean canGoTo(Piece piece, String squareTo) {
@@ -135,11 +152,6 @@ public class Board {
                 board[rank][file] = null;
             }
         }
-    }
-
-    public Piece[] getCornerPieces() {
-        int size = Board.SIZE;
-        return new Piece[] {board[size-1][size-1], board[0][size-1], board[size-1][0], board[0][0]};
     }
 
     /**

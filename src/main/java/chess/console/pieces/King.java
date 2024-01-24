@@ -1,4 +1,4 @@
-package stepDefinitions;
+package chess.console.pieces;
 
 import chess.console.Board;
 import chess.console.pieces.Piece;
@@ -23,7 +23,7 @@ public class King extends Piece{
         Piece cornerPiece = board.get(cornerSquare);
         return canCastle()
                 && squareFrom.charAt(1) == squareTo.charAt(1)
-                && cornerPiece.getClass() == Rook.class
+                && cornerPiece instanceof Rook
                 && ((Rook)cornerPiece).canCastle()
                 && board.isClearPath(squareFrom, squareTo)
                 && !board.isAttackedPath(this, squareFrom, squareTo); // placed at the end because it is most computationally expensive
