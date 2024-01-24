@@ -174,16 +174,16 @@ Feature: Moving Pieces
     And a black bishop on "b2"
     And a white king on "c2"
     When the king moves from "c2" to "c3"
-    Then the king is on "c3"
-    And the square "c2" is empty
+    Then the king is on "c2"
+    And the square "c3" is empty
 
   Scenario: trying to move king vertically into check
     Given an empty board
     And a black bishop on "b2"
     And a white king on "e4"
     When the king moves from "e4" to "d4"
-    Then the king is on "d4"
-    And the square "e4" is empty
+    Then the king is on "e4"
+    And the square "d4" is empty
 
   Scenario: Trying to move king more than 1 square
     Given an empty board
@@ -332,7 +332,7 @@ Feature: Moving Pieces
 
 
     # castling with a rook when the other rook has moved [valid]
-
+    # a piece can move to a square attacked by another piece of the same color
 
 
 

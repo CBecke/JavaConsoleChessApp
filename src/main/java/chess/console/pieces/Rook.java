@@ -4,6 +4,8 @@ import chess.console.Board;
 import chess.console.pieces.Piece;
 
 public class Rook extends Piece {
+    private boolean canCastle = true;
+
     public Rook(Piece.Color color) {
         super(color);
     }
@@ -22,4 +24,6 @@ public class Rook extends Piece {
     private boolean isHorizontalMove(String squareFrom, String squareTo) {
         return (squareFrom.charAt(0) != squareTo.charAt(0)) && (squareFrom.charAt(1) == squareTo.charAt(1));
     }
+
+    public boolean canCastle() { return canCastle; }
 }

@@ -4,6 +4,8 @@ import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
 import chess.console.pieces.Piece;
 
+import java.util.ArrayList;
+
 public class Board {
 
     // board[7][0] is a1 and board[7][7] is a8
@@ -14,6 +16,9 @@ public class Board {
     public Board() {
         board = new Piece[SIZE][SIZE];
     }
+
+    public static char getFirstFile() { return 'a'; }
+    public static char getLastFile() { return (char)(getFirstFile() + (Board.SIZE - 1)); }
 
     // potential bug: putting a piece on non-empty square
     public void put(Piece piece, String square) throws BoardOutOfBoundsException {
@@ -31,8 +36,8 @@ public class Board {
         return square.charAt(0) - 'a';
     }
 
-    private static int getRank(String squareFrom) {
-        return squareFrom.charAt(1) - '1'; // subtract '1' since board is 0-indexed
+    private static int getRank(String square) {
+        return square.charAt(1) - '1'; // subtract '1' since board is 0-indexed
     }
 
     private boolean isWithinBoard(String square) {
@@ -89,23 +94,10 @@ public class Board {
     }
 
     public boolean isClearPath(String squareFrom, String squareTo) {
-        int startFile = getFile(squareFrom);
-        int startRank = getRank(squareFrom);
-        int endFile = getFile(squareTo);
-        int endRank = getRank(squareTo);
-        int directionFile = Integer.compare(endFile, startFile);
-        int directionRank = Integer.compare(endRank, startRank);
-
-        endFile -= directionFile;
-        endRank -= directionRank;
-        while (!(startFile == endFile && startRank == endRank)) {
-            startFile += directionFile;
-            startRank += directionRank;
-            if (!isEmpty(startFile, startRank)) {
-                return false;
-            }
+        ArrayList<String> path = getPath(squareFrom, squareTo);
+        for (String square : path) {
+            if (!isEmpty(square)) { return false; }
         }
-
         return true;
     }
 
@@ -116,14 +108,15 @@ public class Board {
     /**
      * Iterates over entire board to check if piece is attacked on squareTo.
      */
-    public boolean isAttacked(Piece piece, String squareTo) {
+    public boolean isAttacked(Piece.Color color, String square) {
         for (int rank = 0; rank < Board.SIZE; rank++) {
             for (int file = 0; file < Board.SIZE; file++) {
                 if (isEmpty(file, rank)) { continue; }
-
                 Piece current = board[rank][file];
                 String squareFrom = toSquare(file, rank);
-                if (current != piece && current.isValidMove(this, squareFrom, squareTo))
+
+                // If an opposite color piece can move to squareTo, then squareTo is attacked by that piece
+                if (current.getColor() != color && current.isValidMove(this, squareFrom, square))
                     { return true; }
             }
         }
@@ -132,7 +125,7 @@ public class Board {
 
     private String toSquare(int file, int rank) {
         char letter = (char) (file + 'a');
-        char number = (char) (rank+1);
+        char number = (char)(rank+1+'0');
         return "" + letter + number;
     }
 
@@ -143,4 +136,43 @@ public class Board {
             }
         }
     }
+
+    public Piece[] getCornerPieces() {
+        int size = Board.SIZE;
+        return new Piece[] {board[size-1][size-1], board[0][size-1], board[size-1][0], board[0][0]};
+    }
+
+    /**
+     * Checks if the squares between (and excluding both) squareFrom and squareTo are attacked.
+     */
+    public boolean isAttackedPath(Piece piece, String squareFrom, String squareTo) {
+        ArrayList<String> path = getPath(squareFrom, squareTo);
+        for (String square : path) {
+            if (isAttacked(piece.getColor(), square)) { return true; }
+        }
+        return false;
+    }
+
+    /**
+     * Gets the squares between (and excluding both) squareFrom and squareTo.
+     * E.g. getPath("a1", "d4") = {"b2", "c3"}.
+     */
+    public ArrayList<String> getPath(String squareFrom, String squareTo) {
+        int directionFile = Integer.compare(getFile(squareTo), getFile(squareFrom));
+        int directionRank = Integer.compare(getRank(squareTo), getRank(squareFrom));
+        // start from the square in the path next to squareFrom
+        String current = toSquare(getFile(squareFrom) + directionFile
+                                , getRank(squareFrom) + directionRank);
+
+        ArrayList<String> path = new ArrayList<>();
+        while (!current.equals(squareTo)) {
+            path.add(current);
+            int nextFile = getFile(current) + directionFile;
+            int nextRank = getRank(current) + directionRank;
+            current = toSquare(nextFile, nextRank);
+        }
+
+        return path;
+    }
+
 }

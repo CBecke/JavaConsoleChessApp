@@ -1,6 +1,5 @@
 package stepDefinitions;
 
-import chess.console.Board;
 import chess.console.GameManager;
 import chess.console.pieces.*;
 import chess.console.exceptions.BoardOutOfBoundsException;
@@ -9,8 +8,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,8 +21,7 @@ public class movingSteps {
     private King king;
     private Rook rook;
     private Queen queen;
-    private GameManager gameManager = GameManager.getInstance();
-
+    private final GameManager gameManager = GameManager.getInstance();
 
     @Given("an empty board")
     public void anEmptyBoard() { gameManager.clearBoard(); }
@@ -194,4 +190,13 @@ public class movingSteps {
         gameManager.put(rook, square);
     }
 
+    @And("the king can castle")
+    public void theKingCanCastle() {
+        assertTrue(king.canCastle());
+    }
+
+    @And("the rook can castle")
+    public void theRookCanCastle() {
+        assertTrue(rook.canCastle());
+    }
 }
