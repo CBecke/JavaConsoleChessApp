@@ -7,6 +7,7 @@ import chess.console.pieces.Piece;
 /**
  * Singleton class to combine and handle game components. Retrieve instance with GameManager.getInstance()
  */
+@Deprecated // Not useful for now
 public class GameManager {
     /// Singleton components
     private static GameManager instance = null;

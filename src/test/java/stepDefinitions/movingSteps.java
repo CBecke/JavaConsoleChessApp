@@ -1,6 +1,6 @@
 package stepDefinitions;
 
-import chess.console.GameManager;
+import chess.console.Board;
 import chess.console.pieces.*;
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class movingSteps {
+    Board board;
     private Knight knight;
     private Exception exception;
     private Knight capturedKnight;
@@ -21,38 +22,37 @@ public class movingSteps {
     private King king;
     private Rook rook;
     private Queen queen;
-    private final GameManager gameManager = GameManager.getInstance();
 
     @Given("an empty board")
-    public void anEmptyBoard() { gameManager.clearBoard(); }
+    public void anEmptyBoard() { board = new Board(); }
 
     @And("a knight on {string}")
     public void aKnightOn(String square) throws BoardOutOfBoundsException {
         knight = new Knight(Knight.Color.WHITE);
-        gameManager.put(knight, square);
+        board.put(knight, square);
     }
 
     @When("the knight moves from {string} to {string}")
     public void theKnightMovesTo(String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
-        gameManager.move(knight, squareFrom, squareTo);
+        board.move(knight, squareFrom, squareTo);
     }
 
     @Then("the knight is on {string}")
     public void theKnightIsOn(String square) {
-        assertEquals(knight, gameManager.getPiece(square));
+        assertEquals(knight, board.get(square));
     }
 
 
     @And("the knight is not on {string}")
     public void theKnightIsNotOn(String square) {
-        assertNull(gameManager.getPiece(square));
+        assertNull(board.get(square));
     }
 
     @And("a knight illegally on {string}")
     public void aKnightIllegallyOn(String square) throws BoardOutOfBoundsException {
         knight = new Knight(Knight.Color.WHITE);
         exception = assertThrows(BoardOutOfBoundsException.class, () -> {
-            gameManager.put(knight, square);
+            board.put(knight, square);
         });
     }
 
@@ -65,129 +65,129 @@ public class movingSteps {
     @When("the knight moves illegally from {string} to {string}")
     public void theKnightMovesIllegallyFromTo(String squareFrom, String squareTo) throws BoardOutOfBoundsException {
         exception = assertThrows(BoardOutOfBoundsException.class, () -> {
-            gameManager.move(knight, squareFrom, squareTo);
+            board.move(knight, squareFrom, squareTo);
         });
     }
 
     @When("the non-existent knight moves illegally from {string} to {string}")
     public void theNonExistentKnightMovesIllegallyFromTo(String squareFrom, String squareTo) {
         exception = assertThrows(IllegalMoveException.class, () -> {
-            gameManager.move(knight, squareFrom, squareTo);
+            board.move(knight, squareFrom, squareTo);
         });
     }
 
     @And("the square {string} is empty")
     public void theSquareIsEmpty(String square) {
-        assertTrue(gameManager.isEmpty(square));
+        assertTrue(board.isEmpty(square));
     }
 
     @And("another white knight on {string}")
     public void anotherWhiteKnightOn(String square) throws BoardOutOfBoundsException {
         capturedKnight = new Knight(Knight.Color.WHITE);
-        gameManager.put(capturedKnight, square);
+        board.put(capturedKnight, square);
     }
 
     @Then("the knight on {string} captures on {string}")
     public void theKnightOnCapturesOn(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        gameManager.move(knight, squareFrom, squareTo);
+        board.move(knight, squareFrom, squareTo);
     }
 
     @And("a white knight on {string}")
     public void aWhiteKnightOn(String square) throws BoardOutOfBoundsException {
         knight = new Knight(Knight.Color.WHITE);
-        gameManager.put(knight, square);
+        board.put(knight, square);
     }
 
     @And("a black knight on {string}")
     public void aBlackKnightOn(String square) throws BoardOutOfBoundsException {
         capturedKnight = new Knight(Knight.Color.BLACK);
-        gameManager.put(capturedKnight, square);
+        board.put(capturedKnight, square);
     }
 
     @Then("the knight stays on {string}")
     public void theKnightStaysOn(String square) {
-        assertEquals(knight, gameManager.getPiece(square));
+        assertEquals(knight, board.get(square));
     }
 
     @And("the other knight stays on {string}")
     public void theOtherKnightStaysOn(String square) {
-        assertEquals(capturedKnight, gameManager.getPiece(square));
+        assertEquals(capturedKnight, board.get(square));
     }
 
 
     @And("a black bishop on {string}")
     public void aBlackBishopOn(String square) throws BoardOutOfBoundsException {
         bishop = new Bishop(Bishop.Color.BLACK);
-        gameManager.put(bishop, square);
+        board.put(bishop, square);
     }
 
     @When("the bishop moves from {string} to {string}")
     public void theBishopMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        gameManager.move(bishop, squareFrom, squareTo);
+        board.move(bishop, squareFrom, squareTo);
     }
 
     @Then("the bishop is on {string}")
     public void theBishopIsOn(String square) {
-        assertEquals(bishop, gameManager.getPiece(square));
+        assertEquals(bishop, board.get(square));
     }
 
     @When("the bishop on {string} captures on {string}")
     public void theBishopOnCapturesOn(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        gameManager.move(bishop, squareFrom, squareTo);
+        board.move(bishop, squareFrom, squareTo);
     }
 
     @And("a white king on {string}")
     public void aWhiteKingOn(String square) throws BoardOutOfBoundsException {
         king = new King(Piece.Color.WHITE);
-        gameManager.put(king, square);
+        board.put(king, square);
     }
 
     @When("the king moves from {string} to {string}")
     public void theKingMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        gameManager.move(king, squareFrom, squareTo);
+        board.move(king, squareFrom, squareTo);
     }
 
     @Then("the king is on {string}")
     public void theKingIsOn(String square) {
-        assertEquals(king, gameManager.getPiece(square));
+        assertEquals(king, board.get(square));
     }
 
     @And("a black rook on {string}")
     public void aBlackRookOn(String square) throws BoardOutOfBoundsException {
         rook = new Rook(Piece.Color.BLACK);
-        gameManager.put(rook, square);
+        board.put(rook, square);
     }
 
     @When("the rook moves from {string} to {string}")
     public void theRookMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        gameManager.move(rook, squareFrom, squareTo);
+        board.move(rook, squareFrom, squareTo);
     }
 
     @Then("the rook is on {string}")
     public void theRookIsOn(String square) {
-        assertEquals(rook, gameManager.getPiece(square));
+        assertEquals(rook, board.get(square));
     }
 
     @And("a white queen on {string}")
     public void aWhiteQueenOn(String square) throws BoardOutOfBoundsException {
         queen = new Queen(Piece.Color.WHITE);
-        gameManager.put(queen, square);
+        board.put(queen, square);
     }
 
     @When("the queen moves from {string} to {string}")
     public void theQueenMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        gameManager.move(queen, squareFrom, squareTo);
+        board.move(queen, squareFrom, squareTo);
     }
 
     @Then("the queen is on {string}")
     public void theQueenIsOn(String square) {
-        assertEquals(queen, gameManager.getPiece(square));
+        assertEquals(queen, board.get(square));
     }
 
     @And("a white rook on {string}")
     public void aWhiteRookOn(String square) throws BoardOutOfBoundsException {
         rook = new Rook(Piece.Color.WHITE);
-        gameManager.put(rook, square);
+        board.put(rook, square);
     }
 
     @And("the king can castle")
