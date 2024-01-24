@@ -135,4 +135,12 @@ public class Board {
         char number = (char) (rank+1);
         return "" + letter + number;
     }
+
+    public void clear() {
+        for (int rank = 0; rank < Board.SIZE; rank++) {
+            for (int file = 0; file < Board.SIZE; file++) {
+                board[rank][file] = null;
+            }
+        }
+    }
 }

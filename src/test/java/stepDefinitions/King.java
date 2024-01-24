@@ -4,12 +4,7 @@ import chess.console.Board;
 import chess.console.pieces.Piece;
 
 public class King extends Piece{
-    private boolean canCastle;
-
-    public King(Color color) {
-        super(color);
-        canCastle = true;
-    }
+    public King(Color color) { super(color); }
 
     @Override
     public boolean isValidMove(Board board, String squareFrom, String squareTo) {
@@ -18,7 +13,4 @@ public class King extends Piece{
         return fileDiff <= 1 && rankDiff <= 1 && !board.isAttacked(this, squareTo);
     }
 
-    public boolean canCastle() {
-        return canCastle;
-    }
 }

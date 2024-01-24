@@ -7,7 +7,7 @@ Feature: Moving Pieces
     And the square "e8" is empty
     When the knight moves from "f6" to "e8"
     Then the knight is on "e8"
-    And the square "e8" is empty
+    And the square "f6" is empty
 
   Scenario: Putting a knight on an out of bounds file (fail)
     Given an empty board
