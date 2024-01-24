@@ -55,6 +55,31 @@ public class Board {
                 || !piece.isValidMove(this, squareFrom, squareTo))
             { return; }
 
+        movePiece(squareFrom, squareTo);
+
+        // If this point is reached, the king could castle, so we can "manually" move the rook
+        if (isCastles(piece, squareFrom, squareTo)) {
+            doRookCastles(squareFrom, squareTo);
+        }
+    }
+
+    private void doRookCastles(String squareFrom, String squareTo) {
+        // set square where rook is coming from
+        char cornerFile = squareTo.charAt(0) < squareFrom.charAt(0) ? getFirstFile() : getLastFile();
+        String cornerSquare = "" + cornerFile + squareTo.charAt(1);
+
+        // set destination square based on the king's move
+        char fileTo = (char)(squareFrom.charAt(0) + ((squareFrom.charAt(0) < squareTo.charAt(0)) ? 1 : -1));
+        char rankTo = squareFrom.charAt(1);
+        String destinationSquare = "" + fileTo + rankTo;
+
+        movePiece(cornerSquare, destinationSquare);
+    }
+
+    /**
+     * Moves the piece at squareFrom to squareTo with NO safety checks.
+     */
+    private void movePiece(String squareFrom, String squareTo) {
         int fileFrom = getFile(squareFrom);
         int rankFrom = getRank(squareFrom);
         int fileTo = getFile(squareTo);
@@ -62,20 +87,6 @@ public class Board {
 
         board[rankTo][fileTo] = board[rankFrom][fileFrom];
         board[rankFrom][fileFrom] = null;
-
-        // If this point is reached, the king could castle, so we can "manually" move the rook
-        if (isCastles(piece, squareFrom, squareTo)) {
-            // set destination square based on the king's move
-            fileTo = fileFrom + ((fileFrom < fileTo) ? 1 : -1);
-            rankTo = getRank(squareFrom);
-            // then set square where rook is coming from
-            char cornerFile = squareTo.charAt(0) < squareFrom.charAt(0) ? getFirstFile() : getLastFile();
-            String cornerSquare = "" + cornerFile + squareTo.charAt(1);
-            fileFrom = getFile(cornerSquare);
-            rankFrom = getRank(cornerSquare);
-            board[rankTo][fileTo] = board[rankFrom][fileFrom];
-            board[rankFrom][fileFrom] = null;
-        }
     }
 
     private boolean isCastles(Piece piece, String squareFrom, String squareTo) {
