@@ -332,6 +332,8 @@ Feature: Moving Pieces
 
 
     # castling with a rook when the other rook has moved [valid]
+    # failing to castle when the king has already moved
+    # failing to castle when the rook has already moved
     # a piece can move to a square attacked by another piece of the same color
 
 
