@@ -417,8 +417,19 @@ Feature: Moving Pieces
     Then the king is on "e1"
     And the rook is on "a1"
 
+  Scenario: moving a white pawn 2 steps forward from initial position
+    Given an empty board
+    And a white pawn on "b2"
+    When the pawn moves from "b2" to "b4"
+    Then the pawn is on "b4"
+    And the square "b2" is empty
 
-
+    # can't double move pawn except first position (black and white)
+    # can't move pawn backwards
+    # can't take piece vertically with pawn
+    # can take piece diagonally with pawn
+    # pawn promotion
+    # check and checkmate
     # Find a better way to set canCastle to false for rook and king, instead of isKing/RookMove() in Board.move()
 
 

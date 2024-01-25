@@ -23,6 +23,7 @@ public class movingSteps {
     private Rook rook;
     private Queen queen;
     private Rook otherRook;
+    private Pawn pawn;
 
     @Given("an empty board")
     public void anEmptyBoard() { board = new Board(); }
@@ -226,5 +227,20 @@ public class movingSteps {
     @And("the other rook is on {string}")
     public void theOtherRookIsOn(String square) {
         assertEquals(otherRook, board.get(square));
+    }
+
+    @And("a white pawn on {string}")
+    public void aWhitePawnOn(String square) throws BoardOutOfBoundsException {
+        pawn = new Pawn(Piece.Color.WHITE);
+        board.put(pawn, square);
+    }
+
+    @When("the pawn moves from {string} to {string}")
+    public void thePawnMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(squareFrom, squareTo);
+    }
+
+    @Then("the pawn is on {string}")
+    public void thePawnIsOn(String square) {
     }
 }
