@@ -24,4 +24,9 @@ public class BlackPawn extends Pawn {
         int rank = square.charAt(1) - '0';
         return rank == (Board.SIZE - 1);
     }
+
+    @Override
+    boolean isValidCaptureDirection(String squareFrom, String squareTo) {
+        return squareTo.charAt(1) - squareFrom.charAt(1) == -1;
+    }
 }

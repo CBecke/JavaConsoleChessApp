@@ -10,14 +10,23 @@ public abstract class Pawn extends Piece {
 
     @Override
     public boolean isValidMove(Board board, String squareFrom, String squareTo) {
-        return isValidDoubleMove(squareFrom, squareTo)
-                || isValidSingleForwardMove(squareFrom, squareTo);
+        return (board.isEmpty(squareTo)
+                    && (isValidDoubleMove(squareFrom, squareTo)
+                        || isValidSingleForwardMove(squareFrom, squareTo)))
+                || isValidCapture(board, squareFrom, squareTo);
     }
-
     abstract boolean isValidSingleForwardMove(String squareFrom, String squareTo);
 
     abstract boolean isValidDoubleMove(String squareFrom, String squareTo);
 
-
     abstract boolean isInInitialRank(String square);
+
+    abstract boolean isValidCaptureDirection(String squareFrom, String squareTo);
+
+    boolean isValidCapture(Board board, String squareFrom, String squareTo) {
+        return !board.isEmpty(squareTo)
+                && board.get(squareTo).getColor() != getColor()
+                && Math.abs(squareTo.charAt(0) - squareFrom.charAt(0)) == 1
+                && isValidCaptureDirection(squareFrom, squareTo);
+    };
 }

@@ -25,4 +25,10 @@ public class WhitePawn extends Pawn {
         int rank = square.charAt(1) - '0';
         return rank == 2;
     }
+
+    @Override
+    boolean isValidCaptureDirection(String squareFrom, String squareTo) {
+        return squareTo.charAt(1) - squareFrom.charAt(1) == 1;
+    }
+
 }

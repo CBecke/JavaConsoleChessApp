@@ -487,8 +487,54 @@ Feature: Moving Pieces
     Then the pawn is on "b7"
     And the square "b6" is empty
 
+  Scenario: trying to take a piece by moving forward 1 rank with white pawn
+    Given an empty board
+    And a white pawn on "b2"
+    And a black bishop on "b3"
+    When the pawn moves from "b2" to "b3"
+    Then the pawn is on "b2"
+    And the bishop is on "b3"
 
-    # can't take piece vertically with pawn
+  Scenario: trying to take a piece by moving forward 2 ranks with white pawn
+    Given an empty board
+    And a white pawn on "b2"
+    And a black bishop on "b4"
+    When the pawn moves from "b2" to "b4"
+    Then the pawn is on "b2"
+    And the bishop is on "b4"
+
+  Scenario: trying to take a piece by moving forward 1 rank with black pawn
+    Given an empty board
+    And a black pawn on "b7"
+    And a white knight on "b6"
+    When the pawn moves from "b7" to "b6"
+    Then the pawn is on "b7"
+    And the knight is on "b6"
+
+  Scenario: trying to take a piece by moving forward 2 ranks with black pawn
+    Given an empty board
+    And a black pawn on "b7"
+    And a white knight on "b5"
+    When the pawn moves from "b7" to "b5"
+    Then the pawn is on "b7"
+    And the knight is on "b5"
+
+  Scenario: capturing with a white pawn
+    Given an empty board
+    And a white pawn on "b2"
+    And a black bishop on "c3"
+    When the pawn moves from "b2" to "c3"
+    Then the pawn is on "c3"
+    And the square "b2" is empty
+
+  Scenario: capturing with a black pawn
+    Given an empty board
+    And a black pawn on "b3"
+    And a white knight on "c2"
+    When the pawn moves from "b3" to "c2"
+    Then the pawn is on "c2"
+    And the square "b3" is empty
+
     # can take piece diagonally with pawn
     # pawn promotion
     # check and checkmate
