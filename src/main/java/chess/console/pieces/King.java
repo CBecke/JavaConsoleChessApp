@@ -31,4 +31,6 @@ public class King extends Piece{
 
 
     public boolean canCastle() { return canCastle;}
+
+    public void disableCastling() { canCastle = false; }
 }

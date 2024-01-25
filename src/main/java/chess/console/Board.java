@@ -4,6 +4,7 @@ import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
 import chess.console.pieces.King;
 import chess.console.pieces.Piece;
+import chess.console.pieces.Rook;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,6 @@ public class Board {
 
         int file = getFile(square);
         int rank = getRank(square);
-
         board[rank][file] = piece;
     }
 
@@ -55,6 +55,8 @@ public class Board {
                 || !piece.isValidMove(this, squareFrom, squareTo))
             { return; }
 
+        if (isRookMove(piece)) { ((Rook)piece).disableCastling(); }
+        if (isKingMove(piece)) { ((King)piece).disableCastling(); }
         movePiece(squareFrom, squareTo);
 
         // If this point is reached, the king could castle, so we can "manually" move the rook
@@ -62,6 +64,10 @@ public class Board {
             doRookCastles(squareFrom, squareTo);
         }
     }
+
+    private boolean isRookMove(Piece piece) { return piece instanceof Rook; }
+
+    private boolean isKingMove(Piece piece) { return piece instanceof King; }
 
     private void doRookCastles(String squareFrom, String squareTo) {
         // set square where rook is coming from

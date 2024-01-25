@@ -1,7 +1,6 @@
 package chess.console.pieces;
 
 import chess.console.Board;
-import chess.console.pieces.Piece;
 
 public class Rook extends Piece {
     private boolean canCastle = true;
@@ -26,4 +25,6 @@ public class Rook extends Piece {
     }
 
     public boolean canCastle() { return canCastle; }
+
+    public void disableCastling() { canCastle = false; }
 }

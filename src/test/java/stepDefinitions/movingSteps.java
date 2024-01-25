@@ -199,4 +199,20 @@ public class movingSteps {
     public void theRookCanCastle() {
         assertTrue(rook.canCastle());
     }
+
+    @And("a black king on {string}")
+    public void aBlackKingOn(String square) throws BoardOutOfBoundsException {
+        king = new King(Piece.Color.BLACK);
+        board.put(king, square);
+    }
+
+    @And("the king has moved from {string} to {string}")
+    public void theKingHasMovedFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(king, squareFrom, squareTo);
+    }
+
+    @And("the rook has moved from {string} to {string}")
+    public void theRookHasMovedFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(rook, squareFrom, squareTo);
+    }
 }

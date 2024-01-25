@@ -320,6 +320,7 @@ Feature: Moving Pieces
     And the square "h8" is empty
 
 
+  # castling
   Scenario: White Queen side castling
     Given an empty board
     And a white king on "e1"
@@ -330,11 +331,62 @@ Feature: Moving Pieces
     Then the king is on "c1"
     And the rook is on "d1"
 
+  Scenario: White king side castling
+    Given an empty board
+    And a white king on "e1"
+    And the king can castle
+    And a white rook on "h1"
+    And the rook can castle
+    When the king moves from "e1" to "g1"
+    Then the king is on "g1"
+    And the rook is on "f1"
 
+  Scenario: black queen side castling
+    Given an empty board
+    And a black king on "e8"
+    And the king can castle
+    And a black rook on "a8"
+    And the rook can castle
+    When the king moves from "e8" to "c8"
+    Then the king is on "c8"
+    And the rook is on "d8"
+
+  Scenario: black king side castling
+    Given an empty board
+    And a black king on "e8"
+    And the king can castle
+    And a black rook on "h8"
+    And the rook can castle
+    When the king moves from "e8" to "g8"
+    Then the king is on "g8"
+    And the rook is on "f8"
+
+  Scenario: Trying to castle when the king has already moved
+    Given an empty board
+    And a white king on "e1"
+    And the king has moved from "e1" to "d1"
+    And the king has moved from "d1" to "e1"
+    And a white rook on "h1"
+    And the rook can castle
+    When the king moves from "e1" to "g1"
+    Then the king is on "e1"
+    And the rook is on "h1"
+
+  Scenario: Trying to castle when the rook has already moved
+    Given an empty board
+    And a white king on "e1"
+    And the king can castle
+    And a white rook on "a1"
+    And the rook has moved from "a1" to "b1"
+    And the rook has moved from "b1" to "a1"
+    When the king moves from "e1" to "c1"
+    Then the king is on "e1"
+    And the rook is on "a1"
+
+    # refactor Board.move() such that it no longer takes piece as parameter
     # castling with a rook when the other rook has moved [valid]
-    # failing to castle when the king has already moved
-    # failing to castle when the rook has already moved
-    # a piece can move to a square attacked by another piece of the same color
+    # trying to castle with opposite colored rook
+    # ensure a piece can move to a square attacked by another piece of the same color
 
 
 
