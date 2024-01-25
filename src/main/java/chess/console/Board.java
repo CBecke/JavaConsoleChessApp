@@ -47,9 +47,11 @@ public class Board {
                 && '1' <= square.charAt(1) && square.charAt(1) <= '8';
     }
 
-    public void move(Piece piece, String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
+    public void move(String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
         if (!isWithinBoard(squareTo)) { throw new BoardOutOfBoundsException(squareTo); }
         if (isEmpty(squareFrom)) { throw new IllegalMoveException("The square moved from is empty"); }
+
+        Piece piece = get(squareFrom);
         if (!canGoTo(piece, squareTo)
                 || isStillStandingMove(squareFrom, squareTo)
                 || !piece.isValidMove(this, squareFrom, squareTo))

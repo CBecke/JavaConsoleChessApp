@@ -34,7 +34,7 @@ public class movingSteps {
 
     @When("the knight moves from {string} to {string}")
     public void theKnightMovesTo(String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
-        board.move(knight, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 
     @Then("the knight is on {string}")
@@ -65,14 +65,14 @@ public class movingSteps {
     @When("the knight moves illegally from {string} to {string}")
     public void theKnightMovesIllegallyFromTo(String squareFrom, String squareTo) throws BoardOutOfBoundsException {
         exception = assertThrows(BoardOutOfBoundsException.class, () -> {
-            board.move(knight, squareFrom, squareTo);
+            board.move(squareFrom, squareTo);
         });
     }
 
     @When("the non-existent knight moves illegally from {string} to {string}")
     public void theNonExistentKnightMovesIllegallyFromTo(String squareFrom, String squareTo) {
         exception = assertThrows(IllegalMoveException.class, () -> {
-            board.move(knight, squareFrom, squareTo);
+            board.move(squareFrom, squareTo);
         });
     }
 
@@ -89,7 +89,7 @@ public class movingSteps {
 
     @Then("the knight on {string} captures on {string}")
     public void theKnightOnCapturesOn(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(knight, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 
     @And("a white knight on {string}")
@@ -123,7 +123,7 @@ public class movingSteps {
 
     @When("the bishop moves from {string} to {string}")
     public void theBishopMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(bishop, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 
     @Then("the bishop is on {string}")
@@ -133,7 +133,7 @@ public class movingSteps {
 
     @When("the bishop on {string} captures on {string}")
     public void theBishopOnCapturesOn(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(bishop, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 
     @And("a white king on {string}")
@@ -144,7 +144,7 @@ public class movingSteps {
 
     @When("the king moves from {string} to {string}")
     public void theKingMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(king, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 
     @Then("the king is on {string}")
@@ -160,7 +160,7 @@ public class movingSteps {
 
     @When("the rook moves from {string} to {string}")
     public void theRookMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(rook, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 
     @Then("the rook is on {string}")
@@ -176,7 +176,7 @@ public class movingSteps {
 
     @When("the queen moves from {string} to {string}")
     public void theQueenMovesFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(queen, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 
     @Then("the queen is on {string}")
@@ -208,11 +208,11 @@ public class movingSteps {
 
     @And("the king has moved from {string} to {string}")
     public void theKingHasMovedFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(king, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 
     @And("the rook has moved from {string} to {string}")
     public void theRookHasMovedFromTo(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(rook, squareFrom, squareTo);
+        board.move(squareFrom, squareTo);
     }
 }

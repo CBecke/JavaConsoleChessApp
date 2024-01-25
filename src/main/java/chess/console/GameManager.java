@@ -30,8 +30,8 @@ public class GameManager {
         board.put(piece, square);
     }
 
-    public void move(Piece piece, String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(piece, squareFrom, squareTo);
+    public void move(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
+        board.move(squareFrom, squareTo);
     }
 
     public Piece getPiece(String square) { return board.get(square); }
