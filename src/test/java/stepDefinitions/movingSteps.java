@@ -242,5 +242,12 @@ public class movingSteps {
 
     @Then("the pawn is on {string}")
     public void thePawnIsOn(String square) {
+        assertEquals(pawn, board.get(square));
+    }
+
+    @And("a black pawn on {string}")
+    public void aBlackPawnOn(String square) throws BoardOutOfBoundsException {
+        pawn = new Pawn(Piece.Color.BLACK);
+        board.put(pawn, square);
     }
 }

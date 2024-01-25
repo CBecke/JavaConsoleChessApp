@@ -417,15 +417,77 @@ Feature: Moving Pieces
     Then the king is on "e1"
     And the rook is on "a1"
 
-  Scenario: moving a white pawn 2 steps forward from initial position
+  Scenario: moving a white pawn 2 steps forward from initial square
     Given an empty board
     And a white pawn on "b2"
     When the pawn moves from "b2" to "b4"
     Then the pawn is on "b4"
     And the square "b2" is empty
 
-    # can't double move pawn except first position (black and white)
-    # can't move pawn backwards
+  Scenario: trying to move a white pawn 2 steps forward from non-initial square
+    Given an empty board
+    And a white pawn on "b3"
+    When the pawn moves from "b3" to "b5"
+    Then the pawn is on "b3"
+    And the square "b5" is empty
+
+  Scenario: moving a black pawn 2 steps forward from initial square
+    Given an empty board
+    And a black pawn on "b7"
+    When the pawn moves from "b7" to "b5"
+    Then the pawn is on "b5"
+    And the square "b7" is empty
+
+  Scenario: trying to move a black pawn 2 steps forward from non-initial square
+    Given an empty board
+    And a black pawn on "b6"
+    When the pawn moves from "b6" to "b4"
+    Then the pawn is on "b6"
+    And the square "b4" is empty
+
+  Scenario: trying to move a white pawn backwards
+    Given an empty board
+    And a white pawn on "b2"
+    When the pawn moves from "b2" to "b1"
+    Then the pawn is on "b2"
+    And the square "b1" is empty
+
+  Scenario: trying to move a black pawn backwards
+    Given an empty board
+    And a black pawn on "b6"
+    When the pawn moves from "b6" to "b7"
+    Then the pawn is on "b6"
+    And the square "b7" is empty
+
+  Scenario: Moving a white pawn 1 step forward
+    Given an empty board
+    And a white pawn on "b2"
+    When the pawn moves from "b2" to "b3"
+    Then the pawn is on "b3"
+    And the square "b2" is empty
+
+  Scenario: trying to move a black pawn 1 step backward
+    Given an empty board
+    And a black pawn on "b2"
+    When the pawn moves from "b2" to "b3"
+    Then the pawn is on "b2"
+    And the square "b3" is empty
+
+  Scenario: Moving a black pawn 1 step forward
+    Given an empty board
+    And a black pawn on "b7"
+    When the pawn moves from "b7" to "b6"
+    Then the pawn is on "b6"
+    And the square "b7" is empty
+
+  Scenario: trying to move a white pawn 1 step backward
+    Given an empty board
+    And a white pawn on "b7"
+    When the pawn moves from "b7" to "b6"
+    Then the pawn is on "b7"
+    And the square "b6" is empty
+
+
     # can't take piece vertically with pawn
     # can take piece diagonally with pawn
     # pawn promotion
