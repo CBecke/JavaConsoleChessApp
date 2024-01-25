@@ -4,6 +4,9 @@ import chess.console.Board;
 import chess.console.pieces.*;
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
+import chess.console.pieces.pawn.BlackPawn;
+import chess.console.pieces.pawn.Pawn;
+import chess.console.pieces.pawn.WhitePawn;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -231,7 +234,7 @@ public class movingSteps {
 
     @And("a white pawn on {string}")
     public void aWhitePawnOn(String square) throws BoardOutOfBoundsException {
-        pawn = new Pawn(Piece.Color.WHITE);
+        pawn = new WhitePawn();
         board.put(pawn, square);
     }
 
@@ -247,7 +250,7 @@ public class movingSteps {
 
     @And("a black pawn on {string}")
     public void aBlackPawnOn(String square) throws BoardOutOfBoundsException {
-        pawn = new Pawn(Piece.Color.BLACK);
+        pawn = new BlackPawn();
         board.put(pawn, square);
     }
 }
