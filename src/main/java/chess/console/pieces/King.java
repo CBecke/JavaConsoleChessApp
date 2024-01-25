@@ -25,8 +25,8 @@ public class King extends Piece{
                 && squareFrom.charAt(1) == squareTo.charAt(1)
                 && cornerPiece instanceof Rook
                 && ((Rook)cornerPiece).canCastle()
-                && board.isClearPath(squareFrom, squareTo)
-                && !board.isAttackedPath(this, squareFrom, squareTo); // placed at the end because it is most computationally expensive
+                && board.isClearPath(squareFrom, cornerSquare)
+                && !board.isAttackedPath(this, squareFrom, cornerSquare); // placed at the end because it is most computationally expensive
     }
 
 

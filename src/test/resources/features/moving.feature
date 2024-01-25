@@ -383,10 +383,43 @@ Feature: Moving Pieces
     Then the king is on "e1"
     And the rook is on "a1"
 
-    # refactor Board.move() such that it no longer takes piece as parameter
-    # castling with a rook when the other rook has moved [valid]
-    # trying to castle with opposite colored rook
-    # ensure a piece can move to a square attacked by another piece of the same color
+  Scenario: castle when the OTHER rook has already moved
+    Given an empty board
+    And a white king on "e1"
+    And the king can castle
+    And a white rook on "a1"
+    And the rook has moved from "a1" to "b1"
+    And the rook has moved from "b1" to "a1"
+    And another white rook on "h1"
+    When the king moves from "e1" to "g1"
+    Then the king is on "g1"
+    And the other rook is on "f1"
+
+  Scenario: castle when path is attacked by same color piece
+    Given an empty board
+    And a white king on "e1"
+    And the king can castle
+    And a white rook on "a1"
+    And the rook can castle
+    And another white rook on "d2"
+    When the king moves from "e1" to "c1"
+    Then the king is on "c1"
+    And the rook is on "d1"
+
+  Scenario: trying to castle when path is attacked
+    Given an empty board
+    And a white king on "e1"
+    And the king can castle
+    And a white rook on "a1"
+    And the rook can castle
+    And a black bishop on "a2"
+    When the king moves from "e1" to "c1"
+    Then the king is on "e1"
+    And the rook is on "a1"
+
+
+
+    # Find a better way to set canCastle to false for rook and king, instead of isKing/RookMove() in Board.move()
 
 
 
