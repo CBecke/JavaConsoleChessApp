@@ -535,7 +535,38 @@ Feature: Moving Pieces
     Then the pawn is on "c2"
     And the square "b3" is empty
 
-    # can take piece diagonally with pawn
+  Scenario: trying to capture white piece with white pawn
+    Given an empty board
+    And a white pawn on "b3"
+    And a white knight on "c4"
+    When the pawn moves from "b3" to "c4"
+    Then the pawn is on "b3"
+    And the knight is on "c4"
+
+  Scenario: trying to capture black piece with black pawn
+    Given an empty board
+    And a black pawn on "b3"
+    And a black bishop on "c2"
+    When the pawn moves from "b3" to "c2"
+    Then the pawn is on "b3"
+    And the bishop is on "c2"
+
+  Scenario: trying to capture in illegal direction with white pawn
+    Given an empty board
+    And a white pawn on "b3"
+    And a black bishop on "c2"
+    When the pawn moves from "b3" to "c2"
+    Then the pawn is on "b3"
+    And the bishop is on "c2"
+
+  Scenario: trying to capture in illegal direction with black pawn
+    Given an empty board
+    And a black pawn on "b3"
+    And a white knight on "c4"
+    When the pawn moves from "b3" to "c4"
+    Then the pawn is on "b3"
+    And the knight is on "c4"
+
     # pawn promotion
     # check and checkmate
     # Find a better way to set canCastle to false for rook and king, instead of isKing/RookMove() in Board.move()
