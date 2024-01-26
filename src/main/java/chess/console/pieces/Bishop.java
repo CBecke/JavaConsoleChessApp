@@ -14,5 +14,10 @@ public class Bishop extends Piece {
                 && board.isClearPath(squareFrom, squareTo);
     }
 
+    @Override
+    public String toString() {
+        return getColor() == Color.WHITE ? "B" : "b";
+    }
+
     private boolean isDiagonalMove(int fileDiff, int rankDiff) { return fileDiff == rankDiff; }
 }

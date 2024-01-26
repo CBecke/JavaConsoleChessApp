@@ -14,4 +14,9 @@ public class Knight extends Piece {
         return (fileDiff == 1 && rankDiff == 2)
                 || (fileDiff == 2 && rankDiff == 1);
     }
+
+    @Override
+    public String toString() {
+        return getColor() == Color.WHITE ? "N" : "n";
+    }
 }

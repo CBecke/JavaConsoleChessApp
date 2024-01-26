@@ -16,6 +16,7 @@ public abstract class Pawn extends Piece {
                         || isValidSingleForwardMove(squareFrom, squareTo)))
                 || isValidCapture(board, squareFrom, squareTo);
     }
+
     abstract boolean isValidSingleForwardMove(String squareFrom, String squareTo);
 
     abstract boolean isValidDoubleMove(String squareFrom, String squareTo);

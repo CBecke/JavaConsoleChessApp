@@ -32,4 +32,8 @@ public class WhitePawn extends Pawn {
         return squareTo.charAt(1) - squareFrom.charAt(1) == direction;
     }
 
+    @Override
+    public String toString() {
+        return "P";
+    }
 }

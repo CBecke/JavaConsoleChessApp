@@ -18,6 +18,11 @@ public class King extends Piece{
                 && ((fileDiff <= 1 && rankDiff <= 1) || isValidCastles(board, squareFrom, squareTo)) ;
     }
 
+    @Override
+    public String toString() {
+        return getColor() == Color.WHITE ? "K" : "k";
+    }
+
     private boolean isValidCastles(Board board, String squareFrom, String squareTo) {
         char cornerFile = squareTo.charAt(0) < squareFrom.charAt(0) ? Board.getFirstFile() : Board.getLastFile();
         String cornerSquare = "" + cornerFile + squareTo.charAt(1);

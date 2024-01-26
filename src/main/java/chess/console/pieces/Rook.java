@@ -17,6 +17,11 @@ public class Rook extends Piece {
                     && board.isClearPath(squareFrom, squareTo);
     }
 
+    @Override
+    public String toString() {
+        return getColor() == Color.WHITE ? "R" : "r";
+    }
+
     private boolean isVerticalMove(String squareFrom, String squareTo) {
         return (squareFrom.charAt(0) == squareTo.charAt(0)) && (squareFrom.charAt(1) != squareTo.charAt(1));
     }

@@ -31,4 +31,9 @@ public class BlackPawn extends Pawn {
     boolean isValidCaptureDirection(String squareFrom, String squareTo) {
         return squareTo.charAt(1) - squareFrom.charAt(1) == direction;
     }
+
+    @Override
+    public String toString() {
+        return "p";
+    }
 }

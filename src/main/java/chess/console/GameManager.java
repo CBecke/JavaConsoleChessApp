@@ -20,7 +20,7 @@ public class GameManager {
     // Logic
     private final Board board = new Board();
     private Printer printer = new ConsolePrinter();
-    private Player whitePlayer;
+    private Player whitePlayer = new Player(Color.WHITE);
     private boolean whiteLost = false;
     private boolean blackLost = false;
     private boolean draw      = false;
@@ -29,6 +29,7 @@ public class GameManager {
     public void playChess() throws BoardOutOfBoundsException {
         // Prepare board for game
         board.setInitialPosition();
+        printer.printBoard(board);
 
         /* Potentially keep player array and use modulo to chose player. will make loop shorter*/
         while (!isGameOver()) {

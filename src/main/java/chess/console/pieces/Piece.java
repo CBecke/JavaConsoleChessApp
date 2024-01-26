@@ -17,4 +17,6 @@ public abstract class Piece {
 
     public abstract boolean isValidMove(Board board, String squareFrom, String squareTo);
 
+    @Override
+    public abstract String toString();
 }
