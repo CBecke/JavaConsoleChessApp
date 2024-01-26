@@ -253,4 +253,16 @@ public class movingSteps {
         pawn = new BlackPawn();
         board.put(pawn, square);
     }
+
+    @Then("there is a white queen on {string}")
+    public void thereIsAWhiteQueenOn(String square) {
+        Piece piece = board.get(square);
+        assertTrue(piece instanceof Queen && piece.getColor() == Piece.Color.WHITE);
+    }
+
+    @Then("there is a white knight on {string}")
+    public void thereIsAWhiteKnightOn(String square) {
+        Piece piece = board.get(square);
+        assertTrue(piece instanceof Knight && piece.getColor() == Piece.Color.WHITE);
+    }
 }

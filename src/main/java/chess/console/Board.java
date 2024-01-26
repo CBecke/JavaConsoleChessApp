@@ -4,7 +4,10 @@ import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
 import chess.console.pieces.King;
 import chess.console.pieces.Piece;
+import chess.console.pieces.Queen;
 import chess.console.pieces.Rook;
+import chess.console.pieces.pawn.Pawn;
+import chess.console.pieces.pawn.WhitePawn;
 
 import java.util.ArrayList;
 
@@ -65,7 +68,17 @@ public class Board {
         if (isCastles(piece, squareFrom, squareTo)) {
             doRookCastles(squareFrom, squareTo);
         }
+
+        // Promotion
+        if (isPawnMove(piece) && isEdgeRankMove(squareTo)) { put(new Queen(piece.getColor()), squareTo); }
     }
+
+    private boolean isEdgeRankMove(String square) {
+        int rank = getRank(square);
+        return rank == 0 || rank == Board.SIZE - 1;
+    }
+
+    private boolean isPawnMove(Piece piece) { return piece instanceof Pawn; }
 
     private boolean isRookMove(Piece piece) { return piece instanceof Rook; }
 

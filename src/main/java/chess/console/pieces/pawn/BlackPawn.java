@@ -3,6 +3,7 @@ package chess.console.pieces.pawn;
 import chess.console.Board;
 
 public class BlackPawn extends Pawn {
+    private final int direction = -1;
     public BlackPawn() {
         super(Color.BLACK);
     }
@@ -10,13 +11,13 @@ public class BlackPawn extends Pawn {
     @Override
     boolean isValidSingleForwardMove(String squareFrom, String squareTo) {
         int rankDiff = squareTo.charAt(1) - squareFrom.charAt(1);
-        return rankDiff == -1;
+        return rankDiff == direction;
     }
 
     @Override
     boolean isValidDoubleMove(String squareFrom, String squareTo) {
         int rankDiff = squareTo.charAt(1) - squareFrom.charAt(1);
-        return isInInitialRank(squareFrom) && rankDiff == -2;
+        return isInInitialRank(squareFrom) && rankDiff == 2*direction;
     }
 
     @Override
@@ -27,6 +28,6 @@ public class BlackPawn extends Pawn {
 
     @Override
     boolean isValidCaptureDirection(String squareFrom, String squareTo) {
-        return squareTo.charAt(1) - squareFrom.charAt(1) == -1;
+        return squareTo.charAt(1) - squareFrom.charAt(1) == direction;
     }
 }

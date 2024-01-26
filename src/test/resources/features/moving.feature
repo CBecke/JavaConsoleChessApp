@@ -567,7 +567,25 @@ Feature: Moving Pieces
     Then the pawn is on "b3"
     And the knight is on "c4"
 
+  Scenario: Promoting a pawn to a queen
+    Given an empty board
+    And a white pawn on "b7"
+    When the pawn moves from "b7" to "b8"
+    Then there is a white queen on "b8"
+    And the square "b7" is empty
+
+  # Failing for now: postponed until user input has been integrated
+  Scenario: Promoting a pawn to a knight
+    Given an empty board
+    And a white pawn on "b7"
+    When the pawn moves from "b7" to "b8"
+    Then there is a white knight on "b8"
+    And the square "b7" is empty
+
     # pawn promotion
+      # to queen
+      # to knight
+    # promoting on capture
     # check and checkmate
     # Find a better way to set canCastle to false for rook and king, instead of isKing/RookMove() in Board.move()
 
