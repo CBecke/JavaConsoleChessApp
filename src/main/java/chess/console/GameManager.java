@@ -7,7 +7,6 @@ import chess.console.pieces.Piece;
 /**
  * Singleton class to combine and handle game components. Retrieve instance with GameManager.getInstance()
  */
-@Deprecated // Not useful for now
 public class GameManager {
     /// Singleton components
     private static GameManager instance = null;
@@ -17,24 +16,36 @@ public class GameManager {
         if (instance == null) {instance = new GameManager(); }
         return instance;
     }
-
     // Logic
     private final Board board = new Board();
+    private Player whitePlayer;
+    private boolean whiteLost = false;
+    private boolean blackLost = false;
+    private boolean draw      = false;
 
 
-    public void clearBoard() {
-        board.clear();
+    public void playChess() throws BoardOutOfBoundsException {
+        // Prepare board for game
+        board.setInitialPosition();
+
+        /* Potentially keep player array and use modulo to chose player. will make loop shorter*/
+        while (!isGameOver()) {
+            // White to move
+            while (!whitePlayer.move(board));
+
+            // print board
+
+            // check for ended game
+
+            // black to move
+
+            // print board
+
+            // check for ended game
+        }
     }
 
-    public void put(Piece piece, String square) throws BoardOutOfBoundsException {
-        board.put(piece, square);
-    }
+    private boolean isGameOver() { return whiteLost || blackLost || draw; }
 
-    public void move(String squareFrom, String squareTo) throws IllegalMoveException, BoardOutOfBoundsException {
-        board.move(squareFrom, squareTo);
-    }
 
-    public Piece getPiece(String square) { return board.get(square); }
-
-    public boolean isEmpty(String square) { return board.isEmpty(square); }
 }

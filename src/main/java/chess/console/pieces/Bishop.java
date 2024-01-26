@@ -1,6 +1,7 @@
 package chess.console.pieces;
 
 import chess.console.Board;
+import chess.console.Color;
 
 public class Bishop extends Piece {
     public Bishop(Color color) { super(color); }

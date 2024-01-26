@@ -2,10 +2,8 @@ package chess.console;
 
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
-import chess.console.pieces.King;
-import chess.console.pieces.Piece;
-import chess.console.pieces.Queen;
-import chess.console.pieces.Rook;
+import chess.console.pieces.*;
+import chess.console.pieces.pawn.BlackPawn;
 import chess.console.pieces.pawn.Pawn;
 import chess.console.pieces.pawn.WhitePawn;
 
@@ -44,7 +42,7 @@ public class Board {
         return square.charAt(1) - '1'; // subtract '1' since board is 0-indexed
     }
 
-    private boolean isWithinBoard(String square) {
+    public boolean isWithinBoard(String square) {
         return square.length() == 2
                 && 'a' <= square.charAt(0) && square.charAt(0) <= 'h'
                 && '1' <= square.charAt(1) && square.charAt(1) <= '8';
@@ -157,7 +155,7 @@ public class Board {
     /**
      * Iterates over entire board to check if piece is attacked on squareTo.
      */
-    public boolean isAttacked(Piece.Color color, String square) {
+    public boolean isAttacked(Color color, String square) {
         for (int rank = 0; rank < Board.SIZE; rank++) {
             for (int file = 0; file < Board.SIZE; file++) {
                 if (isEmpty(file, rank)) { continue; }
@@ -219,4 +217,38 @@ public class Board {
         return path;
     }
 
+    public void setInitialPosition() throws BoardOutOfBoundsException {
+        // remove previous pieces
+        clear();
+
+        // Set first rank [white pieces]
+        put(new Rook(Color.WHITE), "a1");
+        put(new Rook(Color.WHITE), "h1");
+        put(new Knight(Color.WHITE), "b1");
+        put(new Knight(Color.WHITE), "g1");
+        put(new Bishop(Color.WHITE), "c1");
+        put(new Bishop(Color.WHITE), "f1");
+        put(new Queen(Color.WHITE), "d1");
+        put(new King(Color.WHITE), "e1");
+
+        // set last rank [black pieces]
+        put(new Rook(Color.BLACK), "a8");
+        put(new Rook(Color.BLACK), "h8");
+        put(new Knight(Color.BLACK), "b8");
+        put(new Knight(Color.BLACK), "g8");
+        put(new Bishop(Color.BLACK), "c8");
+        put(new Bishop(Color.BLACK), "f8");
+        put(new Queen(Color.BLACK), "d8");
+        put(new King(Color.BLACK), "e8");
+
+        // set pawns
+        for (char file = 'a'; file <= 'h'; file++) {
+            put(new WhitePawn(), "" + file + '2');
+            put(new BlackPawn(), "" + file + '7');
+        }
+    }
+
+    public boolean isValidSquareFrom(Player player, String squareFrom) {
+        return !isEmpty(squareFrom) && get(squareFrom).getColor() == player.getColor();
+    }
 }

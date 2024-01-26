@@ -1,6 +1,7 @@
 package chess.console.pieces;
 
 import chess.console.Board;
+import chess.console.Color;
 import chess.console.pieces.Piece;
 import chess.console.pieces.Rook;
 

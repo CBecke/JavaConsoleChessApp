@@ -1,11 +1,12 @@
 package chess.console.pieces;
 
 import chess.console.Board;
+import chess.console.Color;
 
 public class Rook extends Piece {
     private boolean canCastle = true;
 
-    public Rook(Piece.Color color) {
+    public Rook(Color color) {
         super(color);
     }
 

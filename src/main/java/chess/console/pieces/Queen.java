@@ -1,6 +1,7 @@
 package chess.console.pieces;
 
 import chess.console.Board;
+import chess.console.Color;
 
 public class Queen extends Piece {
     public Queen(Color color) {

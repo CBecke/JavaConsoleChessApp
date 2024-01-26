@@ -1,6 +1,7 @@
 package chess.console.pieces.pawn;
 
 import chess.console.Board;
+import chess.console.Color;
 
 public class WhitePawn extends Pawn {
     private final int direction = 1;

@@ -1,6 +1,7 @@
 package chess.console.pieces.pawn;
 
 import chess.console.Board;
+import chess.console.Color;
 import chess.console.pieces.Piece;
 
 public abstract class Pawn extends Piece {

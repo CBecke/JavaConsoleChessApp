@@ -1,12 +1,9 @@
 package chess.console.pieces;
 
 import chess.console.Board;
+import chess.console.Color;
 
 public abstract class Piece {
-    public static enum Color {
-        WHITE,
-        BLACK
-    }
 
     private final Color color;
 

@@ -1,6 +1,7 @@
 package stepDefinitions;
 
 import chess.console.Board;
+import chess.console.Color;
 import chess.console.pieces.*;
 import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.exceptions.IllegalMoveException;
@@ -33,7 +34,7 @@ public class movingSteps {
 
     @And("a knight on {string}")
     public void aKnightOn(String square) throws BoardOutOfBoundsException {
-        knight = new Knight(Knight.Color.WHITE);
+        knight = new Knight(Color.WHITE);
         board.put(knight, square);
     }
 
@@ -55,7 +56,7 @@ public class movingSteps {
 
     @And("a knight illegally on {string}")
     public void aKnightIllegallyOn(String square) throws BoardOutOfBoundsException {
-        knight = new Knight(Knight.Color.WHITE);
+        knight = new Knight(Color.WHITE);
         exception = assertThrows(BoardOutOfBoundsException.class, () -> {
             board.put(knight, square);
         });
@@ -88,7 +89,7 @@ public class movingSteps {
 
     @And("another white knight on {string}")
     public void anotherWhiteKnightOn(String square) throws BoardOutOfBoundsException {
-        capturedKnight = new Knight(Knight.Color.WHITE);
+        capturedKnight = new Knight(Color.WHITE);
         board.put(capturedKnight, square);
     }
 
@@ -99,13 +100,13 @@ public class movingSteps {
 
     @And("a white knight on {string}")
     public void aWhiteKnightOn(String square) throws BoardOutOfBoundsException {
-        knight = new Knight(Knight.Color.WHITE);
+        knight = new Knight(Color.WHITE);
         board.put(knight, square);
     }
 
     @And("a black knight on {string}")
     public void aBlackKnightOn(String square) throws BoardOutOfBoundsException {
-        capturedKnight = new Knight(Knight.Color.BLACK);
+        capturedKnight = new Knight(Color.BLACK);
         board.put(capturedKnight, square);
     }
 
@@ -122,7 +123,7 @@ public class movingSteps {
 
     @And("a black bishop on {string}")
     public void aBlackBishopOn(String square) throws BoardOutOfBoundsException {
-        bishop = new Bishop(Bishop.Color.BLACK);
+        bishop = new Bishop(Color.BLACK);
         board.put(bishop, square);
     }
 
@@ -143,7 +144,7 @@ public class movingSteps {
 
     @And("a white king on {string}")
     public void aWhiteKingOn(String square) throws BoardOutOfBoundsException {
-        king = new King(Piece.Color.WHITE);
+        king = new King(Color.WHITE);
         board.put(king, square);
     }
 
@@ -159,7 +160,7 @@ public class movingSteps {
 
     @And("a black rook on {string}")
     public void aBlackRookOn(String square) throws BoardOutOfBoundsException {
-        rook = new Rook(Piece.Color.BLACK);
+        rook = new Rook(Color.BLACK);
         board.put(rook, square);
     }
 
@@ -175,7 +176,7 @@ public class movingSteps {
 
     @And("a white queen on {string}")
     public void aWhiteQueenOn(String square) throws BoardOutOfBoundsException {
-        queen = new Queen(Piece.Color.WHITE);
+        queen = new Queen(Color.WHITE);
         board.put(queen, square);
     }
 
@@ -191,7 +192,7 @@ public class movingSteps {
 
     @And("a white rook on {string}")
     public void aWhiteRookOn(String square) throws BoardOutOfBoundsException {
-        rook = new Rook(Piece.Color.WHITE);
+        rook = new Rook(Color.WHITE);
         board.put(rook, square);
     }
 
@@ -207,7 +208,7 @@ public class movingSteps {
 
     @And("a black king on {string}")
     public void aBlackKingOn(String square) throws BoardOutOfBoundsException {
-        king = new King(Piece.Color.BLACK);
+        king = new King(Color.BLACK);
         board.put(king, square);
     }
 
@@ -223,7 +224,7 @@ public class movingSteps {
 
     @And("another white rook on {string}")
     public void anotherWhiteRookOn(String square) throws BoardOutOfBoundsException {
-        otherRook = new Rook(Piece.Color.WHITE);
+        otherRook = new Rook(Color.WHITE);
         board.put(otherRook, square);
     }
 
@@ -257,12 +258,12 @@ public class movingSteps {
     @Then("there is a white queen on {string}")
     public void thereIsAWhiteQueenOn(String square) {
         Piece piece = board.get(square);
-        assertTrue(piece instanceof Queen && piece.getColor() == Piece.Color.WHITE);
+        assertTrue(piece instanceof Queen && piece.getColor() == Color.WHITE);
     }
 
     @Then("there is a white knight on {string}")
     public void thereIsAWhiteKnightOn(String square) {
         Piece piece = board.get(square);
-        assertTrue(piece instanceof Knight && piece.getColor() == Piece.Color.WHITE);
+        assertTrue(piece instanceof Knight && piece.getColor() == Color.WHITE);
     }
 }
