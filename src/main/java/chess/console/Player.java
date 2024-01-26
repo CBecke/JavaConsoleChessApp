@@ -2,7 +2,6 @@ package chess.console;
 
 import chess.console.inputhandler.ConsoleInputHandler;
 import chess.console.inputhandler.InputHandler;
-import chess.console.pieces.Piece;
 
 public class Player {
     Color color;
@@ -15,8 +14,7 @@ public class Player {
     public boolean move(Board board) {
         // Get the square to move from
         String squareFrom = "";
-        String colorString = color.toString().toUpperCase();
-        System.out.println(color.toString() + " to move");
+        System.out.println(color + " to move");
         while (!board.isValidSquareFrom(this, squareFrom)) {
             System.out.println("Enter square to move from: ");
             squareFrom = inputHandler.getUserInput();
