@@ -26,7 +26,7 @@ public class Player {
         String squareTo = "";
         while (!board.isWithinBoard(squareTo)) {
             System.out.println("Enter square to move to: ");
-            squareFrom = inputHandler.getUserInput();
+            squareTo = inputHandler.getUserInput();
         }
 
         // test if move is valid on the board

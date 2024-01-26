@@ -26,6 +26,7 @@ public class ConsolePrinter implements Printer {
 
         System.out.println();
         printFiles(columnWidth, fileNameWidth);
+        System.out.println();
     }
 
     private void printFiles(int columnWidth, int fileNameWidth) {
