@@ -1,7 +1,6 @@
 package chess.console;
 
 import chess.console.exceptions.BoardOutOfBoundsException;
-import chess.console.exceptions.IllegalMoveException;
 import chess.console.pieces.*;
 import chess.console.pieces.pawn.BlackPawn;
 import chess.console.pieces.pawn.Pawn;
@@ -24,11 +23,7 @@ public class Board {
     public static char getLastFile() { return (char)(getFirstFile() + (Board.SIZE - 1)); }
 
     // potential bug: putting a piece on non-empty square
-    public void put(Piece piece, String square) throws BoardOutOfBoundsException {
-        if (!isWithinBoard(square)) {
-            throw new BoardOutOfBoundsException(square);
-        }
-
+    public void put(Piece piece, String square) {
         int file = getFile(square);
         int rank = getRank(square);
         board[rank][file] = piece;
@@ -44,19 +39,16 @@ public class Board {
 
     public boolean isWithinBoard(String square) {
         return square.length() == 2
-                && 'a' <= square.charAt(0) && square.charAt(0) <= 'h'
-                && '1' <= square.charAt(1) && square.charAt(1) <= '8';
+                && 'a' <= square.charAt(0) && square.charAt(0) <= 'a' + Board.SIZE
+                && '1' <= square.charAt(1) && square.charAt(1) <= '1' + Board.SIZE;
     }
 
-    public void move(String squareFrom, String squareTo) throws BoardOutOfBoundsException, IllegalMoveException {
-        if (!isWithinBoard(squareTo)) { throw new BoardOutOfBoundsException(squareTo); }
-        if (isEmpty(squareFrom)) { throw new IllegalMoveException("The square moved from is empty"); }
-
+    public boolean move(String squareFrom, String squareTo) {
         Piece piece = get(squareFrom);
         if (!canGoTo(piece, squareTo)
                 || isStillStandingMove(squareFrom, squareTo)
                 || !piece.isValidMove(this, squareFrom, squareTo))
-            { return; }
+            { return false; }
 
         if (isRookMove(piece)) { ((Rook)piece).disableCastling(); }
         if (isKingMove(piece)) { ((King)piece).disableCastling(); }
@@ -69,6 +61,8 @@ public class Board {
 
         // Promotion
         if (isPawnMove(piece) && isEdgeRankMove(squareTo)) { put(new Queen(piece.getColor()), squareTo); }
+
+        return true;
     }
 
     private boolean isEdgeRankMove(String square) {
@@ -249,6 +243,6 @@ public class Board {
     }
 
     public boolean isValidSquareFrom(Player player, String squareFrom) {
-        return !isEmpty(squareFrom) && get(squareFrom).getColor() == player.getColor();
+        return isWithinBoard(squareFrom) && !isEmpty(squareFrom) && get(squareFrom).getColor() == player.getColor();
     }
 }

@@ -1,8 +1,8 @@
 package chess.console;
 
+import chess.console.printer.ConsolePrinter;
+import chess.console.printer.Printer;
 import chess.console.exceptions.BoardOutOfBoundsException;
-import chess.console.exceptions.IllegalMoveException;
-import chess.console.pieces.Piece;
 
 /**
  * Singleton class to combine and handle game components. Retrieve instance with GameManager.getInstance()
@@ -10,6 +10,7 @@ import chess.console.pieces.Piece;
 public class GameManager {
     /// Singleton components
     private static GameManager instance = null;
+
     private GameManager() {}
 
     public static GameManager getInstance() {
@@ -18,6 +19,7 @@ public class GameManager {
     }
     // Logic
     private final Board board = new Board();
+    private Printer printer = new ConsolePrinter();
     private Player whitePlayer;
     private boolean whiteLost = false;
     private boolean blackLost = false;
@@ -34,6 +36,7 @@ public class GameManager {
             while (!whitePlayer.move(board));
 
             // print board
+            printer.printBoard(board);
 
             // check for ended game
 
