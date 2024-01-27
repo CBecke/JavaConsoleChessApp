@@ -11,24 +11,23 @@ public class Player {
         this.color = color;
     }
 
-    public boolean move(Board board) {
-        // Get the square to move from
+    public void move(Board board) {
         String squareFrom = "";
-        System.out.println(color + " to move");
-        while (!board.isValidSquareFrom(this, squareFrom)) {
-            System.out.println("Enter square to move from: ");
-            squareFrom = inputHandler.getUserInput();
-        }
-
-        // Get the square to move to
         String squareTo = "";
-        while (!board.isWithinBoard(squareTo)) {
-            System.out.println("Enter square to move to: ");
-            squareTo = inputHandler.getUserInput();
-        }
+        do {
+            // Get the square to move from
+            System.out.println(color + " to move");
+            while (!board.isValidSquareFrom(this, squareFrom)) {
+                System.out.print("Enter square to move from: ");
+                squareFrom = inputHandler.getUserInput();
+            }
 
-        // test if move is valid on the board
-        return board.move(squareFrom, squareTo);
+            // Get the square to move to
+            while (!board.isWithinBoard(squareTo)) {
+                System.out.print("Enter square to move to: ");
+                squareTo = inputHandler.getUserInput();
+            }
+        } while (!board.move(squareFrom, squareTo));
     }
 
     public Color getColor() { return color; }

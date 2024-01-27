@@ -3,6 +3,8 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 
+import java.util.List;
+
 public abstract class Piece {
 
     private final Color color;
@@ -19,4 +21,9 @@ public abstract class Piece {
 
     @Override
     public abstract String toString();
+
+    /**
+     * Used to optimize search for valid moves (instead of calling isValidMove with squareTo for every square on the board.
+     */
+    public abstract List<String> getValidMoves(Board board, String squareFrom);
 }

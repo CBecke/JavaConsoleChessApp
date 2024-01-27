@@ -4,6 +4,8 @@ import chess.console.printer.ConsolePrinter;
 import chess.console.printer.Printer;
 import chess.console.exceptions.BoardOutOfBoundsException;
 
+import java.util.List;
+
 /**
  * Singleton class to combine and handle game components. Retrieve instance with GameManager.getInstance()
  */
@@ -34,12 +36,13 @@ public class GameManager {
         /* Potentially keep player array and use modulo to chose player. will make loop shorter*/
         while (!isGameOver()) {
             // White to move
-            while (!whitePlayer.move(board));
+            whitePlayer.move(board);
 
             // print board
             printer.printBoard(board);
 
             // check for ended game
+            boolean gameEnded = testIfGameEnded(board);
 
             // black to move
 
@@ -47,6 +50,28 @@ public class GameManager {
 
             // check for ended game
         }
+    }
+
+    private boolean testIfGameEnded(Board board) {
+        // Test for checkmate
+        List<String> kingSquares = board.getKingPositions();
+        for (String kingSquare : kingSquares) {
+            Color color = board.get(kingSquare).getColor();
+            if (board.isAttacked(color, kingSquare)) {
+                for (String square : board.getValidMoves(kingSquare)) {
+
+                }
+            }
+        }
+
+        // Test for 3-fold repetition
+
+        // Test for 50 move draw
+
+        // Test for insufficient material
+
+        // Test for no possible moves
+        return false;
     }
 
     private boolean isGameOver() { return whiteLost || blackLost || draw; }

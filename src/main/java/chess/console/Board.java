@@ -7,6 +7,7 @@ import chess.console.pieces.pawn.Pawn;
 import chess.console.pieces.pawn.WhitePawn;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
 
@@ -30,7 +31,7 @@ public class Board {
     }
 
     private static int getFile(String square) {
-        return square.charAt(0) - 'a';
+        return square.charAt(0) - getFirstFile();
     }
 
     private static int getRank(String square) {
@@ -135,7 +136,7 @@ public class Board {
     }
 
     public boolean isClearPath(String squareFrom, String squareTo) {
-        ArrayList<String> path = getPath(squareFrom, squareTo);
+        List<String> path = getPath(squareFrom, squareTo);
         for (String square : path) {
             if (!isEmpty(square)) { return false; }
         }
@@ -164,8 +165,8 @@ public class Board {
         return false;
     }
 
-    private String toSquare(int file, int rank) {
-        char letter = (char) (file + 'a');
+    public String toSquare(int file, int rank) {
+        char letter = (char) (file + getFirstFile());
         char number = (char)(rank+1+'0');
         return "" + letter + number;
     }
@@ -182,7 +183,7 @@ public class Board {
      * Checks if the squares between (and excluding both) squareFrom and squareTo are attacked.
      */
     public boolean isAttackedPath(Piece piece, String squareFrom, String squareTo) {
-        ArrayList<String> path = getPath(squareFrom, squareTo);
+        List<String> path = getPath(squareFrom, squareTo);
         for (String square : path) {
             if (isAttacked(piece.getColor(), square)) { return true; }
         }
@@ -193,12 +194,11 @@ public class Board {
      * Gets the squares between (and excluding both) squareFrom and squareTo.
      * E.g. getPath("a1", "d4") = {"b2", "c3"}.
      */
-    public ArrayList<String> getPath(String squareFrom, String squareTo) {
+    public List<String> getPath(String squareFrom, String squareTo) {
         int directionFile = Integer.compare(getFile(squareTo), getFile(squareFrom));
         int directionRank = Integer.compare(getRank(squareTo), getRank(squareFrom));
         // start from the square in the path next to squareFrom
-        String current = toSquare(getFile(squareFrom) + directionFile
-                                , getRank(squareFrom) + directionRank);
+        String current = shiftSquare(squareFrom, directionFile, directionRank);
 
         ArrayList<String> path = new ArrayList<>();
         while (!current.equals(squareTo)) {
@@ -244,5 +244,38 @@ public class Board {
 
     public boolean isValidSquareFrom(Player player, String squareFrom) {
         return isWithinBoard(squareFrom) && !isEmpty(squareFrom) && get(squareFrom).getColor() == player.getColor();
+    }
+
+    public List<String> getKingPositions() {
+        List<String> kingSquares = new ArrayList<String>();
+        for (int rank = 0; rank < Board.SIZE; rank++) {
+            for (int file = 0; file < Board.SIZE; file++) {
+                if (board[rank][file] instanceof King) { kingSquares.add(toSquare(file, rank)); }
+            }
+        }
+        return kingSquares;
+    }
+
+    public List<String> getValidMoves(String squareFrom) {
+        Piece piece = get(squareFrom);
+        if (piece == null) { return new ArrayList<>(); }
+
+        List<String> validMoves = piece.getValidMoves(this, squareFrom);
+        /*
+        if (!canGoTo(piece, squareTo)
+                || isStillStandingMove(squareFrom, squareTo)
+                || !piece.isValidMove(this, squareFrom, squareTo))
+        { return false; }
+         */
+        return validMoves;
+    }
+
+    /**
+     * Gets the square one would reach by moving fileShift to the side and rankShift up/down from square.
+     * E.g. shiftSquare("a4", 4, -1) = "e3"
+     */
+    public String shiftSquare(String square, int fileShift, int rankShift) {
+        return toSquare(getFile(square) + fileShift
+                     , getRank(square) + rankShift);
     }
 }
