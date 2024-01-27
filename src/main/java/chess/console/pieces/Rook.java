@@ -3,6 +3,8 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 
+import java.util.List;
+
 public class Rook extends Piece {
     private boolean canCastle = true;
 
@@ -20,6 +22,11 @@ public class Rook extends Piece {
     @Override
     public String toString() {
         return getColor() == Color.WHITE ? "R" : "r";
+    }
+
+    @Override
+    public List<String> getValidMoves(Board board, String squareFrom) {
+        return null;
     }
 
     private boolean isVerticalMove(String squareFrom, String squareTo) {

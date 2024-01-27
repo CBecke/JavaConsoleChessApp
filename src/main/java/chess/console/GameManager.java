@@ -50,6 +50,7 @@ public class GameManager {
 
             // check for ended game
         }
+
     }
 
     private boolean testIfGameEnded(Board board) {

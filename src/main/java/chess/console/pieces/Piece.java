@@ -25,5 +25,5 @@ public abstract class Piece {
     /**
      * Used to optimize search for valid moves (instead of calling isValidMove with squareTo for every square on the board.
      */
-    public abstract List<String> getValidMoves(Board board, String squareFrom);
+    public abstract List<String> getValidMoves(Board board, String squareFrom); // TODO: potentially ensure that the moves do not put the king in check
 }

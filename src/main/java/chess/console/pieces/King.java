@@ -5,6 +5,9 @@ import chess.console.Color;
 import chess.console.pieces.Piece;
 import chess.console.pieces.Rook;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class King extends Piece{
     private boolean canCastle = true;
 
@@ -21,6 +24,26 @@ public class King extends Piece{
     @Override
     public String toString() {
         return getColor() == Color.WHITE ? "K" : "k";
+    }
+
+    @Override
+    public List<String> getValidMoves(Board board, String squareFrom) {
+        List<String> validMoves = new LinkedList<>();
+        // iterate over neighboring squares (including diagonally neighboring)
+        for (int rankShift = -1; rankShift <= 1; rankShift++) {
+            for (int fileShift = -1; fileShift < 1; fileShift++) {
+                String currentSquare = board.shiftSquare(squareFrom, fileShift, rankShift);
+                if (currentSquare.equals(squareFrom)) { continue; }
+
+                if (board.isWithinBoard(currentSquare)
+                        && !board.isAttacked(getColor(), currentSquare)
+                        && (board.isEmpty(currentSquare)
+                            || board.get(currentSquare).getColor() != getColor())) {
+                    validMoves.add(currentSquare);
+                }
+            }
+        }
+        return validMoves;
     }
 
     private boolean isValidCastles(Board board, String squareFrom, String squareTo) {

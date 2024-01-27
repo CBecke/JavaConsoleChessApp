@@ -3,6 +3,9 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Knight extends Piece {
 
     public Knight(Color color) { super(color); }
@@ -18,5 +21,26 @@ public class Knight extends Piece {
     @Override
     public String toString() {
         return getColor() == Color.WHITE ? "N" : "n";
+    }
+
+    @Override
+    public List<String> getValidMoves(Board board, String squareFrom) {
+        List<String> validMoves = new LinkedList<>();
+
+        String squareTo;
+        int[][] moveShiftPermutations = {{-1,2}, {-1,-2}, {1,2}, {1,-2}, {-2,1}, {-2,-1}, {2,1}, {2,-1}};
+
+        for (int[] move : moveShiftPermutations) {
+            squareTo = board.shiftSquare(squareFrom, move[0], move[1]);
+            if (canMoveTo(board, squareTo)) { validMoves.add(squareTo); }
+        }
+
+        return validMoves;
+    }
+
+    private boolean canMoveTo(Board board, String squareTo) {
+        return board.isWithinBoard(squareTo)
+                && (board.isEmpty(squareTo)
+                    || board.get(squareTo).getColor() != getColor());
     }
 }

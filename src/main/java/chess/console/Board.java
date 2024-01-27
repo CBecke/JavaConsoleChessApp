@@ -44,6 +44,7 @@ public class Board {
                 && '1' <= square.charAt(1) && square.charAt(1) <= '1' + Board.SIZE;
     }
 
+    // TODO: check that the move does not put your king in check
     public boolean move(String squareFrom, String squareTo) {
         Piece piece = get(squareFrom);
         if (!canGoTo(piece, squareTo)

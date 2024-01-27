@@ -39,14 +39,26 @@ public class Bishop extends Piece {
 
     private List<String> getValidMovesInDirection(Board board, String squareFrom, int fileDirection, int rankDirection) {
         List<String> validMoves = new LinkedList<>();
-        String currentSquare = board.shiftSquare(squareFrom, fileDirection, rankDirection);
+        int fileShift = fileDirection;
+        int rankShift = rankDirection;
+        String currentSquare = board.shiftSquare(squareFrom, fileShift, rankShift);
 
-        while (board.isWithinBoard(currentSquare) && board.isEmpty(currentSquare)) {
+        boolean hasCaptured = false;
+        while (board.isWithinBoard(currentSquare) && (board.isEmpty(currentSquare) || !hasCaptured)) {
             validMoves.add(currentSquare);
-            currentSquare = board.shiftSquare(squareFrom, fileDirection, rankDirection);
+
+            // The bishop can capture the first opposite color piece in its path, assuming the path was clear
+            if (!board.isEmpty(currentSquare) && board.get(currentSquare).getColor() != getColor())
+                { hasCaptured = true; }
+
+            fileShift += fileDirection;
+            rankShift += rankDirection;
+            currentSquare = board.shiftSquare(squareFrom, fileShift, rankShift);
         }
+
         return validMoves;
     }
+
 
     private boolean isDiagonalMove(int fileDiff, int rankDiff) { return fileDiff == rankDiff; }
 }
