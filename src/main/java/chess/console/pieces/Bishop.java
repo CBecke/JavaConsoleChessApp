@@ -2,6 +2,7 @@ package chess.console.pieces;
 
 import chess.console.Board;
 import chess.console.Color;
+import chess.console.MoveCalculator;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -26,39 +27,10 @@ public class Bishop extends Piece {
 
     @Override
     public List<String> getValidMoves(Board board, String squareFrom) {
-        // Get valid moves right and up
-        List<String> validMoves = new LinkedList<>(getValidMovesInDirection(board, squareFrom, 1, 1));
-        // Get valid moves left and up
-        validMoves.addAll(getValidMovesInDirection(board, squareFrom, -1, 1));
-        // check right and down
-        validMoves.addAll(getValidMovesInDirection(board,squareFrom, 1, -1));
-        // check left and down
-        validMoves.addAll(getValidMovesInDirection(board, squareFrom, -1, -1));
-        return validMoves;
+        // moveDirection contains doubles where the first element is the file direction and the second is the rank direction
+        int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}};
+        return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }
-
-    private List<String> getValidMovesInDirection(Board board, String squareFrom, int fileDirection, int rankDirection) {
-        List<String> validMoves = new LinkedList<>();
-        int fileShift = fileDirection;
-        int rankShift = rankDirection;
-        String currentSquare = board.shiftSquare(squareFrom, fileShift, rankShift);
-
-        boolean hasCaptured = false;
-        while (board.isWithinBoard(currentSquare) && (board.isEmpty(currentSquare) || !hasCaptured)) {
-            validMoves.add(currentSquare);
-
-            // The bishop can capture the first opposite color piece in its path, assuming the path was clear
-            if (!board.isEmpty(currentSquare) && board.get(currentSquare).getColor() != getColor())
-                { hasCaptured = true; }
-
-            fileShift += fileDirection;
-            rankShift += rankDirection;
-            currentSquare = board.shiftSquare(squareFrom, fileShift, rankShift);
-        }
-
-        return validMoves;
-    }
-
 
     private boolean isDiagonalMove(int fileDiff, int rankDiff) { return fileDiff == rankDiff; }
 }

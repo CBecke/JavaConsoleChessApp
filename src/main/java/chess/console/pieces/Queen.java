@@ -2,6 +2,9 @@ package chess.console.pieces;
 
 import chess.console.Board;
 import chess.console.Color;
+import chess.console.MoveCalculator;
+
+import java.util.List;
 
 public class Queen extends Piece {
     public Queen(Color color) {
@@ -17,6 +20,13 @@ public class Queen extends Piece {
     @Override
     public String toString() {
         return getColor() == Color.WHITE ? "Q" : "q";
+    }
+
+    @Override
+    public List<String> getValidMoves(Board board, String squareFrom) {
+        int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}, // diagonal
+                                              {1,0}, {-1,0}, {0,1}, {0,-1}};  // horizontal and vertical
+        return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }
 
     private boolean isBishopMove(Board board, String squareFrom, String squareTo) {
