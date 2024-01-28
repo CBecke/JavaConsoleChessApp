@@ -4,8 +4,11 @@ import chess.console.Board;
 import chess.console.Color;
 import chess.console.pieces.Piece;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public abstract class Pawn extends Piece {
-    private int direction;
+    private final int direction;
 
     protected Pawn(Color color, int direction) {
         super(color);
@@ -17,6 +20,29 @@ public abstract class Pawn extends Piece {
                     && (isValidDoubleMove(squareFrom, squareTo)
                         || isValidSingleForwardMove(squareFrom, squareTo)))
                 || isValidCapture(board, squareFrom, squareTo);
+    }
+
+    @Override
+    public List<String> getValidMoves(Board board, String squareFrom) {
+        List<String> validMoves = new LinkedList<>();
+        String toSquareCandidate = board.shiftSquare(squareFrom, 0, direction);
+
+        // single square forward move
+        if (board.isEmpty(toSquareCandidate)) {
+            validMoves.add(toSquareCandidate);
+
+            // double square forward move
+            toSquareCandidate = board.shiftSquare(toSquareCandidate, 0, direction);
+            if (board.isEmpty(toSquareCandidate)) { validMoves.add(toSquareCandidate); }
+        }
+
+        // captures
+        for (int fileDirection : new int[]{-1, 1}) {
+            toSquareCandidate = board.shiftSquare(squareFrom, fileDirection, direction);
+            if (isValidCapture(board, squareFrom, toSquareCandidate)) { validMoves.add(toSquareCandidate); }
+        }
+
+        return validMoves;
     }
 
     abstract boolean isInInitialRank(String square);

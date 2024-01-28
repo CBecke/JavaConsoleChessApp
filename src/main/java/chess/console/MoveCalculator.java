@@ -34,6 +34,13 @@ public class MoveCalculator {
         return validMoves;
     }
 
+    /**
+     * Computes the valid squares for the piece on squareFrom on the board to move to.
+     * @param board: the chess board.
+     * @param squareFrom: the square on board where the piece is currently.
+     * @param moveDirections: an array of pairs where the first element is the file direction and the second is the rank direction.
+     * @return the possible squares (as strings, e.g. "e4") to move to.
+     */
     public static List<String> getValidMovesInDirections(Board board, String squareFrom, int[][] moveDirections) {
         List<String> validMoves = new LinkedList<>();
 

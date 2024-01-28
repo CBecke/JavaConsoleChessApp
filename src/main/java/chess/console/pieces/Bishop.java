@@ -27,7 +27,6 @@ public class Bishop extends Piece {
 
     @Override
     public List<String> getValidMoves(Board board, String squareFrom) {
-        // moveDirection contains doubles where the first element is the file direction and the second is the rank direction
         int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }
