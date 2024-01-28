@@ -52,8 +52,8 @@ public class Board {
                 || !piece.isValidMove(this, squareFrom, squareTo))
             { return false; }
 
-        if (isRookMove(piece)) { ((Rook)piece).disableCastling(); }
-        if (isKingMove(piece)) { ((King)piece).disableCastling(); }
+        if (isRook(piece)) { ((Rook)piece).disableCastling(); }
+        if (isKing(piece)) { ((King)piece).disableCastling(); }
         movePiece(squareFrom, squareTo);
 
         // If this point is reached, the king could castle, so we can "manually" move the rook
@@ -62,7 +62,7 @@ public class Board {
         }
 
         // Promotion
-        if (isPawnMove(piece) && isEdgeRankMove(squareTo)) { put(new Queen(piece.getColor()), squareTo); }
+        if (isPawn(piece) && isEdgeRankMove(squareTo)) { put(new Queen(piece.getColor()), squareTo); }
 
         return true;
     }
@@ -72,11 +72,11 @@ public class Board {
         return rank == 0 || rank == Board.SIZE - 1;
     }
 
-    private boolean isPawnMove(Piece piece) { return piece instanceof Pawn; }
+    private boolean isPawn(Piece piece) { return piece instanceof Pawn; }
 
-    private boolean isRookMove(Piece piece) { return piece instanceof Rook; }
+    private boolean isRook(Piece piece) { return piece instanceof Rook; }
 
-    private boolean isKingMove(Piece piece) { return piece instanceof King; }
+    private boolean isKing(Piece piece) { return piece instanceof King; }
 
     private void doRookCastles(String squareFrom, String squareTo) {
         // set square where rook is coming from
