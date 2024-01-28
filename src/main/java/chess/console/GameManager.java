@@ -21,14 +21,14 @@ public class GameManager {
     }
     // Logic
     private final Board board = new Board();
-    private Printer printer = new ConsolePrinter();
+    private final Printer printer = new ConsolePrinter();
     private Player whitePlayer = new Player(Color.WHITE);
     private boolean whiteLost = false;
     private boolean blackLost = false;
     private boolean draw      = false;
 
 
-    public void playChess() throws BoardOutOfBoundsException {
+    public void playChess() {
         // Prepare board for game
         board.setInitialPosition();
         printer.printBoard(board);
@@ -58,10 +58,11 @@ public class GameManager {
         List<String> kingSquares = board.getKingPositions();
         for (String kingSquare : kingSquares) {
             Color color = board.get(kingSquare).getColor();
-            if (board.isAttacked(color, kingSquare)) {
-                for (String square : board.getValidMoves(kingSquare)) {
-
-                }
+            if (board.isAttacked(color, kingSquare)
+                    && board.canBeDefended(kingSquare)
+                    && board.getValidMoves(kingSquare).isEmpty()) {
+                setLostFlag(color, true);
+                return true;
             }
         }
 
@@ -73,6 +74,13 @@ public class GameManager {
 
         // Test for no possible moves
         return false;
+    }
+
+    private void setLostFlag(Color color, boolean b) {
+        if (color == Color.WHITE)
+            { whiteLost = b; }
+        else
+            { blackLost = b; }
     }
 
     private boolean isGameOver() { return whiteLost || blackLost || draw; }

@@ -1,12 +1,12 @@
 package chess.console;
 
-import chess.console.exceptions.BoardOutOfBoundsException;
 import chess.console.pieces.*;
 import chess.console.pieces.pawn.BlackPawn;
 import chess.console.pieces.pawn.Pawn;
 import chess.console.pieces.pawn.WhitePawn;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Board {
@@ -212,7 +212,7 @@ public class Board {
         return path;
     }
 
-    public void setInitialPosition() throws BoardOutOfBoundsException {
+    public void setInitialPosition() {
         // remove previous pieces
         clear();
 
@@ -248,7 +248,7 @@ public class Board {
     }
 
     public List<String> getKingPositions() {
-        List<String> kingSquares = new ArrayList<String>();
+        List<String> kingSquares = new LinkedList<>();
         for (int rank = 0; rank < Board.SIZE; rank++) {
             for (int file = 0; file < Board.SIZE; file++) {
                 if (board[rank][file] instanceof King) { kingSquares.add(toSquare(file, rank)); }
@@ -260,15 +260,7 @@ public class Board {
     public List<String> getValidMoves(String squareFrom) {
         Piece piece = get(squareFrom);
         if (piece == null) { return new ArrayList<>(); }
-
-        List<String> validMoves = piece.getValidMoves(this, squareFrom);
-        /*
-        if (!canGoTo(piece, squareTo)
-                || isStillStandingMove(squareFrom, squareTo)
-                || !piece.isValidMove(this, squareFrom, squareTo))
-        { return false; }
-         */
-        return validMoves;
+        return piece.getValidMoves(this, squareFrom);
     }
 
     /**
@@ -278,5 +270,44 @@ public class Board {
     public String shiftSquare(String square, int fileShift, int rankShift) {
         return toSquare(getFile(square) + fileShift
                      , getRank(square) + rankShift);
+    }
+
+    /**
+     * Returns true if a move exists such that the given square is no longer attacked, and false otherwise.
+     * @param square: assumed not to be empty
+     */
+    public boolean canBeDefended(String square) {
+        Color color = get(square).getColor();
+        // get pieces (through their squares) that attack the given square
+        List<String> attackers = getAttackers(square);
+
+        // get squares which can block the attack (potentially by taking the piece)
+
+
+        // test if the attack can be stopped by moving one of your pieces.
+        // If ANY one move which reaches one of the blocking squares does not prevent the given square from being
+        // attacked that should be sufficient proof that the square cannot be defended - it implies that at least 2
+        // pieces are attacking the king in the current position
+
+        return false;
+    }
+
+    /**
+     * gets the pieces that attack square.
+     */
+    private List<String> getAttackers(String square) {
+        Color color = get(square).getColor();
+        List<String> attackingSquares = new LinkedList<>();
+        for (int rank = 0; rank < Board.SIZE; rank++) {
+            for (int file = 0; file < Board.SIZE; file++) {
+                String currentSquare = toSquare(file, rank);
+                if (!isEmpty(currentSquare)
+                        && get(currentSquare).getColor() != color
+                        && get(currentSquare).isValidMove(this, currentSquare, square)) {
+                    attackingSquares.add(currentSquare);
+                }
+            }
+        }
+        return attackingSquares;
     }
 }

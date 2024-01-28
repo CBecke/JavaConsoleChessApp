@@ -582,12 +582,19 @@ Feature: Moving Pieces
     Then there is a white knight on "b8"
     And the square "b7" is empty
 
+  # check
+    # king can move out of check
+    # king cannot move out of check but attack can be blocked by other piece
+  # Test checkmate
+    # king cannot move due to squares around him being attacked
+    # king is in check and cannot move
+
     # pawn promotion
       # to queen
       # to knight
     # promoting on capture
     # check and checkmate
-    # Find a better way to set canCastle to false for rook and king, instead of isKing/RookMove() in Board.move()
+    # TODO: Find a better way to set canCastle to false for rook and king, instead of isKing/RookMove() in Board.move()
 
 
 

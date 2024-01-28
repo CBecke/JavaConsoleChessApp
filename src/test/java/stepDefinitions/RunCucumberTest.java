@@ -6,8 +6,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(publish = false
-        , features = "src/test/resources/features"
+@CucumberOptions(features = "src/test/resources/features"
         , glue = "stepDefinitions"
         , snippets = SnippetType.CAMELCASE)
 
