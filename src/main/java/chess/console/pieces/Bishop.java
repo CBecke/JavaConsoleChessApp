@@ -4,10 +4,7 @@ import chess.console.Board;
 import chess.console.Color;
 import chess.console.MoveCalculator;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Bishop extends Piece {
     public Bishop(Color color) { super(color); }
@@ -26,7 +23,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<String> getValidMoves(Board board, String squareFrom) {
+    public Collection<String> getValidMoves(Board board, String squareFrom) {
         int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }

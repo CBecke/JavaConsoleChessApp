@@ -3,6 +3,7 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<String> getValidMoves(Board board, String squareFrom) {
+    public Collection<String> getValidMoves(Board board, String squareFrom) {
         List<String> validMoves = new LinkedList<>();
 
         String squareTo;

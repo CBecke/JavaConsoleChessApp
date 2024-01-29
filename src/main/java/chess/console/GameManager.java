@@ -4,6 +4,7 @@ import chess.console.printer.ConsolePrinter;
 import chess.console.printer.Printer;
 import chess.console.exceptions.BoardOutOfBoundsException;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public class GameManager {
 
     private boolean testIfGameEnded(Board board) {
         // Test for checkmate
-        List<String> kingSquares = board.getKingPositions();
+        Collection<String> kingSquares = board.getKingPositions();
         for (String kingSquare : kingSquares) {
             Color color = board.get(kingSquare).getColor();
             if (board.isAttacked(color, kingSquare)

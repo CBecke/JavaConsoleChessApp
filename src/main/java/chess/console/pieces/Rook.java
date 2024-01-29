@@ -4,6 +4,7 @@ import chess.console.Board;
 import chess.console.Color;
 import chess.console.MoveCalculator;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<String> getValidMoves(Board board, String squareFrom) {
+    public Collection<String> getValidMoves(Board board, String squareFrom) {
         int[][] moveDirections = new int[][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }

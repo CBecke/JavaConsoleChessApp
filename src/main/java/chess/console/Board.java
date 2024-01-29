@@ -5,9 +5,7 @@ import chess.console.pieces.pawn.BlackPawn;
 import chess.console.pieces.pawn.Pawn;
 import chess.console.pieces.pawn.WhitePawn;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Board {
 
@@ -137,7 +135,7 @@ public class Board {
     }
 
     public boolean isClearPath(String squareFrom, String squareTo) {
-        List<String> path = getPath(squareFrom, squareTo);
+        Collection<String> path = getPath(squareFrom, squareTo);
         for (String square : path) {
             if (!isEmpty(square)) { return false; }
         }
@@ -184,7 +182,7 @@ public class Board {
      * Checks if the squares between (and excluding both) squareFrom and squareTo are attacked.
      */
     public boolean isAttackedPath(Piece piece, String squareFrom, String squareTo) {
-        List<String> path = getPath(squareFrom, squareTo);
+        Collection<String> path = getPath(squareFrom, squareTo);
         for (String square : path) {
             if (isAttacked(piece.getColor(), square)) { return true; }
         }
@@ -195,13 +193,13 @@ public class Board {
      * Gets the squares between (and excluding both) squareFrom and squareTo.
      * E.g. getPath("a1", "d4") = {"b2", "c3"}.
      */
-    public List<String> getPath(String squareFrom, String squareTo) {
+    public Collection<String> getPath(String squareFrom, String squareTo) {
         int directionFile = Integer.compare(getFile(squareTo), getFile(squareFrom));
         int directionRank = Integer.compare(getRank(squareTo), getRank(squareFrom));
         // start from the square in the path next to squareFrom
         String current = shiftSquare(squareFrom, directionFile, directionRank);
 
-        ArrayList<String> path = new ArrayList<>();
+        Collection<String> path = new LinkedList<>();
         while (!current.equals(squareTo)) {
             path.add(current);
             int nextFile = getFile(current) + directionFile;
@@ -247,8 +245,8 @@ public class Board {
         return isWithinBoard(squareFrom) && !isEmpty(squareFrom) && get(squareFrom).getColor() == player.getColor();
     }
 
-    public List<String> getKingPositions() {
-        List<String> kingSquares = new LinkedList<>();
+    public Collection<String> getKingPositions() {
+        Collection<String> kingSquares = new LinkedList<>();
         for (int rank = 0; rank < Board.SIZE; rank++) {
             for (int file = 0; file < Board.SIZE; file++) {
                 if (board[rank][file] instanceof King) { kingSquares.add(toSquare(file, rank)); }
@@ -257,9 +255,9 @@ public class Board {
         return kingSquares;
     }
 
-    public List<String> getValidMoves(String squareFrom) {
+    public Collection<String> getValidMoves(String squareFrom) {
         Piece piece = get(squareFrom);
-        if (piece == null) { return new ArrayList<>(); }
+        if (piece == null) { return new LinkedList<>(); }
         return piece.getValidMoves(this, squareFrom);
     }
 
@@ -279,10 +277,10 @@ public class Board {
     public boolean canBeDefended(String square) {
         Color color = get(square).getColor();
         // get pieces (through their squares) that attack the given square
-        List<String> attackers = getAttackers(square);
+        Collection<String> attackerSquares = getAttackers(square);
 
-        // get squares which can block the attack (potentially by taking the piece)
-
+        // get squares which can block the attack (potentially by capturing the attacking piece)
+        Collection<String> squaresToDefend = getSquaresToDefend(attackerSquares, square);
 
         // test if the attack can be stopped by moving one of your pieces.
         // If ANY one move which reaches one of the blocking squares does not prevent the given square from being
@@ -293,21 +291,42 @@ public class Board {
     }
 
     /**
-     * gets the pieces that attack square.
+     * Gets the squares which either have pieces attacking the given square,
+     * or which are between the attacker and the square and can block the attack.
+     * @return: A HashSet of squares that can block an attack, including capturing the attacker.
      */
-    private List<String> getAttackers(String square) {
-        Color color = get(square).getColor();
-        List<String> attackingSquares = new LinkedList<>();
+    private Collection<String> getSquaresToDefend(Collection<String> attackerSquares, String square) {
+        Collection<String> squaresToDefend = new HashSet<>(attackerSquares);
+        for (String attackerSquare : attackerSquares) {
+            Piece attacker = get(attackerSquare);
+            if (attacker instanceof Knight) { continue; }
+            squaresToDefend.addAll(getPath(attackerSquare, square));
+        }
+
+        return squaresToDefend;
+    }
+
+    /**
+     * Gets the squares of pieces that attack the given square.
+     */
+    private Collection<String> getAttackers(String square) {
+        Collection<String> attackingSquares = new LinkedList<>();
         for (int rank = 0; rank < Board.SIZE; rank++) {
             for (int file = 0; file < Board.SIZE; file++) {
                 String currentSquare = toSquare(file, rank);
-                if (!isEmpty(currentSquare)
-                        && get(currentSquare).getColor() != color
-                        && get(currentSquare).isValidMove(this, currentSquare, square)) {
+                if (canAttack(currentSquare, square)) {
                     attackingSquares.add(currentSquare);
                 }
             }
         }
         return attackingSquares;
+    }
+
+    private boolean canAttack(String squareFrom, String squareTo) {
+        Piece piece = get(squareFrom);
+        return !isEmpty(squareFrom)
+                && (!isEmpty(squareTo)
+                    || piece.getColor() != get(squareTo).getColor())
+                && get(squareFrom).isValidMove(this, squareFrom, squareTo);
     }
 }

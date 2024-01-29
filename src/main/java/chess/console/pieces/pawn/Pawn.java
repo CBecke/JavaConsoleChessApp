@@ -4,6 +4,7 @@ import chess.console.Board;
 import chess.console.Color;
 import chess.console.pieces.Piece;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,8 +24,8 @@ public abstract class Pawn extends Piece {
     }
 
     @Override
-    public List<String> getValidMoves(Board board, String squareFrom) {
-        List<String> validMoves = new LinkedList<>();
+    public Collection<String> getValidMoves(Board board, String squareFrom) {
+        Collection<String> validMoves = new LinkedList<>();
         String toSquareCandidate = board.shiftSquare(squareFrom, 0, direction);
 
         // single square forward move

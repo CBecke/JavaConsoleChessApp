@@ -4,6 +4,7 @@ import chess.console.Board;
 import chess.console.Color;
 import chess.console.MoveCalculator;
 
+import java.util.Collection;
 import java.util.List;
 
 public class Queen extends Piece {
@@ -23,7 +24,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<String> getValidMoves(Board board, String squareFrom) {
+    public Collection<String> getValidMoves(Board board, String squareFrom) {
         int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}, // diagonal
                                               {1,0}, {-1,0}, {0,1}, {0,-1}};  // horizontal and vertical
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);

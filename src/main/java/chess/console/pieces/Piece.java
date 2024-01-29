@@ -3,6 +3,7 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 
+import java.util.Collection;
 import java.util.List;
 
 public abstract class Piece {
@@ -25,5 +26,6 @@ public abstract class Piece {
     /**
      * Used to optimize search for valid moves (instead of calling isValidMove with squareTo for every square on the board.
      */
-    public abstract List<String> getValidMoves(Board board, String squareFrom); // TODO: potentially ensure that the moves do not put the king in check
+    public abstract Collection<String> getValidMoves(Board board, String squareFrom); // TODO: potentially ensure that the moves do not put the king in check
+
 }

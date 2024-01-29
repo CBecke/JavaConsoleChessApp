@@ -1,5 +1,6 @@
 package chess.console;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,8 +12,8 @@ public class MoveCalculator {
     // Prevent instantiation of the utility class with private visibility
     private MoveCalculator() {};
 
-    public static List<String> getValidMovesInDirection(Board board, String squareFrom, int fileDirection, int rankDirection) {
-        List<String> validMoves = new LinkedList<>();
+    public static Collection<String> getValidMovesInDirection(Board board, String squareFrom, int fileDirection, int rankDirection) {
+        Collection<String> validMoves = new LinkedList<>();
         int fileShift = fileDirection;
         int rankShift = rankDirection;
         boolean hasCaptured = false;
@@ -41,8 +42,8 @@ public class MoveCalculator {
      * @param moveDirections: an array of pairs where the first element is the file direction and the second is the rank direction.
      * @return the possible squares (as strings, e.g. "e4") to move to.
      */
-    public static List<String> getValidMovesInDirections(Board board, String squareFrom, int[][] moveDirections) {
-        List<String> validMoves = new LinkedList<>();
+    public static Collection<String> getValidMovesInDirections(Board board, String squareFrom, int[][] moveDirections) {
+        Collection<String> validMoves = new LinkedList<>();
 
         for (int[] direction : moveDirections) {
             validMoves.addAll(MoveCalculator.getValidMovesInDirection(board, squareFrom, direction[0], direction[1]));
