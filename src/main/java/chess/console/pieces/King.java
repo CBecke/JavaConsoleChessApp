@@ -34,9 +34,8 @@ public class King extends Piece{
         for (int rankShift = -1; rankShift <= 1; rankShift++) {
             for (int fileShift = -1; fileShift < 1; fileShift++) {
                 String currentSquare = board.shiftSquare(squareFrom, fileShift, rankShift);
-                if (currentSquare.equals(squareFrom)) { continue; }
-
-                if (board.isWithinBoard(currentSquare)
+                if (!currentSquare.equals(squareFrom)
+                        && board.isWithinBoard(currentSquare)
                         && !board.isAttacked(getColor(), currentSquare)
                         && (board.isEmpty(currentSquare)
                             || board.get(currentSquare).getColor() != getColor())) {

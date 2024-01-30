@@ -275,7 +275,6 @@ public class Board {
      * @param square: assumed not to be empty
      */
     public boolean canBeDefended(String square) {
-        Color color = get(square).getColor();
         // get pieces (through their squares) that attack the given square
         Collection<String> attackerSquares = getAttackers(square);
 
@@ -286,8 +285,31 @@ public class Board {
         // If ANY one move which reaches one of the blocking squares does not prevent the given square from being
         // attacked that should be sufficient proof that the square cannot be defended - it implies that at least 2
         // pieces are attacking the king in the current position
+        Color color = get(square).getColor();
+        for (int rank = 0; rank < Board.SIZE; rank++) {
+            for (int file = 0; file < Board.SIZE; file++) {
+                String squareFrom = toSquare(file, rank);
+                if (isEmpty(squareFrom)) { continue; }
 
-        return false;
+                Piece current = board[rank][file];
+                for (String squareTo : squaresToDefend) {
+                    if (current.isValidMove(this, squareFrom, squareTo)) {
+                        // TODO: pretend making the move. If the king is still under attack, then the king cannot
+                        // TODO: be defended and canBeDefended should return false.
+                        // try making the move to see if it would defend the king
+                        movePiece(squareFrom, squareTo);
+
+                        // test if king is still attacked
+                        boolean canBeDefended = !isAttacked(color, square);
+
+                        // reset the "fake" move
+                        movePiece(squareTo, squareFrom);
+                        return canBeDefended;
+                    }
+                }
+            }
+        }
+        return false; // TODO: Evaluate if this is correct (should it be true? Is the function sufficient as is?)
     }
 
     /**
@@ -329,4 +351,5 @@ public class Board {
                     || piece.getColor() != get(squareTo).getColor())
                 && get(squareFrom).isValidMove(this, squareFrom, squareTo);
     }
+
 }
