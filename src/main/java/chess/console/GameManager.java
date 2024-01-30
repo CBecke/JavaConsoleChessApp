@@ -2,10 +2,8 @@ package chess.console;
 
 import chess.console.printer.ConsolePrinter;
 import chess.console.printer.Printer;
-import chess.console.exceptions.BoardOutOfBoundsException;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Singleton class to combine and handle game components. Retrieve instance with GameManager.getInstance()
@@ -43,7 +41,7 @@ public class GameManager {
             printer.printBoard(board);
 
             // check for ended game
-            boolean gameEnded = testIfGameEnded(board);
+            boolean gameEnded = hasGameEnded(board);
 
             // black to move
 
@@ -54,13 +52,13 @@ public class GameManager {
 
     }
 
-    private boolean testIfGameEnded(Board board) {
+    private boolean hasGameEnded(Board board) {
         // Test for checkmate
         Collection<String> kingSquares = board.getKingPositions();
         for (String kingSquare : kingSquares) {
             Color color = board.get(kingSquare).getColor();
             if (board.isAttacked(color, kingSquare)
-                    && board.canBeDefended(kingSquare)
+                    && !board.canBeDefended(kingSquare)
                     && board.getValidMoves(kingSquare).isEmpty()) {
                 setLostFlag(color, true);
                 return true;

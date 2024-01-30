@@ -106,7 +106,7 @@ public class Board implements Iterable<String> {
                 && Math.abs(squareTo.charAt(0) - squareFrom.charAt(0)) == 2;
     }
 
-    private boolean isStillStandingMove( String squareFrom, String squareTo){
+    private boolean isStillStandingMove(String squareFrom, String squareTo){
         return squareFrom.equals(squareTo);
     }
 
@@ -181,8 +181,8 @@ public class Board implements Iterable<String> {
     }
 
     /**
-     * Gets the squares between (and excluding both) squareFrom and squareTo.
-     * E.g. getPath("a1", "d4") = {"b2", "c3"}.
+     * Gets the squares between (and excluding both) squareFrom and squareTo. Only works for straight diagonal,
+     * horizontal, or vertical paths. E.g. getPath("a1", "d4") = {"b2", "c3"}.
      */
     public Collection<String> getPath(String squareFrom, String squareTo) {
         int directionFile = Integer.compare(getFile(squareTo), getFile(squareFrom));
