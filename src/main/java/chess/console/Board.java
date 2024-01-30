@@ -7,7 +7,7 @@ import chess.console.pieces.pawn.WhitePawn;
 
 import java.util.*;
 
-public class Board {
+public class Board implements Iterable<String> {
 
     // board[7][0] is a1 and board[7][7] is a8
     Piece[][] board;
@@ -21,7 +21,6 @@ public class Board {
     public static char getFirstFile() { return 'a'; }
     public static char getLastFile() { return (char)(getFirstFile() + (Board.SIZE - 1)); }
 
-    // potential bug: putting a piece on non-empty square
     public void put(Piece piece, String square) {
         int file = getFile(square);
         int rank = getRank(square);
@@ -142,25 +141,19 @@ public class Board {
         return true;
     }
 
-    private boolean isEmpty(int file, int rank) {
-        return board[rank][file] == null;
-    }
-
     /**
      * Iterates over entire board to check if piece is attacked on squareTo.
      */
     public boolean isAttacked(Color color, String square) {
-        for (int rank = 0; rank < Board.SIZE; rank++) {
-            for (int file = 0; file < Board.SIZE; file++) {
-                if (isEmpty(file, rank)) { continue; }
-                Piece current = board[rank][file];
-                String squareFrom = toSquare(file, rank);
+        for (String squareFrom : this) {
+            if (isEmpty(squareFrom)) { continue; }
+            Piece current = get(squareFrom);
 
-                // If an opposite color piece can move to squareTo, then squareTo is attacked by that piece
-                if (current.getColor() != color && current.isValidMove(this, squareFrom, square))
-                    { return true; }
-            }
+            // If an opposite color piece can move to squareTo, then squareTo is attacked by that piece
+            if (current.getColor() != color && current.isValidMove(this, squareFrom, square))
+            { return true; }
         }
+
         return false;
     }
 
@@ -171,10 +164,8 @@ public class Board {
     }
 
     public void clear() {
-        for (int rank = 0; rank < Board.SIZE; rank++) {
-            for (int file = 0; file < Board.SIZE; file++) {
-                board[rank][file] = null;
-            }
+        for (String square : this) {
+            put(null, square);
         }
     }
 
@@ -206,7 +197,6 @@ public class Board {
             int nextRank = getRank(current) + directionRank;
             current = toSquare(nextFile, nextRank);
         }
-
         return path;
     }
 
@@ -247,11 +237,10 @@ public class Board {
 
     public Collection<String> getKingPositions() {
         Collection<String> kingSquares = new LinkedList<>();
-        for (int rank = 0; rank < Board.SIZE; rank++) {
-            for (int file = 0; file < Board.SIZE; file++) {
-                if (board[rank][file] instanceof King) { kingSquares.add(toSquare(file, rank)); }
-            }
+        for (String square : this) {
+            if (isKing(get(square))) { kingSquares.add(square); }
         }
+
         return kingSquares;
     }
 
@@ -271,8 +260,9 @@ public class Board {
     }
 
     /**
-     * Returns true if a move exists such that the given square is no longer attacked, and false otherwise.
-     * @param square: assumed not to be empty
+     * Returns true if a move exists such that the given square is no longer attacked, and false otherwise. The moving
+     * piece must have the same color as the piece on the square to be defended.
+     * @param square: assumed not to be empty.
      */
     public boolean canBeDefended(String square) {
         // get pieces (through their squares) that attack the given square
@@ -281,35 +271,29 @@ public class Board {
         // get squares which can block the attack (potentially by capturing the attacking piece)
         Collection<String> squaresToDefend = getSquaresToDefend(attackerSquares, square);
 
-        // test if the attack can be stopped by moving one of your pieces.
-        // If ANY one move which reaches one of the blocking squares does not prevent the given square from being
-        // attacked that should be sufficient proof that the square cannot be defended - it implies that at least 2
-        // pieces are attacking the king in the current position
+        // test if the attack can be stopped by moving one of your pieces. If ANY one move which reaches one of the
+        // blocking squares does not prevent the given square from being attacked that should be sufficient proof that
+        // the square cannot be defended - it implies that at least 2 pieces are attacking the king in the current position.
         Color color = get(square).getColor();
-        for (int rank = 0; rank < Board.SIZE; rank++) {
-            for (int file = 0; file < Board.SIZE; file++) {
-                String squareFrom = toSquare(file, rank);
-                if (isEmpty(squareFrom)) { continue; }
 
-                Piece current = board[rank][file];
-                for (String squareTo : squaresToDefend) {
-                    if (current.isValidMove(this, squareFrom, squareTo)) {
-                        // TODO: pretend making the move. If the king is still under attack, then the king cannot
-                        // TODO: be defended and canBeDefended should return false.
-                        // try making the move to see if it would defend the king
-                        movePiece(squareFrom, squareTo);
+        for (String squareFrom : this) {
+            if (isEmpty(squareFrom)) { continue; }
 
-                        // test if king is still attacked
-                        boolean canBeDefended = !isAttacked(color, square);
+            Piece current = get(square);
+            for (String squareTo : squaresToDefend) {
+                if (current.isValidMove(this, squareFrom, squareTo)) {
+                    // pretend making the move. If the king is still under attack then the king cannot be defended.
+                    movePiece(squareFrom, squareTo);
+                    boolean canBeDefended = !isAttacked(color, square);
 
-                        // reset the "fake" move
-                        movePiece(squareTo, squareFrom);
-                        return canBeDefended;
-                    }
+                    // reset the "fake" move
+                    movePiece(squareTo, squareFrom);
+                    return canBeDefended;
                 }
             }
         }
-        return false; // TODO: Evaluate if this is correct (should it be true? Is the function sufficient as is?)
+
+        return false;
     }
 
     /**
@@ -333,14 +317,10 @@ public class Board {
      */
     private Collection<String> getAttackers(String square) {
         Collection<String> attackingSquares = new LinkedList<>();
-        for (int rank = 0; rank < Board.SIZE; rank++) {
-            for (int file = 0; file < Board.SIZE; file++) {
-                String currentSquare = toSquare(file, rank);
-                if (canAttack(currentSquare, square)) {
-                    attackingSquares.add(currentSquare);
-                }
-            }
+        for (String currentSquare : this) {
+            if (canAttack(currentSquare, square)) { attackingSquares.add(currentSquare); }
         }
+
         return attackingSquares;
     }
 
@@ -352,4 +332,32 @@ public class Board {
                 && get(squareFrom).isValidMove(this, squareFrom, squareTo);
     }
 
+    /**
+     * An iterator for the (String) squares of the board
+     */
+    @Override
+    public Iterator<String> iterator() {
+        return new BoardIterator();
+    }
+
+    private class BoardIterator implements Iterator<String> {
+        private char currentFile = 'a';
+        private int currentRank = 1;
+        @Override
+        public boolean hasNext() {
+            return currentFile <= 'h' && currentRank <= Board.SIZE;
+        }
+
+        @Override
+        public String next() {
+            String square = "" + currentFile + currentRank;
+            if (currentFile == 'h') {
+                currentFile = 'a';
+                currentRank++;
+            } else {
+                currentFile++;
+            }
+            return square;
+        }
+    }
 }
