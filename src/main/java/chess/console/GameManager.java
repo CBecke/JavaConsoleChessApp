@@ -43,6 +43,8 @@ public class GameManager {
             // check for ended game
             boolean gameEnded = hasGameEnded(board);
 
+            // report if game ended
+
             // black to move
 
             // print board
@@ -56,10 +58,8 @@ public class GameManager {
         // Test for checkmate
         Collection<String> kingSquares = board.getKingPositions();
         for (String kingSquare : kingSquares) {
-            Color color = board.get(kingSquare).getColor();
-            if (board.isAttacked(color, kingSquare)
-                    && !board.canBeDefended(kingSquare)
-                    && board.getValidMoves(kingSquare).isEmpty()) {
+            if (board.isCheckmate(kingSquare)) {
+                Color color = board.get(kingSquare).getColor();
                 setLostFlag(color, true);
                 return true;
             }

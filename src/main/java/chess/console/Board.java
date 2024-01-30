@@ -332,6 +332,14 @@ public class Board implements Iterable<String> {
                 && get(squareFrom).isValidMove(this, squareFrom, squareTo);
     }
 
+    public boolean isCheckmate(String kingSquare) {
+        Color color = get(kingSquare).getColor();
+        return isAttacked(color, kingSquare)
+                && !canBeDefended(kingSquare)
+                && getValidMoves(kingSquare).isEmpty();
+    }
+
+
     /**
      * An iterator for the (String) squares of the board
      */
