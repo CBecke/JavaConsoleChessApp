@@ -19,9 +19,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public String toString() {
-        return getColor() == Color.WHITE ? "Q" : "q";
-    }
+    public String toString() { return color == Color.WHITE ? "Q" : "q"; }
 
     @Override
     public Collection<String> getValidMoves(Board board, String squareFrom) {

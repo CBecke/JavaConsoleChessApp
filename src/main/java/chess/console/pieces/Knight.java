@@ -21,7 +21,7 @@ public class Knight extends Piece {
 
     @Override
     public String toString() {
-        return getColor() == Color.WHITE ? "N" : "n";
+        return color == Color.WHITE ? "N" : "n";
     }
 
     @Override
@@ -42,6 +42,6 @@ public class Knight extends Piece {
     private boolean canMoveTo(Board board, String squareTo) {
         return board.isWithinBoard(squareTo)
                 && (board.isEmpty(squareTo)
-                    || board.get(squareTo).getColor() != getColor());
+                    || board.get(squareTo).getColor() != color);
     }
 }

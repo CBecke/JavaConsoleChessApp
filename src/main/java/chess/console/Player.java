@@ -11,7 +11,7 @@ public class Player {
         this.color = color;
     }
 
-    public void move(Board board) {
+    public void move(Board board, MoveLogger moveLogger) {
         String squareFrom = "";
         String squareTo = "";
         do {
@@ -28,6 +28,7 @@ public class Player {
                 squareTo = inputHandler.getUserInput();
             }
         } while (!board.move(squareFrom, squareTo));
+        moveLogger.log(board, squareFrom, squareTo);
     }
 
     public Color getColor() { return color; }

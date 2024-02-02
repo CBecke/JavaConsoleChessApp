@@ -22,6 +22,7 @@ public class GameManager {
     private final Board board = new Board();
     private final Printer printer = new ConsolePrinter();
     private Player whitePlayer = new Player(Color.WHITE);
+    private final MoveLogger moveLogger = new MoveLogger();
     private boolean whiteLost = false;
     private boolean blackLost = false;
     private boolean draw      = false;
@@ -35,7 +36,7 @@ public class GameManager {
         /* Potentially keep player array and use modulo to chose player. will make loop shorter*/
         while (!isGameOver()) {
             // White to move
-            whitePlayer.move(board);
+            whitePlayer.move(board, moveLogger);
 
             // print board
             printer.printBoard(board);

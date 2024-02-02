@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class Piece {
 
-    private final Color color;
+    protected final Color color;
 
     public Piece(Color color) {
         this.color = color;

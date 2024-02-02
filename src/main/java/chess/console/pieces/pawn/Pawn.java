@@ -64,7 +64,7 @@ public abstract class Pawn extends Piece {
 
     boolean isValidCapture(Board board, String squareFrom, String squareTo) {
         return !board.isEmpty(squareTo)
-                && board.get(squareTo).getColor() != getColor()
+                && board.get(squareTo).getColor() != color
                 && Math.abs(squareTo.charAt(0) - squareFrom.charAt(0)) == 1
                 && isValidCaptureDirection(squareFrom, squareTo);
     };

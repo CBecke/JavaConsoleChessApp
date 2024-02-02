@@ -54,7 +54,7 @@ public class Board implements Iterable<String> {
         movePiece(squareFrom, squareTo);
 
         // If this point is reached, the king could castle, so we can "manually" move the rook
-        if (isCastles(piece, squareFrom, squareTo)) {
+        if (isCastles(squareFrom, squareTo)) {
             doRookCastles(squareFrom, squareTo);
         }
 
@@ -101,8 +101,8 @@ public class Board implements Iterable<String> {
         board[rankFrom][fileFrom] = null;
     }
 
-    private boolean isCastles(Piece piece, String squareFrom, String squareTo) {
-        return piece instanceof King
+    public boolean isCastles(String squareFrom, String squareTo) {
+        return get(squareFrom) instanceof King
                 && Math.abs(squareTo.charAt(0) - squareFrom.charAt(0)) == 2;
     }
 

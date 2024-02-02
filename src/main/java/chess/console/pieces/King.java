@@ -18,13 +18,13 @@ public class King extends Piece{
     public boolean isValidMove(Board board, String squareFrom, String squareTo) {
         int fileDiff = Math.abs(squareTo.charAt(0) - squareFrom.charAt(0));
         int rankDiff = Math.abs(squareTo.charAt(1) - squareFrom.charAt(1));
-        return !board.isAttacked(getColor(), squareTo)
+        return !board.isAttacked(color, squareTo)
                 && ((fileDiff <= 1 && rankDiff <= 1) || isValidCastles(board, squareFrom, squareTo)) ;
     }
 
     @Override
     public String toString() {
-        return getColor() == Color.WHITE ? "K" : "k";
+        return color == Color.WHITE ? "K" : "k";
     }
 
     @Override
@@ -36,9 +36,9 @@ public class King extends Piece{
                 String currentSquare = board.shiftSquare(squareFrom, fileShift, rankShift);
                 if (!currentSquare.equals(squareFrom)
                         && board.isWithinBoard(currentSquare)
-                        && !board.isAttacked(getColor(), currentSquare)
+                        && !board.isAttacked(color, currentSquare)
                         && (board.isEmpty(currentSquare)
-                            || board.get(currentSquare).getColor() != getColor())) {
+                            || board.get(currentSquare).getColor() != color)) {
                     validMoves.add(currentSquare);
                 }
             }
