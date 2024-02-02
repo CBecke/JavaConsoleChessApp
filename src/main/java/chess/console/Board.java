@@ -13,6 +13,7 @@ public class Board implements Iterable<String> {
     Piece[][] board;
 
     public static int SIZE = 8;
+    private boolean moveWasCapture;
 
     public Board() {
         board = new Piece[SIZE][SIZE];
@@ -48,9 +49,10 @@ public class Board implements Iterable<String> {
                 || isStillStandingMove(squareFrom, squareTo)
                 || !piece.isValidMove(this, squareFrom, squareTo))
             { return false; }
-
         if (isRook(piece)) { ((Rook)piece).disableCastling(); }
         if (isKing(piece)) { ((King)piece).disableCastling(); }
+
+        moveWasCapture = !isEmpty(squareTo);
         movePiece(squareFrom, squareTo);
 
         // If this point is reached, the king could castle, so we can "manually" move the rook
@@ -346,6 +348,25 @@ public class Board implements Iterable<String> {
     @Override
     public Iterator<String> iterator() {
         return new BoardIterator();
+    }
+
+    public boolean isEdgeRank(String square) {
+        int rank = square.charAt(1) - '0';
+        return rank == Board.SIZE || rank == 1;
+    }
+
+    public boolean wasCapture() {
+        return moveWasCapture;
+    }
+
+    /**
+     * returns the square of the king which has opposite color of the input color
+     */
+    public String getKingSquare(Color color) {
+        Collection<String> kingSquares = getKingPositions();
+        Iterator<String> iterator = kingSquares.iterator();
+        String kingSquare = iterator.next();
+        return (get(kingSquare).getColor() == color) ? kingSquare : iterator.next();
     }
 
     private class BoardIterator implements Iterator<String> {

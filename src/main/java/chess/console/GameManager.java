@@ -72,7 +72,11 @@ public class GameManager {
 
         // Test for insufficient material
 
-        // Test for no possible moves
+        // Test for stalemate
+
+        // TODO: draw by agreement
+        // TODO: resignation
+
         return false;
     }
 

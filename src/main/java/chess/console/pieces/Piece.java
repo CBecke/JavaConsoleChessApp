@@ -10,7 +10,7 @@ public abstract class Piece {
 
     protected final Color color;
 
-    public Piece(Color color) {
+    protected Piece(Color color) {
         this.color = color;
     }
 
