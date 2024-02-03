@@ -4,12 +4,10 @@ import chess.console.pieces.King;
 import chess.console.pieces.Piece;
 import chess.console.pieces.pawn.Pawn;
 
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.*;
 
 public class MoveLogger {
-    Collection<String> log = new LinkedList<>();
-
+    LinkedList<String> log = new LinkedList<>();
     /**
      * Records the move AFTER it has been played (and was determined to be valid). That is, on board the piece has
      * already moved from squareFrom to squareTo.
@@ -41,5 +39,22 @@ public class MoveLogger {
         if(board.isCheckmate(oppositeKingSquare)) { log.add(move + "#"); }
         else if (mover.isValidMove(board, squareTo, oppositeKingSquare)) { log.add(move + "+"); } // king put in check
         else { log.add(move); }
+    }
+
+    public boolean isFiftyMoveDraw() {
+        if (log.size() < 50) { return false; }
+        Iterator<String> iterator = log.descendingIterator();
+        int i = 1;
+        while (i <= 50) {
+            String move = iterator.next();
+            if (isPawnMove(move)) { return false; }
+            i+= 1;
+        }
+        return true;
+    }
+
+    private boolean isPawnMove(String move) {
+        char mover = move.charAt(0);
+        return 'a' <= mover && mover <= 'h';
     }
 }
