@@ -1,9 +1,13 @@
 package chess.console;
 
+import chess.console.pieces.Bishop;
+import chess.console.pieces.Knight;
+import chess.console.pieces.Piece;
 import chess.console.printer.ConsolePrinter;
 import chess.console.printer.Printer;
+import jdk.internal.org.objectweb.asm.tree.analysis.BasicInterpreter;
 
-import java.util.Collection;
+import java.util.*;
 
 
 public class GameManager {
@@ -27,7 +31,7 @@ public class GameManager {
             printer.printBoard(board);
 
             // check for ended game
-            boolean gameEnded = hasGameEnded(board);
+            boolean gameEnded = hasGameEnded();
 
             // report if game ended
 
@@ -40,7 +44,7 @@ public class GameManager {
 
     }
 
-    private boolean hasGameEnded(Board board) {
+    private boolean hasGameEnded() {
         // Test for checkmate
         Collection<String> kingSquares = board.getKingPositions();
         for (String kingSquare : kingSquares) {
@@ -52,13 +56,10 @@ public class GameManager {
         }
 
         // Test for 3-fold repetition
-        if (logger.isThreeFoldRepetition() || logger.isFiftyMoveDraw() || isInsufficientMaterialDraw(board)) {
+        if (logger.isThreeFoldRepetition() || logger.isFiftyMoveDraw() || isInsufficientMaterialDraw() || isStaleMate()) {
             draw = true;
             return true;
         }
-
-        // Test for insufficient material
-
 
         // Test for stalemate
 
@@ -66,6 +67,32 @@ public class GameManager {
         // TODO: resignation
 
         return false;
+    }
+
+    /**
+     * Determines if the game is a draw by insufficient material, according to USCF rules: the game is drawn if there is
+     * no <b>forced</b> checkmate possible. This happens in 4 cases: (king), (king, knight), (king, bishop),
+     * (king, knight, knight).
+     */
+    private boolean isInsufficientMaterialDraw() {
+        Map<Class<? extends Piece>, Integer> whitePieces = new HashMap<>();
+        Map<Class<? extends Piece>, Integer> blackPieces = new HashMap<>();
+        for (String square : board) {
+            if (board.isEmpty(square)) { continue; }
+            Piece piece = board.get(square);
+            if (piece.getColor() == Color.WHITE)      { whitePieces.merge(piece.getClass(), 1, Integer::sum); }
+            else if (piece.getColor() == Color.BLACK) { blackPieces.merge(piece.getClass(), 1, Integer::sum); }
+        }
+
+        return isInsufficientMaterial(whitePieces) || isInsufficientMaterial(blackPieces);
+    }
+
+    private boolean isInsufficientMaterial(Map<Class<? extends Piece>, Integer> pieceMap) {
+        return pieceMap.keySet().size() == 2 // contains king and either knight or bishop
+                && ((pieceMap.containsKey(Bishop.class)  // there is only 1 bishop
+                        && pieceMap.get(Bishop.class) == 1)
+                    || (pieceMap.containsKey(Knight.class)  // there is 1 or 2 knights
+                        && pieceMap.get(Knight.class) <= 2));
     }
 
 
