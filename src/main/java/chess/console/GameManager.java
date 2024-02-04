@@ -5,20 +5,8 @@ import chess.console.printer.Printer;
 
 import java.util.Collection;
 
-/**
- * Singleton class to combine and handle game components. Retrieve instance with GameManager.getInstance()
- */
+
 public class GameManager {
-    /// Singleton components
-    private static GameManager instance = null;
-
-    private GameManager() {}
-
-    public static GameManager getInstance() {
-        if (instance == null) {instance = new GameManager(); }
-        return instance;
-    }
-    // Logic
     private final Board board = new Board();
     private final Printer printer = new ConsolePrinter();
     private Player whitePlayer = new Player(Color.WHITE);
@@ -27,10 +15,7 @@ public class GameManager {
     private boolean blackLost = false;
     private boolean draw      = false;
 
-
     public void playChess() {
-        // Prepare board for game
-        board.setInitialPosition();
         printer.printBoard(board);
 
         /* Potentially keep player array and use modulo to chose player. will make loop shorter*/
@@ -83,9 +68,6 @@ public class GameManager {
         return false;
     }
 
-    private boolean isInsufficientMaterialDraw(Board board) {
-        board.getPieces
-    }
 
     private void setLostFlag(Color color, boolean b) {
         if (color == Color.WHITE)

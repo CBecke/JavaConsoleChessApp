@@ -2,6 +2,7 @@ package chess.console.ZobristHashing;
 
 import chess.console.Board;
 import chess.console.Color;
+import chess.console.MoveLogger;
 import chess.console.pieces.*;
 import chess.console.pieces.pawn.Pawn;
 
@@ -9,17 +10,27 @@ import java.security.SecureRandom;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ZobristTable implements ZobristHashing {
+/**
+ * Zobrist hashing to assign unique values to chess positions w.h.p., as described
+ * <a href="https://www.chessprogramming.org/Zobrist_Hashing">here</a> and
+ * <a href="https://en.wikipedia.org/wiki/Zobrist_hashing">here</a>.
+ */
+public class ZobristTable {
     private long hashValue;
     private final SecureRandom random;
     private long[][][] table;
     private long blackToMove;
 
-    public ZobristTable(Board board, boolean isBlackToMove) {
+    /**
+     * Creates a Zobrist hash table and a hash value corresponding to the standard initial chess position.
+     */
+    public ZobristTable() {
         random = new SecureRandom();
         initZobrist();
-        hashValue = generateHash(board, isBlackToMove);
+        Board board = new Board();
+        hashValue = generateHash(board, false);
     }
+
 
     private long generateHash(Board board, boolean isBlackToMove) {
         long h = (isBlackToMove) ? blackToMove : 0L;
@@ -32,18 +43,15 @@ public class ZobristTable implements ZobristHashing {
     }
 
     private long getTableHash(String square, Piece piece) {
-        int pieceValue = getPieceValue(piece);
         int rank = Board.getRank(square);
         int file = Board.getFile(square);
+        int pieceValue = getPieceValue(piece);
         return table[rank][file][pieceValue];
     }
 
     private int getPieceValue(Piece piece) {
         int pieceValue = Integer.MIN_VALUE;
-        // While I realize this is ugly, I do not want to put pieceValue as an attribute of the Piece class because
-        // conceptually it is not part of the piece, it is just a value needed by the zobrist table. Another option I
-        // considered was a hashmap but upon implementing it, I found it obscured the value of a piece too much, despite
-        // looking neater at first glance.. So I stuck with this.
+
         if (piece instanceof Pawn) { pieceValue = 0; }
         else if (piece instanceof Knight) { pieceValue = 1; }
         else if (piece instanceof Bishop) { pieceValue = 2; }
@@ -55,7 +63,6 @@ public class ZobristTable implements ZobristHashing {
         return pieceValue;
     }
 
-    @Override
     public void initZobrist() {
         // based on: https://en.wikipedia.org/wiki/Zobrist_hashing#:~:text=As%20an%20example,hash.%5B1%5D
         // 6 white pieces + 6 black pieces + 2*2 pieces that can castle [black/white king + rook]
@@ -72,23 +79,33 @@ public class ZobristTable implements ZobristHashing {
         }
     }
 
-
-    @Override
     public long generateRandomKey() {
         /* since SecureRandom.nextLong() only has a random seed of 48 bits, using it alone does not cover the entire
-         * long (64 bit) range. To make up for this, we call SecureRandom.nextLong() twice and concatenate the upper 32
+         * (64 bit) long range. To make up for this, we call SecureRandom.nextLong() twice and concatenate the upper 32
          * bits from the first random value with the lower 32 bits from the second random value.
          */
         return (random.nextLong() << 32) | (random.nextLong() & 0xffffffffL);
     }
 
-    @Override
-    public void updateHash(Board board) {
 
+    /**
+     * Updates the zobrist board hash value based on the most recent move. The method is called AFTER the piece has
+     * moved.
+     */
+    public void updateHash(Board board, String squareFrom, String squareTo) {
+        if (board.wasCapture()) {
+            Piece capturedPiece = board.getLastCaptured();
+            hashValue = hashValue ^ getTableHash(squareTo, capturedPiece); // "remove" the captured piece from hash
+        }
+
+        Piece current = board.get(squareTo);
+        // When this is called, the moving piece has already moved to squareTo
+        //
+        hashValue = hashValue ^ getTableHash(squareFrom, current); // "remove" the piece from its previous square
+        hashValue = hashValue ^ getTableHash(squareTo, current);   // "put" the piece on its new square
     }
 
-    @Override
     public long getHash() {
-        return 0;
+        return hashValue;
     }
 }

@@ -14,9 +14,11 @@ public class Board implements Iterable<String> {
 
     public static int SIZE = 8;
     private boolean moveWasCapture;
+    private Piece lastCaptured;
 
     public Board() {
         board = new Piece[SIZE][SIZE];
+        setInitialPosition();
     }
 
     public static char getFirstFile() { return 'a'; }
@@ -52,7 +54,10 @@ public class Board implements Iterable<String> {
         if (isRook(piece)) { ((Rook)piece).disableCastling(); }
         if (isKing(piece)) { ((King)piece).disableCastling(); }
 
+
         moveWasCapture = !isEmpty(squareTo);
+        if (!isEmpty(squareTo)) { lastCaptured = get(squareTo); }
+
         movePiece(squareFrom, squareTo);
 
         // If this point is reached, the king could castle, so we can "manually" move the rook
@@ -367,6 +372,10 @@ public class Board implements Iterable<String> {
         Iterator<String> iterator = kingSquares.iterator();
         String kingSquare = iterator.next();
         return (get(kingSquare).getColor() == color) ? kingSquare : iterator.next();
+    }
+
+    public Piece getLastCaptured() {
+        return lastCaptured;
     }
 
     private class BoardIterator implements Iterator<String> {
