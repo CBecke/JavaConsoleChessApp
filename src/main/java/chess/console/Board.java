@@ -28,11 +28,11 @@ public class Board implements Iterable<String> {
         board[rank][file] = piece;
     }
 
-    private static int getFile(String square) {
+    public static int getFile(String square) {
         return square.charAt(0) - getFirstFile();
     }
 
-    private static int getRank(String square) {
+    public static int getRank(String square) {
         return square.charAt(1) - '1'; // subtract '1' since board is 0-indexed
     }
 

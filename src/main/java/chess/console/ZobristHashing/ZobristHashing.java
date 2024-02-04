@@ -8,9 +8,11 @@ import chess.console.Board;
  * <a href="https://en.wikipedia.org/wiki/Zobrist_hashing">here</a>.
  */
 public interface ZobristHashing {
-    public void initZobristHashing();
+    public void initZobrist();
 
     public long generateRandomKey();
+
+
 
     public void updateHash(Board board);
 
