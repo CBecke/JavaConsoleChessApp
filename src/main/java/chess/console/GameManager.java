@@ -1,5 +1,6 @@
 package chess.console;
 
+import chess.console.inputhandler.InputHandler;
 import chess.console.pieces.Bishop;
 import chess.console.pieces.Knight;
 import chess.console.pieces.Piece;
@@ -11,18 +12,26 @@ import java.util.*;
 
 public class GameManager {
     private final Board board = new Board();
-    private final Printer printer = new ConsolePrinter();
-    private Player whitePlayer = new Player(Color.WHITE);
+    private final Printer printer;
+    private Player whitePlayer;
+    private Player blackPlayer;
     private final MoveLogger logger = new MoveLogger();
     private boolean whiteLost = false;
     private boolean blackLost = false;
     private boolean draw      = false;
 
+    public GameManager(Printer printer, InputHandler inputHandler) {
+        this.printer = printer;
+        whitePlayer = new Player(Color.WHITE, inputHandler, printer);
+        blackPlayer = new Player(Color.BLACK, inputHandler, printer);
+    }
+
     public void playChess() {
         printer.printBoard(board);
+        boolean gameEnded = false;
 
         /* Potentially keep player array and use modulo to chose player. will make loop shorter*/
-        while (!isGameOver()) {
+        while (!gameEnded) {
             // White to move
             whitePlayer.move(board, logger);
 
@@ -30,17 +39,14 @@ public class GameManager {
             printer.printBoard(board);
 
             // check for ended game
-            boolean gameEnded = hasGameEnded();
+            gameEnded = hasGameEnded();
+            if (gameEnded) { continue; }
 
-            // report if game ended
-
-            // black to move
-
-            // print board
-
-            // check for ended game
+            // Black to move
+            blackPlayer.move(board, logger);
         }
 
+        printer.printResult(whiteLost, blackLost, draw);
     }
 
     private boolean hasGameEnded() {
@@ -121,13 +127,7 @@ public class GameManager {
 
 
     private void setLostFlag(Color color, boolean b) {
-        if (color == Color.WHITE)
-            { whiteLost = b; }
-        else
-            { blackLost = b; }
+        if (color == Color.WHITE)      { whiteLost = b; }
+        else if (color == Color.BLACK) { blackLost = b; }
     }
-
-    private boolean isGameOver() { return whiteLost || blackLost || draw; }
-
-
 }

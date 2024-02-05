@@ -2,13 +2,17 @@ package chess.console;
 
 import chess.console.inputhandler.ConsoleInputHandler;
 import chess.console.inputhandler.InputHandler;
+import chess.console.printer.Printer;
 
 public class Player {
     Color color;
-    InputHandler inputHandler = new ConsoleInputHandler();
+    private final InputHandler inputHandler;
+    private final Printer printer;
 
-    public Player(Color color) {
+    public Player(Color color, InputHandler inputHandler, Printer printer) {
         this.color = color;
+        this.inputHandler = inputHandler;
+        this.printer = printer;
     }
 
     public void move(Board board, MoveLogger moveLogger) {
@@ -16,15 +20,15 @@ public class Player {
         String squareTo = "";
         do {
             // Get the square to move from
-            System.out.println(color + " to move");
+            printer.printMessage(color + " to move");
             while (!board.isValidSquareFrom(this, squareFrom)) {
-                System.out.print("Enter square to move from: ");
+                printer.printMessage("Enter square to move from: ");
                 squareFrom = inputHandler.getUserInput();
             }
 
             // Get the square to move to
             while (!board.isWithinBoard(squareTo)) {
-                System.out.print("Enter square to move to: ");
+                printer.printMessage("Enter square to move to: ");
                 squareTo = inputHandler.getUserInput();
             }
         } while (!board.move(squareFrom, squareTo));

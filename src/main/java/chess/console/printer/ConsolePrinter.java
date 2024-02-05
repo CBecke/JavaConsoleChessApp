@@ -29,6 +29,22 @@ public class ConsolePrinter implements Printer {
         System.out.println();
     }
 
+    @Override
+    public void printMessage(String message) {
+        System.out.println(message);
+    }
+
+    @Override
+    public void printResult(boolean whiteLost, boolean blackLost, boolean draw) {
+        if (draw) {
+            System.out.println( "The game ended in a draw.");
+            return;
+        }
+
+        String winner = whiteLost ? "black" : "white";
+        System.out.println("Congratulations to " + winner + ", you have won!");
+    }
+
     private void printFiles(int columnWidth, int fileNameWidth) {
         System.out.print(" ".repeat(fileNameWidth + columnWidth/2));
         for (char file = 'a'; file <= 'h'; file++) {
@@ -47,5 +63,5 @@ public class ConsolePrinter implements Printer {
     public void printRow(int width, int fileNameWidth) {
         System.out.print(" ".repeat(fileNameWidth));
         System.out.print("-".repeat(width));
-    };
+    }
 }
