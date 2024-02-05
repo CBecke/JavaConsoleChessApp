@@ -5,7 +5,6 @@ import chess.console.pieces.Knight;
 import chess.console.pieces.Piece;
 import chess.console.printer.ConsolePrinter;
 import chess.console.printer.Printer;
-import jdk.internal.org.objectweb.asm.tree.analysis.BasicInterpreter;
 
 import java.util.*;
 
@@ -55,18 +54,43 @@ public class GameManager {
             }
         }
 
-        // Test for 3-fold repetition
-        if (logger.isThreeFoldRepetition() || logger.isFiftyMoveDraw() || isInsufficientMaterialDraw() || isStaleMate()) {
+        if (isDraw()) {
             draw = true;
             return true;
         }
-
-        // Test for stalemate
 
         // TODO: draw by agreement
         // TODO: resignation
 
         return false;
+    }
+
+    private boolean isDraw() {
+        return logger.isThreeFoldRepetition()
+                || logger.isFiftyMoveDraw()
+                || isInsufficientMaterialDraw()
+                || isStaleMate();
+    }
+
+    private boolean isStaleMate() {
+        boolean whiteCanMove = false;
+        boolean blackCanMove = false;
+        for (String square : board) {
+            if (board.isEmpty(square)) { continue; }
+            Piece piece = board.get(square);
+
+            // Piece.canMove() can be quite expensive, so we try to avoid calling it by seeing if a piece of that color
+            // already was able to move (meaning that color will not have a stalemate).
+            Color color = piece.getColor();
+            if ((color == Color.WHITE) ? whiteCanMove : blackCanMove) { continue; }
+
+            if (piece.canMove(board, square)) {
+                if (color == Color.WHITE)      { whiteCanMove = true; }
+                else if (color == Color.BLACK) { blackCanMove = true; }
+            }
+        }
+
+        return (!whiteCanMove || !blackCanMove);
     }
 
     /**

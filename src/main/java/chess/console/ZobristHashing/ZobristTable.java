@@ -2,13 +2,10 @@ package chess.console.ZobristHashing;
 
 import chess.console.Board;
 import chess.console.Color;
-import chess.console.MoveLogger;
 import chess.console.pieces.*;
 import chess.console.pieces.pawn.Pawn;
 
 import java.security.SecureRandom;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Zobrist hashing to assign unique values to chess positions w.h.p., as described
@@ -93,14 +90,14 @@ public class ZobristTable {
      * moved.
      */
     public void updateHash(Board board, String squareFrom, String squareTo) {
+        hashValue = hashValue ^ blackToMove; // take into account that the turn has changed
         if (board.wasCapture()) {
             Piece capturedPiece = board.getLastCaptured();
             hashValue = hashValue ^ getTableHash(squareTo, capturedPiece); // "remove" the captured piece from hash
         }
 
-        Piece current = board.get(squareTo);
         // When this is called, the moving piece has already moved to squareTo
-        //
+        Piece current = board.get(squareTo);
         hashValue = hashValue ^ getTableHash(squareFrom, current); // "remove" the piece from its previous square
         hashValue = hashValue ^ getTableHash(squareTo, current);   // "put" the piece on its new square
     }

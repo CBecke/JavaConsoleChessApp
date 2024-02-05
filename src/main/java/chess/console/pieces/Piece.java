@@ -28,4 +28,8 @@ public abstract class Piece {
      */
     public abstract Collection<String> getValidMoves(Board board, String squareFrom); // TODO: potentially ensure that the moves do not put the king in check
 
+    public boolean canMove(Board board, String squareFrom) {
+        return !getValidMoves(board, squareFrom).isEmpty();
+    }
+
 }
