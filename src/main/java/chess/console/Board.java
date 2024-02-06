@@ -40,9 +40,10 @@ public class Board implements Iterable<String> {
 
     public boolean isWithinBoard(String square) {
         return square.length() == 2
-                && 'a' <= square.charAt(0) && square.charAt(0) <= 'a' + Board.SIZE
-                && '1' <= square.charAt(1) && square.charAt(1) <= '1' + Board.SIZE;
+                && 'a' <= square.charAt(0) && square.charAt(0) < 'a' + Board.SIZE
+                && '1' <= square.charAt(1) && square.charAt(1) < '1' + Board.SIZE;
     }
+
 
     // TODO: check that the move does not put your king in check
     public boolean move(String squareFrom, String squareTo) {

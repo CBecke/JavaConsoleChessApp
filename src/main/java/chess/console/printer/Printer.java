@@ -8,4 +8,6 @@ public interface Printer {
     void printMessage(String message);
 
     void printResult(boolean whiteLost, boolean blackLost, boolean draw);
+
+    void printFlippedBoard(Board board);
 }

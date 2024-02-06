@@ -23,9 +23,9 @@ public class MoveCalculator {
         while (board.isWithinBoard(currentSquare) && (board.isEmpty(currentSquare) || !hasCaptured)) {
             validMoves.add(currentSquare);
 
-            // The bishop can capture the first opposite color piece in its path, assuming the path was clear
+            // The piece can capture the first opposite color piece in its path, assuming the path was clear
             if (!board.isEmpty(currentSquare) && board.get(currentSquare).getColor() != thisPieceColor)
-            { hasCaptured = true; }
+                { hasCaptured = true; }
 
             fileShift += fileDirection;
             rankShift += rankDirection;

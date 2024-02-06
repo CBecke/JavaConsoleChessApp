@@ -40,6 +40,7 @@ public abstract class Pawn extends Piece {
         // captures
         for (int fileDirection : new int[]{-1, 1}) {
             toSquareCandidate = board.shiftSquare(squareFrom, fileDirection, direction);
+            if (!board.isWithinBoard(toSquareCandidate)) { continue; }
             if (isValidCapture(board, squareFrom, toSquareCandidate)) { validMoves.add(toSquareCandidate); }
         }
 

@@ -45,6 +45,30 @@ public class ConsolePrinter implements Printer {
         System.out.println("Congratulations to " + winner + ", you have won!");
     }
 
+    @Override
+    public void printFlippedBoard(Board board) {
+        int fileNameWidth = 3;
+        int columnWidth = 6;
+        int rowWidth = 49;
+        // print top edge of board
+        printRow(rowWidth, fileNameWidth);
+
+        for (char rank = '1'; rank < '1' + Board.SIZE; rank++) { // print rank in reverse order from underlying implementation
+            System.out.println();
+            System.out.print(rank + "  |"); // 'a' = 97, '1' = 49
+            for (char file = (char)('a' + Board.SIZE); file >= 'a'; file--) {
+                printPiece(board.get("" + file + rank));
+                System.out.print('|');
+            }
+            System.out.println();
+            printRow(rowWidth, fileNameWidth);
+        }
+
+        System.out.println();
+        printFiles(columnWidth, fileNameWidth);
+        System.out.println();
+    }
+
     private void printFiles(int columnWidth, int fileNameWidth) {
         System.out.print(" ".repeat(fileNameWidth + columnWidth/2));
         for (char file = 'a'; file <= 'h'; file++) {

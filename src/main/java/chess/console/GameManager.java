@@ -44,6 +44,9 @@ public class GameManager {
 
             // Black to move
             blackPlayer.move(board, logger);
+
+            // print flipped board
+            printer.printBoard(board);
         }
 
         printer.printResult(whiteLost, blackLost, draw);
