@@ -56,7 +56,7 @@ public class ConsolePrinter implements Printer {
         for (char rank = '1'; rank < '1' + Board.SIZE; rank++) { // print rank in reverse order from underlying implementation
             System.out.println();
             System.out.print(rank + "  |"); // 'a' = 97, '1' = 49
-            for (char file = (char)('a' + Board.SIZE); file >= 'a'; file--) {
+            for (char file = (char)('a' + Board.SIZE - 1); file >= 'a'; file--) {
                 printPiece(board.get("" + file + rank));
                 System.out.print('|');
             }

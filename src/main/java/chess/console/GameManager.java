@@ -27,26 +27,28 @@ public class GameManager {
     }
 
     public void playChess() {
-        printer.printBoard(board);
         boolean gameEnded = false;
 
         /* Potentially keep player array and use modulo to chose player. will make loop shorter*/
         while (!gameEnded) {
-            // White to move
-            whitePlayer.move(board, logger);
-
             // print board
             printer.printBoard(board);
+
+            // White to move
+            whitePlayer.move(board, logger);
 
             // check for ended game
             gameEnded = hasGameEnded();
             if (gameEnded) { continue; }
 
+            // print flipped board
+            printer.printFlippedBoard(board);
+
             // Black to move
             blackPlayer.move(board, logger);
 
-            // print flipped board
-            printer.printBoard(board);
+            // check for ended game
+            gameEnded = hasGameEnded();
         }
 
         printer.printResult(whiteLost, blackLost, draw);
