@@ -4,7 +4,6 @@ import chess.console.inputhandler.InputHandler;
 import chess.console.pieces.Bishop;
 import chess.console.pieces.Knight;
 import chess.console.pieces.Piece;
-import chess.console.printer.ConsolePrinter;
 import chess.console.printer.Printer;
 
 import java.util.*;
@@ -13,8 +12,8 @@ import java.util.*;
 public class GameManager {
     private final Board board = new Board();
     private final Printer printer;
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private final Player whitePlayer;
+    private final Player blackPlayer;
     private final MoveLogger logger = new MoveLogger();
     private boolean whiteLost = false;
     private boolean blackLost = false;
@@ -27,29 +26,14 @@ public class GameManager {
     }
 
     public void playChess() {
-        boolean gameEnded = false;
-
-        /* Potentially keep player array and use modulo to chose player. will make loop shorter*/
-        while (!gameEnded) {
-            // print board
+        do {
             printer.printBoard(board);
-
-            // White to move
             whitePlayer.move(board, logger);
+            if (hasGameEnded()) { continue; }
 
-            // check for ended game
-            gameEnded = hasGameEnded();
-            if (gameEnded) { continue; }
-
-            // print flipped board
             printer.printFlippedBoard(board);
-
-            // Black to move
             blackPlayer.move(board, logger);
-
-            // check for ended game
-            gameEnded = hasGameEnded();
-        }
+        } while ((!hasGameEnded()));
 
         printer.printResult(whiteLost, blackLost, draw);
     }
