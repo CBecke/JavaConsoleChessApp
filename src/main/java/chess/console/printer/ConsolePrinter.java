@@ -4,28 +4,15 @@ import chess.console.Board;
 import chess.console.pieces.Piece;
 
 public class ConsolePrinter implements Printer {
+    int fileNameWidth = 3;
+    int columnWidth = 6;
+    int rowWidth = 49;
+
     @Override
     public void printBoard(Board board) {
-
-        int fileNameWidth = 3;
-        int columnWidth = 6;
-        int rowWidth = 49;
-        // print top edge of board
-        printRow(rowWidth, fileNameWidth);
-
-        for (char rank = (char)('1' + Board.SIZE - 1); rank >= '1'; rank--) { // print rank in reverse order from underlying implementation
-            System.out.println();
-            System.out.print(rank + "  |"); // 'a' = 97, '1' = 49
-            for (char file = 'a'; file < 'a' + Board.SIZE; file++) {
-                printPiece(board.get("" + file + rank));
-                System.out.print('|');
-            }
-            System.out.println();
-            printRow(rowWidth, fileNameWidth);
-        }
-
+        printBoard(board, 'a', 1, (char)('a'+Board.SIZE-1), 8);
         System.out.println();
-        printFiles(columnWidth, fileNameWidth);
+        printFiles(columnWidth, fileNameWidth, 'a', (char)('a'+Board.SIZE-1));
         System.out.println();
     }
 
@@ -47,31 +34,47 @@ public class ConsolePrinter implements Printer {
 
     @Override
     public void printFlippedBoard(Board board) {
-        int fileNameWidth = 3;
-        int columnWidth = 6;
-        int rowWidth = 49;
+        printBoard(board, (char)('a'+Board.SIZE-1), 8, 'a', 1);
+        System.out.println();
+        printFiles(columnWidth, fileNameWidth, (char)('a'+Board.SIZE-1), 'a');
+        System.out.println();
+    }
+
+    /**
+     * Prints the board such that (firstFile, firstRank) is the bottom left square, and (lastFile,lastRank) is the top
+     * right square.
+     * @param firstFile: left file
+     * @param lastFile: right file
+     * @param firstRank: bottom rank
+     * @param lastRank: top rank
+     */
+    private void printBoard(Board board, char firstFile, int firstRank, char lastFile, int lastRank) {
         // print top edge of board
         printRow(rowWidth, fileNameWidth);
 
-        for (char rank = '1'; rank < '1' + Board.SIZE; rank++) { // print rank in reverse order from underlying implementation
+        // Reverse rank to match underlying board implementation
+        int temp = firstRank;
+        firstRank = lastRank;
+        lastRank = temp;
+
+        int rankDirection = (lastRank > firstRank) ? 1 : -1;
+        int fileDirection = (lastFile > firstFile) ? 1 : -1;
+        for (int currentRank = firstRank; currentRank != (lastRank+rankDirection); currentRank += rankDirection) {
             System.out.println();
-            System.out.print(rank + "  |"); // 'a' = 97, '1' = 49
-            for (char file = (char)('a' + Board.SIZE - 1); file >= 'a'; file--) {
-                printPiece(board.get("" + file + rank));
+            System.out.print(currentRank + "  |");
+            for (char currentFile = firstFile; currentFile != (lastFile+fileDirection); currentFile = (char)(currentFile + fileDirection)) {
+                printPiece(board.get("" + currentFile + currentRank));
                 System.out.print('|');
             }
             System.out.println();
             printRow(rowWidth, fileNameWidth);
         }
-
-        System.out.println();
-        printFiles(columnWidth, fileNameWidth);
-        System.out.println();
     }
 
-    private void printFiles(int columnWidth, int fileNameWidth) {
+    private void printFiles(int columnWidth, int fileNameWidth, char firstFile, char lastFile) {
         System.out.print(" ".repeat(fileNameWidth + columnWidth/2));
-        for (char file = 'a'; file <= 'h'; file++) {
+        int fileDirection = (lastFile > firstFile) ? 1 : -1;
+        for (char file = firstFile; file != (char)(lastFile+fileDirection); file = (char)(file+fileDirection)) {
             System.out.print(file + " ".repeat(columnWidth - 1));
         }
     }
