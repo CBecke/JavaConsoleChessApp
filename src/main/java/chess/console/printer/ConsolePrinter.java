@@ -11,9 +11,6 @@ public class ConsolePrinter implements Printer {
     @Override
     public void printBoard(Board board) {
         printBoard(board, 'a', 1, (char)('a'+Board.SIZE-1), 8);
-        System.out.println();
-        printFiles(columnWidth, fileNameWidth, 'a', (char)('a'+Board.SIZE-1));
-        System.out.println();
     }
 
     @Override
@@ -35,9 +32,6 @@ public class ConsolePrinter implements Printer {
     @Override
     public void printFlippedBoard(Board board) {
         printBoard(board, (char)('a'+Board.SIZE-1), 8, 'a', 1);
-        System.out.println();
-        printFiles(columnWidth, fileNameWidth, (char)('a'+Board.SIZE-1), 'a');
-        System.out.println();
     }
 
     /**
@@ -69,6 +63,10 @@ public class ConsolePrinter implements Printer {
             System.out.println();
             printRow(rowWidth, fileNameWidth);
         }
+        // print file names
+        System.out.println();
+        printFiles(columnWidth, fileNameWidth, firstFile, lastFile);
+        System.out.println();
     }
 
     private void printFiles(int columnWidth, int fileNameWidth, char firstFile, char lastFile) {
