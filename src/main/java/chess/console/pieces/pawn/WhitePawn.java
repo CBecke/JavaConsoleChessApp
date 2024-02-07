@@ -2,6 +2,7 @@ package chess.console.pieces.pawn;
 
 import chess.console.Board;
 import chess.console.Color;
+import chess.console.Square;
 
 public class WhitePawn extends Pawn {
     public WhitePawn() {
@@ -9,10 +10,7 @@ public class WhitePawn extends Pawn {
     }
 
     @Override
-    boolean isInInitialRank(String square) {
-        int rank = square.charAt(1) - '0';
-        return rank == 2;
-    }
+    boolean isInInitialRank(Square square) { return square.getRank() == 2; }
 
     @Override
     public String toString() {

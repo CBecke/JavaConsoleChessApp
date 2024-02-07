@@ -1,6 +1,7 @@
 package chess.console.printer;
 
 import chess.console.Board;
+import chess.console.Square;
 import chess.console.pieces.Piece;
 
 public class ConsolePrinter implements Printer {
@@ -10,7 +11,7 @@ public class ConsolePrinter implements Printer {
 
     @Override
     public void printBoard(Board board) {
-        printBoard(board, 'a', 1, (char)('a'+Board.SIZE-1), 8);
+        printBoard(board, 'a', 1, (char)('a'+Board.size -1), 8);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ConsolePrinter implements Printer {
 
     @Override
     public void printFlippedBoard(Board board) {
-        printBoard(board, (char)('a'+Board.SIZE-1), 8, 'a', 1);
+        printBoard(board, (char)('a'+Board.size -1), 8, 'a', 1);
     }
 
     /**
@@ -57,7 +58,7 @@ public class ConsolePrinter implements Printer {
             System.out.println();
             System.out.print(currentRank + "  |");
             for (char currentFile = firstFile; currentFile != (lastFile+fileDirection); currentFile = (char)(currentFile + fileDirection)) {
-                printPiece(board.get("" + currentFile + currentRank));
+                printPiece(board.get(new Square(currentFile, currentRank)));
                 System.out.print('|');
             }
             System.out.println();

@@ -16,20 +16,24 @@ public class Player {
     }
 
     public void move(Board board, MoveLogger moveLogger) {
-        String squareFrom = "";
-        String squareTo = "";
+        Square squareFrom;
+        Square squareTo;
         do {
+            squareFrom = new Square("invalid");
+            squareTo = new Square("invalid");
             // Get the square to move from
             printer.printMessage(color + " to move");
+
+            // Get the square to move from
             while (!board.isValidSquareFrom(this, squareFrom)) {
                 printer.printMessage("Enter square to move from: ");
-                squareFrom = inputHandler.getUserInput();
+                squareFrom = new Square(inputHandler.getUserInput());
             }
 
             // Get the square to move to
             while (!board.isWithinBoard(squareTo)) {
                 printer.printMessage("Enter square to move to: ");
-                squareTo = inputHandler.getUserInput();
+                squareTo = new Square(inputHandler.getUserInput());
             }
         } while (!board.move(squareFrom, squareTo));
         moveLogger.log(board, squareFrom, squareTo);

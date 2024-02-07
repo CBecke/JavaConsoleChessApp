@@ -3,6 +3,7 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 import chess.console.MoveCalculator;
+import chess.console.Square;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -16,10 +17,8 @@ public class Rook extends Piece {
     }
 
     @Override
-    public boolean isValidMove(Board board, String squareFrom, String squareTo) {
-        return (isHorizontalMove(squareFrom, squareTo)
-                || isVerticalMove(squareFrom, squareTo))
-                    && board.isClearPath(squareFrom, squareTo);
+    public boolean isValidMove(Board board, Square squareFrom, Square squareTo) {
+        return MoveCalculator.isRookMove(board, squareFrom, squareTo);
     }
 
     @Override
@@ -28,18 +27,9 @@ public class Rook extends Piece {
     }
 
     @Override
-    public Collection<String> getValidMoves(Board board, String squareFrom) {
+    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
         int[][] moveDirections = new int[][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
-    }
-
-
-    private boolean isVerticalMove(String squareFrom, String squareTo) {
-        return (squareFrom.charAt(0) == squareTo.charAt(0)) && (squareFrom.charAt(1) != squareTo.charAt(1));
-    }
-
-    private boolean isHorizontalMove(String squareFrom, String squareTo) {
-        return (squareFrom.charAt(0) != squareTo.charAt(0)) && (squareFrom.charAt(1) == squareTo.charAt(1));
     }
 
     public boolean canCastle() { return canCastle; }

@@ -2,11 +2,11 @@ package chess.console.pieces.pawn;
 
 import chess.console.Board;
 import chess.console.Color;
+import chess.console.Square;
 import chess.console.pieces.Piece;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 public abstract class Pawn extends Piece {
     private final int direction;
@@ -16,7 +16,7 @@ public abstract class Pawn extends Piece {
         this.direction = direction;
     };
     @Override
-    public boolean isValidMove(Board board, String squareFrom, String squareTo) {
+    public boolean isValidMove(Board board, Square squareFrom, Square squareTo) {
         return (board.isEmpty(squareTo)
                     && (isValidDoubleMove(squareFrom, squareTo)
                         || isValidSingleForwardMove(squareFrom, squareTo)))
@@ -24,22 +24,22 @@ public abstract class Pawn extends Piece {
     }
 
     @Override
-    public Collection<String> getValidMoves(Board board, String squareFrom) {
-        Collection<String> validMoves = new LinkedList<>();
-        String toSquareCandidate = board.shiftSquare(squareFrom, 0, direction);
+    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
+        Collection<Square> validMoves = new LinkedList<>();
+        Square toSquareCandidate = squareFrom.shift(0, direction);
 
         // single square forward move
         if (board.isEmpty(toSquareCandidate)) {
             validMoves.add(toSquareCandidate);
 
             // double square forward move
-            toSquareCandidate = board.shiftSquare(toSquareCandidate, 0, direction);
+            toSquareCandidate = toSquareCandidate.shift(0, direction);
             if (board.isEmpty(toSquareCandidate)) { validMoves.add(toSquareCandidate); }
         }
 
         // captures
         for (int fileDirection : new int[]{-1, 1}) {
-            toSquareCandidate = board.shiftSquare(squareFrom, fileDirection, direction);
+            toSquareCandidate = squareFrom.shift(fileDirection, direction);
             if (!board.isWithinBoard(toSquareCandidate)) { continue; }
             if (isValidCapture(board, squareFrom, toSquareCandidate)) { validMoves.add(toSquareCandidate); }
         }
@@ -47,26 +47,27 @@ public abstract class Pawn extends Piece {
         return validMoves;
     }
 
-    abstract boolean isInInitialRank(String square);
+    abstract boolean isInInitialRank(Square square);
 
-    boolean isValidSingleForwardMove(String squareFrom, String squareTo) {
-        int rankDiff = squareTo.charAt(1) - squareFrom.charAt(1);
+    boolean isValidSingleForwardMove(Square squareFrom, Square squareTo) {
+        int rankDiff = Square.absRankDiff(squareFrom, squareTo);
         return rankDiff == direction;
     }
 
-    boolean isValidDoubleMove(String squareFrom, String squareTo) {
-        int rankDiff = squareTo.charAt(1) - squareFrom.charAt(1);
+    boolean isValidDoubleMove(Square squareFrom, Square squareTo) {
+        // intentionally not taking absolute rank difference due to direction
+        int rankDiff = squareTo.getRank() - squareFrom.getRank();
         return isInInitialRank(squareFrom) && rankDiff == 2*direction;
     }
 
-    boolean isValidCaptureDirection(String squareFrom, String squareTo) {
-        return squareTo.charAt(1) - squareFrom.charAt(1) == direction;
+    boolean isValidCaptureDirection(Square squareFrom, Square squareTo) {
+        return squareTo.getRank() - squareFrom.getRank() == direction;
     }
 
-    boolean isValidCapture(Board board, String squareFrom, String squareTo) {
+    boolean isValidCapture(Board board, Square squareFrom, Square squareTo) {
         return !board.isEmpty(squareTo)
                 && board.get(squareTo).getColor() != color
-                && Math.abs(squareTo.charAt(0) - squareFrom.charAt(0)) == 1
+                && Square.absFileDiff(squareFrom, squareTo) == 1
                 && isValidCaptureDirection(squareFrom, squareTo);
     };
 }

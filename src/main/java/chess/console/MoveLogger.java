@@ -17,7 +17,7 @@ public class MoveLogger {
      * Records the move AFTER it has been played (and was determined to be valid). That is, on board the piece has
      * already moved from squareFrom to squareTo.
      */
-    public void log(Board board, String squareFrom, String squareTo) {
+    public void log(Board board, Square squareFrom, Square squareTo) {
         log.add(getMoveString(board, squareFrom, squareTo));
 
         zobristTable.updateHash(board, squareTo, squareTo);
@@ -26,25 +26,25 @@ public class MoveLogger {
         if (positionCount.get(positionHash) >= 3) { threeFoldRepetition = true; }
     }
 
-    private String getMoveString(Board board, String squareFrom, String squareTo) {
+    private String getMoveString(Board board, Square squareFrom, Square squareTo) {
         // the piece has already moved to squareTo when this is called
         Piece mover = board.get(squareTo);
 
         // check castles
-        if (mover instanceof King && Math.abs(squareTo.charAt(0) - squareFrom.charAt(0)) == 2)
-            { return (squareTo.charAt(0) == 'c') ? "O-O-O" : "O-O"; }
+        if (mover instanceof King && Square.absFileDiff(squareFrom, squareTo) == 2)
+            { return (squareTo.getCharFile() == 'c') ? "O-O-O" : "O-O"; }
 
         // check pawn promotion
         if (mover instanceof Pawn && board.isEdgeRank(squareTo))
             { return squareTo + "=" + board.get(squareTo).toString(); } // e.g. "e8=Q"
 
-        String move = (mover instanceof Pawn) ? String.valueOf(squareFrom.charAt(0)) : mover.toString();
+        String move = (mover instanceof Pawn) ? String.valueOf(squareFrom.getCharFile()) : mover.toString();
         if (board.wasCapture()) { move = move + "x"; }
         move = move + squareTo;
 
         // check for check/checkmate
         Color oppositeColor = (mover.getColor() == Color.WHITE) ? Color.WHITE : Color.BLACK;
-        String oppositeKingSquare = board.getKingSquare(oppositeColor);
+        Square oppositeKingSquare = board.getKingSquare(oppositeColor);
 
         if(board.isCheckmate(oppositeKingSquare)) { return move + "#"; }
         else if (mover.isValidMove(board, squareTo, oppositeKingSquare)) { return move + "+"; } // king put in check

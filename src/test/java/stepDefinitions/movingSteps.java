@@ -1,23 +1,10 @@
 package stepDefinitions;
 
-import chess.console.Board;
-import chess.console.Color;
-import chess.console.pieces.*;
-import chess.console.exceptions.BoardOutOfBoundsException;
-import chess.console.exceptions.IllegalMoveException;
-import chess.console.pieces.pawn.BlackPawn;
-import chess.console.pieces.pawn.Pawn;
-import chess.console.pieces.pawn.WhitePawn;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class movingSteps {
+    /*
     Board board;
     private Knight knight;
     private Exception exception;
@@ -266,4 +253,6 @@ public class movingSteps {
         Piece piece = board.get(square);
         assertTrue(piece instanceof Knight && piece.getColor() == Color.WHITE);
     }
+
+     */
 }

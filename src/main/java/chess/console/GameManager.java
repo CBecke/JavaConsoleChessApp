@@ -40,8 +40,8 @@ public class GameManager {
 
     private boolean hasGameEnded() {
         // Test for checkmate
-        Collection<String> kingSquares = board.getKingPositions();
-        for (String kingSquare : kingSquares) {
+        Collection<Square> kingSquares = board.getKingPositions();
+        for (Square kingSquare : kingSquares) {
             if (board.isCheckmate(kingSquare)) {
                 Color color = board.get(kingSquare).getColor();
                 setLostFlag(color, true);
@@ -70,7 +70,7 @@ public class GameManager {
     private boolean isStaleMate() {
         boolean whiteCanMove = false;
         boolean blackCanMove = false;
-        for (String square : board) {
+        for (Square square : board) {
             if (board.isEmpty(square)) { continue; }
             Piece piece = board.get(square);
 
@@ -96,7 +96,7 @@ public class GameManager {
     private boolean isInsufficientMaterialDraw() {
         Map<Class<? extends Piece>, Integer> whitePieces = new HashMap<>();
         Map<Class<? extends Piece>, Integer> blackPieces = new HashMap<>();
-        for (String square : board) {
+        for (Square square : board) {
             if (board.isEmpty(square)) { continue; }
             Piece piece = board.get(square);
             if (piece.getColor() == Color.WHITE)      { whitePieces.merge(piece.getClass(), 1, Integer::sum); }

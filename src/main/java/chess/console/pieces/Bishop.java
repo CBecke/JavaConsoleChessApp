@@ -3,6 +3,7 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 import chess.console.MoveCalculator;
+import chess.console.Square;
 
 import java.util.*;
 
@@ -10,9 +11,9 @@ public class Bishop extends Piece {
     public Bishop(Color color) { super(color); }
 
     @Override
-    public boolean isValidMove(Board board, String squareFrom, String squareTo) {
-        int fileDiff = Math.abs(squareTo.charAt(0) - squareFrom.charAt(0));
-        int rankDiff = Math.abs(squareTo.charAt(1) - squareFrom.charAt(1));
+    public boolean isValidMove(Board board, Square squareFrom, Square squareTo) {
+        int fileDiff = Square.absFileDiff(squareFrom, squareTo);
+        int rankDiff = Square.absRankDiff(squareFrom, squareTo);
         return isDiagonalMove(fileDiff, rankDiff)
                 && board.isClearPath(squareFrom, squareTo);
     }
@@ -23,7 +24,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public Collection<String> getValidMoves(Board board, String squareFrom) {
+    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
         int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }

@@ -2,6 +2,7 @@ package chess.console.pieces;
 
 import chess.console.Board;
 import chess.console.Color;
+import chess.console.Square;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +19,7 @@ public abstract class Piece {
         return color;
     }
 
-    public abstract boolean isValidMove(Board board, String squareFrom, String squareTo);
+    public abstract boolean isValidMove(Board board, Square squareFrom, Square squareTo);
 
     @Override
     public abstract String toString();
@@ -26,9 +27,9 @@ public abstract class Piece {
     /**
      * Used to optimize search for valid moves (instead of calling isValidMove with squareTo for every square on the board.
      */
-    public abstract Collection<String> getValidMoves(Board board, String squareFrom); // TODO: potentially ensure that the moves do not put the king in check
+    public abstract Collection<Square> getValidMoves(Board board, Square squareFrom); // TODO: potentially ensure that the moves do not put the king in check
 
-    public boolean canMove(Board board, String squareFrom) {
+    public boolean canMove(Board board, Square squareFrom) {
         return !getValidMoves(board, squareFrom).isEmpty();
     }
 
