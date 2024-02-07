@@ -38,7 +38,7 @@ public class Player {
     /**
      * Prompts the user for a square and returns a [possibly invalid] square if input is length 2, and null otherwise.
      * @param promptMessage the message output to the user before taking input.
-     * @Returns: a [possibly invalid] square if input is length 2, and null otherwise.
+     * @Returns a [possibly invalid] square if input is length 2, and null otherwise.
      */
     private Square tryGetSquare(String promptMessage) {
         printer.printMessage(promptMessage);
