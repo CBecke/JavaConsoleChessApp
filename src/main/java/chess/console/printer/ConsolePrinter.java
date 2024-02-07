@@ -38,10 +38,10 @@ public class ConsolePrinter implements Printer {
     /**
      * Prints the board such that (firstFile, firstRank) is the bottom left square, and (lastFile,lastRank) is the top
      * right square.
-     * @param firstFile: left file
-     * @param lastFile: right file
-     * @param firstRank: bottom rank
-     * @param lastRank: top rank
+     * @param firstFile left file
+     * @param lastFile right file
+     * @param firstRank bottom rank
+     * @param lastRank top rank
      */
     private void printBoard(Board board, char firstFile, int firstRank, char lastFile, int lastRank) {
         // print top edge of board

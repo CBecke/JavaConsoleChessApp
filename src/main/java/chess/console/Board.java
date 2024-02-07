@@ -220,7 +220,9 @@ public class Board implements Iterable<Square> {
     }
 
     public boolean isValidSquareFrom(Player player, Square squareFrom) {
-        return isWithinBoard(squareFrom) && !isEmpty(squareFrom) && get(squareFrom).getColor() == player.getColor();
+        return isWithinBoard(squareFrom)
+                && !isEmpty(squareFrom)
+                && get(squareFrom).getColor() == player.getColor();
     }
 
     public Collection<Square> getKingPositions() {
@@ -241,7 +243,7 @@ public class Board implements Iterable<Square> {
     /**
      * Returns true if a move exists such that the given square is no longer attacked, and false otherwise. The moving
      * piece must have the same color as the piece on the square to be defended.
-     * @param square: assumed not to be empty.
+     * @param square assumed not to be empty.
      */
     public boolean canBeDefended(Square square) {
         // get pieces (through their squares) that attack the given square

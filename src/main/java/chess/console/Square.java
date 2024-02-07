@@ -11,7 +11,7 @@ public class Square {
 
     /**
      * Converts a string  to a square. No safety checks included
-     * @param square: length 2 string consisting of a char followed by a number, e.g. "e5".
+     * @param square length 2 string consisting of a char followed by a number, e.g. "e5".
      */
     public Square(String square) {
         this.file = square.charAt(0);
