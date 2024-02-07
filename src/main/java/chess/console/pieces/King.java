@@ -5,7 +5,7 @@ import chess.console.Color;
 import chess.console.Square;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashSet;
 
 public class King extends Piece{
     private boolean canCastle = true;
@@ -26,8 +26,8 @@ public class King extends Piece{
     }
 
     @Override
-    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
-        Collection<Square> validMoves = new LinkedList<>();
+    public Collection<Square> getValidPieceMoves(Board board, Square squareFrom) {
+        Collection<Square> validMoves = new HashSet<>();
         // iterate over neighboring squares (including diagonally neighboring)
         for (int rankShift = -1; rankShift <= 1; rankShift++) {
             for (int fileShift = -1; fileShift < 1; fileShift++) {

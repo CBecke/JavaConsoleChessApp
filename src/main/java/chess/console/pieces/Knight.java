@@ -5,8 +5,7 @@ import chess.console.Color;
 import chess.console.Square;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
 
 public class Knight extends Piece {
 
@@ -26,8 +25,8 @@ public class Knight extends Piece {
     }
 
     @Override
-    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
-        Collection<Square> validMoves = new LinkedList<>();
+    public Collection<Square> getValidPieceMoves(Board board, Square squareFrom) {
+        Collection<Square> validMoves = new HashSet<>();
 
         Square squareTo;
         int[][] moveShiftPermutations = {{-1,2}, {-1,-2}, {1,2}, {1,-2}, {-2,1}, {-2,-1}, {2,1}, {2,-1}};

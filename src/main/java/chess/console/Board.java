@@ -25,7 +25,7 @@ public class Board implements Iterable<Square> {
         setInitialPosition();
     }
 
-    public void put(Piece piece, Square square) {
+    private void put(Piece piece, Square square) {
         int file = fileToInt(square.getCharFile());
         int rank = square.getRank() - firstRank;
         board[rank][file] = piece;
@@ -64,6 +64,9 @@ public class Board implements Iterable<Square> {
         return true;
     }
 
+    /**
+     * tests if moving the piece from squareFrom puts the king of the same color in check.
+     */
     public boolean putsOwnKingInCheck(Piece piece, Square squareFrom) {
         Square kingSquare = getKingSquare(piece.getColor());
         put(null, squareFrom); // "artificially" remove the piece on squareFrom
@@ -113,18 +116,6 @@ public class Board implements Iterable<Square> {
     public boolean isCastles(Square squareFrom, Square squareTo) {
         return get(squareFrom) instanceof King
                 && Square.absFileDiff(squareFrom, squareTo) == 2;
-    }
-
-    private boolean isStillStandingMove(Square squareFrom, Square squareTo){
-        return squareFrom.equals(squareTo);
-    }
-
-    private boolean canGoTo(Piece piece, Square squareTo) {
-        return isEmpty(squareTo) || isOppositeColor(piece, squareTo);
-    }
-
-    private boolean isOppositeColor(Piece piece, Square square) {
-        return piece.getColor() != get(square).getColor();
     }
 
     public boolean isEmpty(Square square) {

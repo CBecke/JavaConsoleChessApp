@@ -6,7 +6,7 @@ import chess.console.Square;
 import chess.console.pieces.Piece;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashSet;
 
 public abstract class Pawn extends Piece {
     private final int direction;
@@ -14,7 +14,8 @@ public abstract class Pawn extends Piece {
     protected Pawn(Color color, int direction) {
         super(color);
         this.direction = direction;
-    };
+    }
+
     @Override
     public boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo) {
         return (board.isEmpty(squareTo)
@@ -24,8 +25,8 @@ public abstract class Pawn extends Piece {
     }
 
     @Override
-    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
-        Collection<Square> validMoves = new LinkedList<>();
+    public Collection<Square> getValidPieceMoves(Board board, Square squareFrom) {
+        Collection<Square> validMoves = new HashSet<>();
         Square toSquareCandidate = squareFrom.shift(0, direction);
 
         // single square forward move
@@ -69,5 +70,5 @@ public abstract class Pawn extends Piece {
                 && board.get(squareTo).getColor() != color
                 && Square.absFileDiff(squareFrom, squareTo) == 1
                 && isValidCaptureDirection(squareFrom, squareTo);
-    };
+    }
 }

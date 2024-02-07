@@ -5,7 +5,7 @@ import chess.console.Color;
 import chess.console.Square;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 
 public abstract class Piece {
 
@@ -28,8 +28,8 @@ public abstract class Piece {
         return (board.isEmpty(squareTo)
                     || isOppositeColor(board.get(squareTo)))
                 && !squareFrom.equals(squareTo) // still-standing move
-                && isValidPieceMove(board, squareFrom, squareTo)
-                && !board.putsOwnKingInCheck(this, squareFrom);
+                && !board.putsOwnKingInCheck(this, squareFrom)
+                && isValidPieceMove(board, squareFrom, squareTo);
 
     }
 
@@ -43,11 +43,16 @@ public abstract class Piece {
     @Override
     public abstract String toString();
 
+    protected abstract Collection<Square> getValidPieceMoves(Board board, Square squareFrom);
+
     /**
-     * Used to optimize search for valid moves (instead of calling isValidMove with squareTo for every square on the
-     * board. Any sub-class implementation must
+     * Retrieves the set of valid moves.Used to optimize search for valid moves (instead of calling isValidMove with squareTo for every square on the
+     * board).
      */
-    public abstract Collection<Square> getValidMoves(Board board, Square squareFrom); // TODO: potentially ensure that the moves do not put the king in check
+    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
+        if (board.putsOwnKingInCheck(board.get(squareFrom), squareFrom)) { return new HashSet<>(); }
+        return getValidPieceMoves(board, squareFrom);
+    }
 
     public boolean canMove(Board board, Square squareFrom) {
         return !getValidMoves(board, squareFrom).isEmpty();

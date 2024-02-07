@@ -24,7 +24,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
+    public Collection<Square> getValidPieceMoves(Board board, Square squareFrom) {
         int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }
