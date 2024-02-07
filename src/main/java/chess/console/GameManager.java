@@ -54,9 +54,6 @@ public class GameManager {
             return true;
         }
 
-        // TODO: draw by agreement
-        // TODO: resignation
-
         return false;
     }
 

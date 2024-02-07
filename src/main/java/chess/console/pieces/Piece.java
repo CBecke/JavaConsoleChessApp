@@ -28,8 +28,8 @@ public abstract class Piece {
         return (board.isEmpty(squareTo)
                     || isOppositeColor(board.get(squareTo)))
                 && !squareFrom.equals(squareTo) // still-standing move
-                && !board.putsOwnKingInCheck(this, squareFrom)
-                && isValidPieceMove(board, squareFrom, squareTo);
+                && isValidPieceMove(board, squareFrom, squareTo)
+                && !board.putsOwnKingInCheck(this, squareFrom);
 
     }
 

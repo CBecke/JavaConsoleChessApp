@@ -21,13 +21,13 @@ public class Player {
         do {
             squareFrom = new Square("invalid");
             squareTo = new Square("invalid");
-            // Get the square to move from
-            printer.printMessage(color + " to move");
 
+            printer.printMessage(color + " to move");
             // Get the square to move from
             while (!board.isValidSquareFrom(this, squareFrom)) {
                 printer.printMessage("Enter square to move from: ");
-                squareFrom = new Square(inputHandler.getUserInput());
+                String input = inputHandler.getUserInput();
+                squareFrom = new Square(input);
             }
 
             // Get the square to move to
