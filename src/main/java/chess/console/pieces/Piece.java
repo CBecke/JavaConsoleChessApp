@@ -29,7 +29,7 @@ public abstract class Piece {
                     || isOppositeColor(board.get(squareTo)))
                 && !squareFrom.equals(squareTo) // still-standing move
                 && isValidPieceMove(board, squareFrom, squareTo)
-                && !board.putsOwnKingInCheck(this, squareFrom);
+                && !board.putsOwnKingInCheck(this, squareFrom); // checked after isValidPieceMove to avoid cycle
 
     }
 
