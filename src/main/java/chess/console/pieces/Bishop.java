@@ -11,7 +11,7 @@ public class Bishop extends Piece {
     public Bishop(Color color) { super(color); }
 
     @Override
-    public boolean isValidMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo) {
         int fileDiff = Square.absFileDiff(squareFrom, squareTo);
         int rankDiff = Square.absRankDiff(squareFrom, squareTo);
         return isDiagonalMove(fileDiff, rankDiff)

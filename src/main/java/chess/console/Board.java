@@ -42,11 +42,8 @@ public class Board implements Iterable<Square> {
 
     public boolean move(Square squareFrom, Square squareTo) {
         Piece piece = get(squareFrom);
-        if (!canGoTo(piece, squareTo)
-                || isStillStandingMove(squareFrom, squareTo)
-                || !piece.isValidMove(this, squareFrom, squareTo)
-                || putsOwnKingInCheck(piece, squareFrom))
-            { return false; }
+        if (!piece.isValidMove(this, squareFrom, squareTo)) { return false; }
+
         if (isRook(piece)) { ((Rook)piece).disableCastling(); }
         if (isKing(piece)) { ((King)piece).disableCastling(); }
 
@@ -67,7 +64,7 @@ public class Board implements Iterable<Square> {
         return true;
     }
 
-    private boolean putsOwnKingInCheck(Piece piece, Square squareFrom) {
+    public boolean putsOwnKingInCheck(Piece piece, Square squareFrom) {
         Square kingSquare = getKingSquare(piece.getColor());
         put(null, squareFrom); // "artificially" remove the piece on squareFrom
         boolean isInCheck = isAttacked(piece.getColor(), kingSquare);

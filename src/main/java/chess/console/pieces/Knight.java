@@ -13,7 +13,7 @@ public class Knight extends Piece {
     public Knight(Color color) { super(color); }
 
     @Override
-    public boolean isValidMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo) {
         int fileDiff = Square.absFileDiff(squareFrom, squareTo);
         int rankDiff = Square.absRankDiff(squareFrom, squareTo);
         return (fileDiff == 1 && rankDiff == 2)

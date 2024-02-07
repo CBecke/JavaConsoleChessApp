@@ -17,7 +17,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public boolean isValidMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo) {
         return MoveCalculator.isRookMove(board, squareFrom, squareTo);
     }
 
