@@ -40,13 +40,12 @@ public class Board implements Iterable<Square> {
                 && firstRank <= square.getRank() && square.getRank() <= lastRank;
     }
 
-
-    // TODO: check that the move does not put your king in check
     public boolean move(Square squareFrom, Square squareTo) {
         Piece piece = get(squareFrom);
         if (!canGoTo(piece, squareTo)
                 || isStillStandingMove(squareFrom, squareTo)
-                || !piece.isValidMove(this, squareFrom, squareTo))
+                || !piece.isValidMove(this, squareFrom, squareTo)
+                || putsOwnKingInCheck(piece, squareFrom))
             { return false; }
         if (isRook(piece)) { ((Rook)piece).disableCastling(); }
         if (isKing(piece)) { ((King)piece).disableCastling(); }
@@ -66,6 +65,15 @@ public class Board implements Iterable<Square> {
         if (isPawn(piece) && isEdgeRankMove(squareTo)) { put(new Queen(piece.getColor()), squareTo); }
 
         return true;
+    }
+
+    private boolean putsOwnKingInCheck(Piece piece, Square squareFrom) {
+        Square kingSquare = getKingSquare(piece.getColor());
+        put(null, squareFrom); // "artificially" remove the piece on squareFrom
+        boolean isInCheck = isAttacked(piece.getColor(), kingSquare);
+        put(piece, squareFrom); // put piece back on squareFrom
+
+        return isInCheck;
     }
 
     private boolean isEdgeRankMove(Square square) {
