@@ -92,6 +92,7 @@ public class ZobristTable {
      */
     public void updateHash(Board board, Square squareFrom, Square squareTo) {
         hashValue = hashValue ^ blackToMove; // take into account that the turn has changed
+        System.out.println(hashValue); // TODO: remove
         if (board.wasCapture()) {
             Piece capturedPiece = board.getLastCaptured();
             hashValue = hashValue ^ getTableHash(squareTo, capturedPiece); // "remove" the captured piece from hash
@@ -100,7 +101,9 @@ public class ZobristTable {
         // When this is called, the moving piece has already moved to squareTo
         Piece current = board.get(squareTo);
         hashValue = hashValue ^ getTableHash(squareFrom, current); // "remove" the piece from its previous square
+        System.out.println(hashValue); // TODO: remove
         hashValue = hashValue ^ getTableHash(squareTo, current);   // "put" the piece on its new square
+        System.out.println(hashValue + '\n'); // TODO: remove
     }
 
     public long getHash() {

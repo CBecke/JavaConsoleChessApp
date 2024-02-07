@@ -32,21 +32,6 @@ public class Square {
         return rank;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        return other instanceof Square
-                && this.file == ((Square) other).getCharFile() && this.rank == ((Square) other).getRank();
-    }
-
-    @Override
-    public int hashCode() {
-        int prime = 31;
-        int result = 97;
-        result = result * prime + file;
-        result = result * prime + rank;
-        return result;
-    }
-
     /**
      * Gets the square one would reach by moving fileShift to the side and rankShift up/down from square.
      * E.g. shiftSquare("a4", 4, -1) = "e3"
@@ -63,4 +48,24 @@ public class Square {
      * @return the absolute difference between file (taken by subtraction)
      */
     public static int absRankDiff(Square s1, Square s2) { return Math.abs(s1.getRank() - s2.getRank()); }
+
+    @Override
+    public String toString() {
+        return "" + file + rank;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof Square
+                && this.file == ((Square) other).getCharFile() && this.rank == ((Square) other).getRank();
+    }
+
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = 97;
+        result = result * prime + file;
+        result = result * prime + rank;
+        return result;
+    }
 }

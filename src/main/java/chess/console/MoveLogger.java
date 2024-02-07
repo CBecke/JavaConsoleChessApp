@@ -19,13 +19,14 @@ public class MoveLogger {
      */
     public void log(Board board, Square squareFrom, Square squareTo) {
         log.add(getMoveString(board, squareFrom, squareTo));
-
-        zobristTable.updateHash(board, squareTo, squareTo);
+        System.out.println(log.getLast()); // TODO: remove
+        zobristTable.updateHash(board, squareFrom, squareTo);
         long positionHash = zobristTable.getHash();
         positionCount.merge(positionHash, 1, Integer::sum);
         if (positionCount.get(positionHash) >= 3) { threeFoldRepetition = true; }
     }
 
+    // TODO: log ambiguous move correctly (e.g. if both knights/rooks can move to the same square)
     private String getMoveString(Board board, Square squareFrom, Square squareTo) {
         // the piece has already moved to squareTo when this is called
         Piece mover = board.get(squareTo);
@@ -38,8 +39,10 @@ public class MoveLogger {
         if (mover instanceof Pawn && board.isEdgeRank(squareTo))
             { return squareTo + "=" + board.get(squareTo).toString(); } // e.g. "e8=Q"
 
-        String move = (mover instanceof Pawn) ? String.valueOf(squareFrom.getCharFile()) : mover.toString();
-        if (board.wasCapture()) { move = move + "x"; }
+        String move = (mover instanceof Pawn) ? "" : mover.toString();
+        if (board.wasCapture()) {
+            move = ((mover instanceof Pawn) ? squareFrom.getCharFile() : "") + "x";
+        }
         move = move + squareTo;
 
         // check for check/checkmate
