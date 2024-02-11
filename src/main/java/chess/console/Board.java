@@ -63,10 +63,13 @@ public class Board implements Iterable<Square> {
     }
 
     /**
-     * tests if moving the piece from squareFrom puts the king of the same color in check.
+     * Tests if moving the piece from squareFrom puts the king of the same color in check.
      */
     public boolean putsOwnKingInCheck(Piece piece, Square squareFrom) {
         Square kingSquare = getKingSquare(piece.getColor());
+        // the king never blocks itself from check and thus is in check when called here
+        if (piece instanceof King) { return true; }
+
         put(null, squareFrom); // "artificially" remove the piece on squareFrom
         boolean isInCheck = isAttacked(piece.getColor(), kingSquare);
         put(piece, squareFrom); // put piece back on squareFrom
@@ -227,15 +230,6 @@ public class Board implements Iterable<Square> {
         Collection<Square> kingSquares = new HashSet<>();
         for (Square square : this) {
             if (isKing(get(square))) { kingSquares.add(square); }
-        }
-        if (kingSquares.size() != 2) {
-            System.out.println("HERE");
-            System.out.println("HERE");
-            for (Square square : kingSquares) {
-                System.out.println(square);
-            }
-            System.out.println("HERE");
-            System.out.println("HERE");
         }
         return kingSquares;
     }
