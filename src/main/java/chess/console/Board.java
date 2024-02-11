@@ -49,14 +49,12 @@ public class Board implements Iterable<Square> {
 
 
         moveWasCapture = !isEmpty(squareTo);
-        if (!isEmpty(squareTo)) { lastCaptured = get(squareTo); }
+        if (moveWasCapture) { lastCaptured = get(squareTo); }
 
         movePiece(squareFrom, squareTo);
 
         // If this point is reached, the king could castle, so we can "manually" move the rook
-        if (isCastles(squareFrom, squareTo)) {
-            doRookCastles(squareFrom, squareTo);
-        }
+        if (isCastles(squareFrom, squareTo)) { doRookCastles(squareFrom, squareTo); }
 
         // Promotion
         if (isPawn(piece) && isEdgeRankMove(squareTo)) { put(new Queen(piece.getColor()), squareTo); }
@@ -142,12 +140,12 @@ public class Board implements Iterable<Square> {
      */
     public boolean isAttacked(Color color, Square square) {
         for (Square squareFrom : this) {
-            if (isEmpty(squareFrom)) { continue; }
+            if (isEmpty(squareFrom) || squareFrom == square) { continue; }
             Piece current = get(squareFrom);
 
             // If an opposite color piece can move to squareTo, then squareTo is attacked by that piece
             if (current.getColor() != color && current.isValidMove(this, squareFrom, square))
-            { return true; }
+                { return true; }
         }
 
         return false;
@@ -226,17 +224,25 @@ public class Board implements Iterable<Square> {
     }
 
     public Collection<Square> getKingPositions() {
-        Collection<Square> kingSquares = new LinkedList<>();
+        Collection<Square> kingSquares = new HashSet<>();
         for (Square square : this) {
             if (isKing(get(square))) { kingSquares.add(square); }
         }
-
+        if (kingSquares.size() != 2) {
+            System.out.println("HERE");
+            System.out.println("HERE");
+            for (Square square : kingSquares) {
+                System.out.println(square);
+            }
+            System.out.println("HERE");
+            System.out.println("HERE");
+        }
         return kingSquares;
     }
 
     public Collection<Square> getValidMoves(Square squareFrom) {
         Piece piece = get(squareFrom);
-        if (piece == null) { return new LinkedList<>(); }
+        if (piece == null) { return new HashSet<>(); }
         return piece.getValidMoves(this, squareFrom);
     }
 
@@ -260,7 +266,7 @@ public class Board implements Iterable<Square> {
         for (Square squareFrom : this) {
             if (isEmpty(squareFrom)) { continue; }
 
-            Piece current = get(square);
+            Piece current = get(squareFrom);
             for (Square squareTo : squaresToDefend) {
                 if (current.isValidMove(this, squareFrom, squareTo)) {
                     // pretend making the move. If the king is still under attack then the king cannot be defended.
@@ -297,7 +303,7 @@ public class Board implements Iterable<Square> {
      * Gets the squares of pieces that attack the given square.
      */
     private Collection<Square> getAttackers(Square square) {
-        Collection<Square> attackingSquares = new LinkedList<>();
+        Collection<Square> attackingSquares = new HashSet<>();
         for (Square currentSquare : this) {
             if (canAttack(currentSquare, square)) { attackingSquares.add(currentSquare); }
         }

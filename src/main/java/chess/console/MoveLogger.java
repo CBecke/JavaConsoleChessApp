@@ -19,7 +19,6 @@ public class MoveLogger {
      */
     public void log(Board board, Square squareFrom, Square squareTo) {
         log.add(getMoveString(board, squareFrom, squareTo));
-        System.out.println(log.getLast()); // TODO: remove
         zobristTable.updateHash(board, squareFrom, squareTo);
         long positionHash = zobristTable.getHash();
         positionCount.merge(positionHash, 1, Integer::sum);
@@ -41,7 +40,7 @@ public class MoveLogger {
 
         String move = (mover instanceof Pawn) ? "" : mover.toString();
         if (board.wasCapture()) {
-            move = ((mover instanceof Pawn) ? squareFrom.getCharFile() : "") + "x";
+            move = move + ((mover instanceof Pawn) ? squareFrom.getCharFile() : "") + "x";
         }
         move = move + squareTo;
 
