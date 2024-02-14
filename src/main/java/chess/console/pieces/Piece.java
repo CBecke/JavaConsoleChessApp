@@ -55,4 +55,11 @@ public abstract class Piece {
      */
     public abstract Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom);
 
+    public boolean canMove(Board board, Square squareFrom) {
+        for (Square squareTo : getPseudoLegalPieceMoves(board, squareFrom)) {
+            if (!board.putsOwnKingInCheck(squareFrom, squareTo))
+                { return true; }
+        }
+        return false;
+    }
 }
