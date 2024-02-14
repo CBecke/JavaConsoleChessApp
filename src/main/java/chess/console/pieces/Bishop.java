@@ -12,8 +12,6 @@ public class Bishop extends Piece {
 
     @Override
     public boolean isPseudoLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
-        int fileDiff = Square.absFileDiff(squareFrom, squareTo);
-        int rankDiff = Square.absRankDiff(squareFrom, squareTo);
         return MoveCalculator.isBishopMove(board, squareFrom, squareTo);
     }
 
@@ -28,5 +26,4 @@ public class Bishop extends Piece {
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }
 
-    private boolean isDiagonalMove(int fileDiff, int rankDiff) { return fileDiff == rankDiff; }
 }

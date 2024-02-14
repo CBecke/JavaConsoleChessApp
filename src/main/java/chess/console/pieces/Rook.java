@@ -31,6 +31,7 @@ public class Rook extends Piece {
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }
 
+    // TODO: make sure this is check in castling
     public boolean canCastle() { return canCastle; }
 
     public void disableCastling() { canCastle = false; }

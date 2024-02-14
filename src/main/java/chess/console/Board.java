@@ -17,7 +17,7 @@ public class Board implements Iterable<Square> {
     public static char lastFile = 'h';
     public static int firstRank = 1;
     public static int lastRank = 8;
-    private boolean moveWasCapture;
+    private boolean moveWasCapture = false;
     private Piece lastCaptured;
 
     public Board() {
@@ -164,6 +164,7 @@ public class Board implements Iterable<Square> {
                 {pawn, new Queen(oppositeColor), new Rook(oppositeColor), new Bishop(oppositeColor) };
 
         for (Piece piece : pieceTypes) {
+            // intentionally iterate over PSEUDO-legal moves; this is sufficient.
             for (Square pseudoMoveSquare : piece.getPseudoLegalPieceMoves(this, square)) {
                 Piece potentialAttacker = get(pseudoMoveSquare);
                 if (!isEmpty(pseudoMoveSquare)
@@ -325,7 +326,7 @@ public class Board implements Iterable<Square> {
         return !isEmpty(squareFrom)
                 && (!isEmpty(squareTo)
                     || piece.getColor() != get(squareTo).getColor())
-                && get(squareFrom).isPseudoLegalMove(this, squareFrom, squareTo);
+                && isLegalMove(squareFrom, squareTo);
     }
 
     public boolean isCheckmate(Square kingSquare) {
