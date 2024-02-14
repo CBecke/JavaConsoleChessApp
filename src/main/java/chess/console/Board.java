@@ -142,6 +142,9 @@ public class Board implements Iterable<Square> {
      * Iterates over entire board to check if piece is attacked on squareTo.
      */
     public boolean isAttacked(Color color, Square square) {
+
+
+        /*
         for (Square squareFrom : this) {
             if (isEmpty(squareFrom) || squareFrom == square) { continue; }
             Piece current = get(squareFrom);
@@ -152,6 +155,7 @@ public class Board implements Iterable<Square> {
         }
 
         return false;
+        */
     }
 
     public void clear() {

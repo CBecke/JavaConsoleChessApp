@@ -6,6 +6,7 @@ import chess.console.Square;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Piece {
 
@@ -19,6 +20,8 @@ public abstract class Piece {
         return color;
     }
 
+    // TODO: make sure king is not in check when a move is made (unless it stops check)
+    // TODO: make sure the current move does not put the king in check
 
     /**
      * Determines if a piece can move from squareFrom to squareTo on board. It tests general conditions are met and
@@ -32,12 +35,12 @@ public abstract class Piece {
                 && !board.putsOwnKingInCheck(this, squareFrom); // checked after isValidPieceMove to avoid cycle
     }
 
-    private boolean isOppositeColor(Piece other) { return color != other.getColor(); }
-
     /**
      * tests piece type specific conditions (such as diagonal move for bishop).
      */
     protected abstract boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo);
+
+    private boolean isOppositeColor(Piece other) { return color != other.getColor(); }
 
     @Override
     public abstract String toString();
@@ -56,5 +59,14 @@ public abstract class Piece {
     public boolean canMove(Board board, Square squareFrom) {
         return !getLegalMoves(board, squareFrom).isEmpty();
     }
+
+    public static Set<Square> getPseudoLegalMoves(Piece piece, Board board, Square squareFrom) {
+        return piece.getPseudoLegalPieceMoves(board, squareFrom);
+    }
+
+    public abstract Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom);
+
+    ;
+
 
 }
