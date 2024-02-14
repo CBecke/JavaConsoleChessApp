@@ -3,6 +3,9 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 import chess.console.Square;
+import chess.console.pieces.pawn.BlackPawn;
+import chess.console.pieces.pawn.Pawn;
+import chess.console.pieces.pawn.WhitePawn;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -71,9 +74,17 @@ public abstract class Piece {
 
     public abstract Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom);
 
+    // TODO: may not be necessary
+    // yucky method but didn't know how else to do this
     public static Set<Square> getAllPseudoLegalPieceMoves(Board board, Square squareFrom, Color color) {
         Set<Square> pseudoMoves = new HashSet<>();
-        (new Knight(Color.WHITE)).getPseudoLegalPieceMoves(board, squareFrom);
+        Pawn pawn = (color == Color.WHITE) ? new WhitePawn() : new BlackPawn();
+        pseudoMoves.addAll(pawn.getPseudoLegalPieceMoves(board,squareFrom));
+        pseudoMoves.addAll((new Knight(color)).getPseudoLegalPieceMoves(board, squareFrom));
+        // pseudo-legal moves for queen also includes pseudo-legal moves for rooks and bishops
+        pseudoMoves.addAll((new Queen(color)).getPseudoLegalPieceMoves(board, squareFrom));
+        pseudoMoves.addAll((new King(color)).getPseudoLegalPieceMoves(board, squareFrom));
+        return pseudoMoves;
     }
 
 }

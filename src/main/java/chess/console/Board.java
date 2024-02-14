@@ -139,23 +139,29 @@ public class Board implements Iterable<Square> {
     }
 
     /**
-     * Iterates over entire board to check if piece is attacked on squareTo.
+     * Determines if the given square is attacked by the opposite color of the given one. That is, if the given color is
+     * white, the method returns true if a black piece can (pseudo-legally) move to square
+     * @param color the color which may be attacked on square
+     * @param square the square which is potentially targetted by an attack
+     * @return true if the opposite color to the given one has a piece that can move to square, and false otherwise.
      */
     public boolean isAttacked(Color color, Square square) {
+        Color oppositeColor = (color == Color.WHITE) ? Color.BLACK : Color.WHITE;
+        Pawn pawn = (color == Color.WHITE) ? new BlackPawn() : new WhitePawn(); // pawn of opposite color of given color
+        Piece[] pieceTypes = new Piece[]
+                {pawn, new Queen(oppositeColor), new Rook(oppositeColor), new Bishop(oppositeColor) };
 
-
-        /*
-        for (Square squareFrom : this) {
-            if (isEmpty(squareFrom) || squareFrom == square) { continue; }
-            Piece current = get(squareFrom);
-
-            // If an opposite color piece can move to squareTo, then squareTo is attacked by that piece
-            if (current.getColor() != color && current.isLegalMove(this, squareFrom, square))
-                { return true; }
+        for (Piece piece : pieceTypes) {
+            for (Square pseudoMoveSquare : piece.getPseudoLegalPieceMoves(this, square)) {
+                Piece potentialAttacker = get(pseudoMoveSquare);
+                if (!isEmpty(pseudoMoveSquare)
+                        && potentialAttacker.getColor() == oppositeColor
+                        && get(pseudoMoveSquare).getClass() == piece.getClass())
+                    { return true; }
+            }
         }
 
         return false;
-        */
     }
 
     public void clear() {
