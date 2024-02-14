@@ -3,11 +3,7 @@ package chess.console.pieces;
 import chess.console.Board;
 import chess.console.Color;
 import chess.console.Square;
-import chess.console.pieces.pawn.BlackPawn;
-import chess.console.pieces.pawn.Pawn;
-import chess.console.pieces.pawn.WhitePawn;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Piece {

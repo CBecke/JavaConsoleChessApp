@@ -4,7 +4,6 @@ import chess.console.Board;
 import chess.console.Color;
 import chess.console.Square;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 

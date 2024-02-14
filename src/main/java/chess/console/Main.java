@@ -5,7 +5,6 @@ import chess.console.inputhandler.InputHandler;
 import chess.console.printer.ConsolePrinter;
 import chess.console.printer.Printer;
 
-import java.util.*;
 
 public class Main {
     public static void main(String[] args) {

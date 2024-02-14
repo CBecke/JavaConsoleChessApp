@@ -1,8 +1,8 @@
 package chess.console;
 
 public class Square {
-    private char file;
-    private int rank;
+    private final char file;
+    private final int rank;
 
     public Square(char file, int rank) {
         this.file = file;
