@@ -34,14 +34,14 @@ public abstract class Piece {
         return (board.isEmpty(squareTo)
                     || isOppositeColor(board.get(squareTo)))
                 && !squareFrom.equals(squareTo) // still-standing move
-                && isLegalPieceMove(board, squareFrom, squareTo)
+                && isPseudoLegalPieceMove(board, squareFrom, squareTo)
                 && !board.putsOwnKingInCheck(this, squareFrom); // checked after isValidPieceMove to avoid cycle
     }
 
     /**
      * tests piece type specific conditions (such as diagonal move for bishop).
      */
-    protected abstract boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo);
+    protected abstract boolean isPseudoLegalPieceMove(Board board, Square squareFrom, Square squareTo);
 
     private boolean isOppositeColor(Piece other) { return color != other.getColor(); }
 

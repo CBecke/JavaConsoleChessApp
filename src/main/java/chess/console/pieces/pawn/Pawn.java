@@ -18,7 +18,7 @@ public abstract class Pawn extends Piece {
     }
 
     @Override
-    public boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isPseudoLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
         return (board.isEmpty(squareTo)
                     && (isValidDoubleMove(squareFrom, squareTo)
                         || isValidSingleForwardMove(squareFrom, squareTo)))

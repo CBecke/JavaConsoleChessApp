@@ -14,11 +14,10 @@ public class King extends Piece{
     public King(Color color) { super(color); }
 
     @Override
-    public boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isPseudoLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
         int fileDiff = Square.absFileDiff(squareFrom, squareTo);
         int rankDiff = Square.absRankDiff(squareFrom, squareTo);
-        return !board.isAttacked(color, squareTo)
-                && ((fileDiff <= 1 && rankDiff <= 1) || isValidCastles(board, squareFrom, squareTo)) ;
+        return ((fileDiff <= 1 && rankDiff <= 1) || isValidCastles(board, squareFrom, squareTo)) ;
     }
 
     @Override
@@ -62,6 +61,7 @@ public class King extends Piece{
         return validMoves;
     }
 
+    // TODO: make sure it is consistent with the new isAttacked
     private boolean isValidCastles(Board board, Square squareFrom, Square squareTo) {
         char cornerFile = squareTo.getCharFile() < squareFrom.getCharFile() ? Board.firstFile : Board.lastFile;
         Square cornerSquare = new Square(cornerFile, squareTo.getRank());

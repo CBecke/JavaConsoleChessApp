@@ -11,11 +11,10 @@ public class Bishop extends Piece {
     public Bishop(Color color) { super(color); }
 
     @Override
-    public boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isPseudoLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
         int fileDiff = Square.absFileDiff(squareFrom, squareTo);
         int rankDiff = Square.absRankDiff(squareFrom, squareTo);
-        return isDiagonalMove(fileDiff, rankDiff)
-                && board.isClearPath(squareFrom, squareTo);
+        return MoveCalculator.isBishopMove(board, squareFrom, squareTo);
     }
 
     @Override

@@ -14,7 +14,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isPseudoLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
         return MoveCalculator.isBishopMove(board,squareFrom, squareTo)
                 || MoveCalculator.isRookMove(board, squareFrom, squareTo);
     }
