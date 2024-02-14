@@ -13,7 +13,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
         return MoveCalculator.isBishopMove(board,squareFrom, squareTo)
                 || MoveCalculator.isRookMove(board, squareFrom, squareTo);
     }
@@ -22,7 +22,7 @@ public class Queen extends Piece {
     public String toString() { return color == Color.WHITE ? "Q" : "q"; }
 
     @Override
-    public Collection<Square> getValidPieceMoves(Board board, Square squareFrom) {
+    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
         int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}, // diagonal
                                               {1,0}, {-1,0}, {0,1}, {0,-1}};  // horizontal and vertical
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);

@@ -24,11 +24,11 @@ public abstract class Piece {
      * Determines if a piece can move from squareFrom to squareTo on board. It tests general conditions are met and
      * calls the abstract method isValidPieceMove in which the individual piece's logic rules are tested.
      */
-    public boolean isValidMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isLegalMove(Board board, Square squareFrom, Square squareTo) {
         return (board.isEmpty(squareTo)
                     || isOppositeColor(board.get(squareTo)))
                 && !squareFrom.equals(squareTo) // still-standing move
-                && isValidPieceMove(board, squareFrom, squareTo)
+                && isLegalPieceMove(board, squareFrom, squareTo)
                 && !board.putsOwnKingInCheck(this, squareFrom); // checked after isValidPieceMove to avoid cycle
     }
 
@@ -37,24 +37,24 @@ public abstract class Piece {
     /**
      * tests piece type specific conditions (such as diagonal move for bishop).
      */
-    protected abstract boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo);
+    protected abstract boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo);
 
     @Override
     public abstract String toString();
 
-    protected abstract Collection<Square> getValidPieceMoves(Board board, Square squareFrom);
+    protected abstract Collection<Square> getLegalPieceMoves(Board board, Square squareFrom);
 
     /**
      * Retrieves the set of valid moves.Used to optimize search for valid moves (instead of calling isValidMove with squareTo for every square on the
      * board).
      */
-    public Collection<Square> getValidMoves(Board board, Square squareFrom) {
+    public Collection<Square> getLegalMoves(Board board, Square squareFrom) {
         if (board.putsOwnKingInCheck(board.get(squareFrom), squareFrom)) { return new HashSet<>(); }
-        return getValidPieceMoves(board, squareFrom);
+        return getLegalPieceMoves(board, squareFrom);
     }
 
     public boolean canMove(Board board, Square squareFrom) {
-        return !getValidMoves(board, squareFrom).isEmpty();
+        return !getLegalMoves(board, squareFrom).isEmpty();
     }
 
 }

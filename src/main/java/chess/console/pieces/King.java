@@ -13,7 +13,7 @@ public class King extends Piece{
     public King(Color color) { super(color); }
 
     @Override
-    public boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
         int fileDiff = Square.absFileDiff(squareFrom, squareTo);
         int rankDiff = Square.absRankDiff(squareFrom, squareTo);
         return !board.isAttacked(color, squareTo)
@@ -26,7 +26,7 @@ public class King extends Piece{
     }
 
     @Override
-    public Collection<Square> getValidPieceMoves(Board board, Square squareFrom) {
+    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
         Collection<Square> validMoves = new HashSet<>();
         // iterate over neighboring squares (including diagonally neighboring)
         for (int rankShift = -1; rankShift <= 1; rankShift++) {

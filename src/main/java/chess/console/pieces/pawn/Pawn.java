@@ -17,7 +17,7 @@ public abstract class Pawn extends Piece {
     }
 
     @Override
-    public boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
         return (board.isEmpty(squareTo)
                     && (isValidDoubleMove(squareFrom, squareTo)
                         || isValidSingleForwardMove(squareFrom, squareTo)))
@@ -25,7 +25,7 @@ public abstract class Pawn extends Piece {
     }
 
     @Override
-    public Collection<Square> getValidPieceMoves(Board board, Square squareFrom) {
+    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
         Collection<Square> validMoves = new HashSet<>();
         Square toSquareCandidate = squareFrom.shift(0, direction);
 

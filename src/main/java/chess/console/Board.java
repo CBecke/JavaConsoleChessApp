@@ -42,7 +42,7 @@ public class Board implements Iterable<Square> {
 
     public boolean move(Square squareFrom, Square squareTo) {
         Piece piece = get(squareFrom);
-        if (!piece.isValidMove(this, squareFrom, squareTo)) { return false; }
+        if (!piece.isLegalMove(this, squareFrom, squareTo)) { return false; }
 
         if (isRook(piece)) { ((Rook)piece).disableCastling(); }
         if (isKing(piece)) { ((King)piece).disableCastling(); }
@@ -147,7 +147,7 @@ public class Board implements Iterable<Square> {
             Piece current = get(squareFrom);
 
             // If an opposite color piece can move to squareTo, then squareTo is attacked by that piece
-            if (current.getColor() != color && current.isValidMove(this, squareFrom, square))
+            if (current.getColor() != color && current.isLegalMove(this, squareFrom, square))
                 { return true; }
         }
 
@@ -237,7 +237,7 @@ public class Board implements Iterable<Square> {
     public Collection<Square> getValidMoves(Square squareFrom) {
         Piece piece = get(squareFrom);
         if (piece == null) { return new HashSet<>(); }
-        return piece.getValidMoves(this, squareFrom);
+        return piece.getLegalMoves(this, squareFrom);
     }
 
     /**
@@ -262,7 +262,7 @@ public class Board implements Iterable<Square> {
 
             Piece current = get(squareFrom);
             for (Square squareTo : squaresToDefend) {
-                if (current.isValidMove(this, squareFrom, squareTo)) {
+                if (current.isLegalMove(this, squareFrom, squareTo)) {
                     // pretend making the move. If the king is still under attack then the king cannot be defended.
                     movePiece(squareFrom, squareTo);
                     boolean canBeDefended = !isAttacked(color, square);
@@ -310,7 +310,7 @@ public class Board implements Iterable<Square> {
         return !isEmpty(squareFrom)
                 && (!isEmpty(squareTo)
                     || piece.getColor() != get(squareTo).getColor())
-                && get(squareFrom).isValidMove(this, squareFrom, squareTo);
+                && get(squareFrom).isLegalMove(this, squareFrom, squareTo);
     }
 
     public boolean isCheckmate(Square kingSquare) {

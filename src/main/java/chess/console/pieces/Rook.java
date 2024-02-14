@@ -15,7 +15,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public boolean isValidPieceMove(Board board, Square squareFrom, Square squareTo) {
+    public boolean isLegalPieceMove(Board board, Square squareFrom, Square squareTo) {
         return MoveCalculator.isRookMove(board, squareFrom, squareTo);
     }
 
@@ -25,7 +25,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public Collection<Square> getValidPieceMoves(Board board, Square squareFrom) {
+    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
         int[][] moveDirections = new int[][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }
