@@ -24,7 +24,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
+    public Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom) {
         int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }

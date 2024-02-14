@@ -2,6 +2,7 @@ package chess.console;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Utility class to encapsulate shared move functionality
@@ -11,8 +12,8 @@ public class MoveCalculator {
     // Prevent instantiation of the utility class with private visibility
     private MoveCalculator() {}
 
-    public static Collection<Square> getValidMovesInDirection(Board board, Square squareFrom, int fileDirection, int rankDirection) {
-        Collection<Square> validMoves = new HashSet<>();
+    public static Set<Square> getValidMovesInDirection(Board board, Square squareFrom, int fileDirection, int rankDirection) {
+        Set<Square> validMoves = new HashSet<>();
         int fileShift = fileDirection;
         int rankShift = rankDirection;
         boolean hasCaptured = false;
@@ -41,8 +42,8 @@ public class MoveCalculator {
      * @param moveDirections an array of pairs where the first element is the file direction and the second is the rank direction.
      * @return the possible squares to move to.
      */
-    public static Collection<Square> getValidMovesInDirections(Board board, Square squareFrom, int[][] moveDirections) {
-        Collection<Square> validMoves = new HashSet<>();
+    public static Set<Square> getValidMovesInDirections(Board board, Square squareFrom, int[][] moveDirections) {
+        Set<Square> validMoves = new HashSet<>();
 
         for (int[] direction : moveDirections) {
             validMoves.addAll(MoveCalculator.getValidMovesInDirection(board, squareFrom, direction[0], direction[1]));

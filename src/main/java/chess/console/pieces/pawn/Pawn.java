@@ -7,6 +7,7 @@ import chess.console.pieces.Piece;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Pawn extends Piece {
     private final int direction;
@@ -25,8 +26,8 @@ public abstract class Pawn extends Piece {
     }
 
     @Override
-    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
-        Collection<Square> validMoves = new HashSet<>();
+    public Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom) {
+        Set<Square> validMoves = new HashSet<>();
         Square toSquareCandidate = squareFrom.shift(0, direction);
 
         // single square forward move
@@ -41,8 +42,8 @@ public abstract class Pawn extends Piece {
         // captures
         for (int fileDirection : new int[]{-1, 1}) {
             toSquareCandidate = squareFrom.shift(fileDirection, direction);
-            if (!board.isWithinBoard(toSquareCandidate)) { continue; }
-            if (isValidCapture(board, squareFrom, toSquareCandidate)) { validMoves.add(toSquareCandidate); }
+            if (board.isWithinBoard(toSquareCandidate) && isValidCapture(board, squareFrom, toSquareCandidate))
+                { validMoves.add(toSquareCandidate); }
         }
 
         return validMoves;
@@ -71,4 +72,5 @@ public abstract class Pawn extends Piece {
                 && Square.absFileDiff(squareFrom, squareTo) == 1
                 && isValidCaptureDirection(squareFrom, squareTo);
     }
+
 }

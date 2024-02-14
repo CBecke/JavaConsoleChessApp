@@ -45,13 +45,13 @@ public abstract class Piece {
     @Override
     public abstract String toString();
 
-    protected abstract Collection<Square> getLegalPieceMoves(Board board, Square squareFrom);
+    protected abstract Set<Square> getLegalPieceMoves(Board board, Square squareFrom);
 
     /**
      * Retrieves the set of valid moves.Used to optimize search for valid moves (instead of calling isValidMove with squareTo for every square on the
      * board).
      */
-    public Collection<Square> getLegalMoves(Board board, Square squareFrom) {
+    public Set<Square> getLegalMoves(Board board, Square squareFrom) {
         if (board.putsOwnKingInCheck(board.get(squareFrom), squareFrom)) { return new HashSet<>(); }
         return getLegalPieceMoves(board, squareFrom);
     }
@@ -60,13 +60,20 @@ public abstract class Piece {
         return !getLegalMoves(board, squareFrom).isEmpty();
     }
 
+    /**
+     * a move is pseudo-legal if it can be performed without considering whether the king is already or will be put
+     * into check when the move is made. That is, legal moves are a subset og pseudo-legal moves and the set difference
+     * between them is the moves that are illegal because the player has to prevent their king from being in check.
+     */
     public static Set<Square> getPseudoLegalMoves(Piece piece, Board board, Square squareFrom) {
         return piece.getPseudoLegalPieceMoves(board, squareFrom);
     }
 
     public abstract Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom);
 
-    ;
-
+    public static Set<Square> getAllPseudoLegalPieceMoves(Board board, Square squareFrom, Color color) {
+        Set<Square> pseudoMoves = new HashSet<>();
+        (new Knight(Color.WHITE)).getPseudoLegalPieceMoves(board, squareFrom);
+    }
 
 }

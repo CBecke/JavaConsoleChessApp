@@ -6,6 +6,7 @@ import chess.console.Square;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Knight extends Piece {
 
@@ -25,8 +26,12 @@ public class Knight extends Piece {
     }
 
     @Override
-    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
-        Collection<Square> validMoves = new HashSet<>();
+    public Set<Square> getLegalPieceMoves(Board board, Square squareFrom) {
+    }
+
+    @Override
+    public Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom) {
+        Set<Square> validMoves = new HashSet<>();
 
         Square squareTo;
         int[][] moveShiftPermutations = {{-1,2}, {-1,-2}, {1,2}, {1,-2}, {-2,1}, {-2,-1}, {2,1}, {2,-1}};

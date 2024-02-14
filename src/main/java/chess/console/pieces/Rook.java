@@ -6,6 +6,7 @@ import chess.console.MoveCalculator;
 import chess.console.Square;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class Rook extends Piece {
     private boolean canCastle = true;
@@ -25,7 +26,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
+    public Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom) {
         int[][] moveDirections = new int[][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
         return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
     }
