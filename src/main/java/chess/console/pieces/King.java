@@ -26,25 +26,6 @@ public class King extends Piece{
     }
 
     @Override
-    public Collection<Square> getLegalPieceMoves(Board board, Square squareFrom) {
-        Collection<Square> validMoves = new HashSet<>();
-        // iterate over neighboring squares (including diagonally neighboring)
-        for (int rankShift = -1; rankShift <= 1; rankShift++) {
-            for (int fileShift = -1; fileShift < 1; fileShift++) {
-                Square currentSquare = squareFrom.shift(fileShift, rankShift);
-                if (!currentSquare.equals(squareFrom)
-                        && board.isWithinBoard(currentSquare)
-                        && !board.isAttacked(color, currentSquare)
-                        && (board.isEmpty(currentSquare)
-                            || board.get(currentSquare).getColor() != color)) {
-                    validMoves.add(currentSquare);
-                }
-            }
-        }
-        return validMoves;
-    }
-
-    @Override
     public Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom) {
         Set<Square> validMoves = new HashSet<>();
         // iterate over neighboring squares (including diagonally neighboring)

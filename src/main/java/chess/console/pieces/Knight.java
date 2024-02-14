@@ -26,10 +26,6 @@ public class Knight extends Piece {
     }
 
     @Override
-    public Set<Square> getLegalPieceMoves(Board board, Square squareFrom) {
-    }
-
-    @Override
     public Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom) {
         Set<Square> validMoves = new HashSet<>();
 

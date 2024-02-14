@@ -42,7 +42,7 @@ public class Board implements Iterable<Square> {
 
     public boolean move(Square squareFrom, Square squareTo) {
         Piece piece = get(squareFrom);
-        if (!piece.isLegalMove(this, squareFrom, squareTo)) { return false; }
+        if (!piece.isPseudoLegalMove(this, squareFrom, squareTo)) { return false; }
 
         if (isRook(piece)) { ((Rook)piece).disableCastling(); }
         if (isKing(piece)) { ((King)piece).disableCastling(); }
@@ -272,7 +272,7 @@ public class Board implements Iterable<Square> {
 
             Piece current = get(squareFrom);
             for (Square squareTo : squaresToDefend) {
-                if (current.isLegalMove(this, squareFrom, squareTo)) {
+                if (current.isPseudoLegalMove(this, squareFrom, squareTo)) {
                     // pretend making the move. If the king is still under attack then the king cannot be defended.
                     movePiece(squareFrom, squareTo);
                     boolean canBeDefended = !isAttacked(color, square);
@@ -320,7 +320,7 @@ public class Board implements Iterable<Square> {
         return !isEmpty(squareFrom)
                 && (!isEmpty(squareTo)
                     || piece.getColor() != get(squareTo).getColor())
-                && get(squareFrom).isLegalMove(this, squareFrom, squareTo);
+                && get(squareFrom).isPseudoLegalMove(this, squareFrom, squareTo);
     }
 
     public boolean isCheckmate(Square kingSquare) {

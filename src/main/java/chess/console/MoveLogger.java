@@ -49,7 +49,7 @@ public class MoveLogger {
         Square oppositeKingSquare = board.getKingSquare(oppositeColor);
 
         if(board.isCheckmate(oppositeKingSquare)) { return move + "#"; }
-        else if (mover.isLegalMove(board, squareTo, oppositeKingSquare)) { return move + "+"; } // king put in check
+        else if (mover.isPseudoLegalMove(board, squareTo, oppositeKingSquare)) { return move + "+"; } // king put in check
         return move;
     }
 
