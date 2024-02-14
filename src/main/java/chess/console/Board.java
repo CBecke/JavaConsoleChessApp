@@ -42,7 +42,7 @@ public class Board implements Iterable<Square> {
 
     public boolean move(Square squareFrom, Square squareTo) {
         Piece piece = get(squareFrom);
-        if (!piece.isPseudoLegalMove(this, squareFrom, squareTo)) { return false; }
+        if (!isLegalMove(squareFrom, squareTo)) { return false; }
 
         if (isRook(piece)) { ((Rook)piece).disableCastling(); }
         if (isKing(piece)) { ((King)piece).disableCastling(); }
@@ -62,17 +62,29 @@ public class Board implements Iterable<Square> {
         return true;
     }
 
-    /**
-     * Tests if moving the piece from squareFrom puts the king of the same color in check.
-     */
-    public boolean putsOwnKingInCheck(Piece piece, Square squareFrom) {
-        Square kingSquare = getKingSquare(piece.getColor());
-        // the king never blocks itself from check and thus is in check when called here
-        if (piece instanceof King) { return true; }
+    public boolean isLegalMove(Square squareFrom, Square squareTo) {
+        return !isEmpty(squareFrom)
+                && get(squareFrom).isPseudoLegalMove(this, squareFrom, squareTo)
+                && !putsOwnKingInCheck(squareFrom, squareTo);
+    }
 
-        put(null, squareFrom); // "artificially" remove the piece on squareFrom
-        boolean isInCheck = isAttacked(piece.getColor(), kingSquare);
-        put(piece, squareFrom); // put piece back on squareFrom
+    /**
+     * Tests if moving the piece from squareFrom to squareTo puts the king of the same color in check.
+     */
+    public boolean putsOwnKingInCheck(Square squareFrom, Square squareTo) {
+        Piece mover = get(squareFrom);
+        Piece target = get(squareFrom);
+        Square kingSquare = getKingSquare(mover.getColor());
+
+        // make "artificial" move
+        put(mover, squareTo);
+        put(null, squareFrom);
+
+        boolean isInCheck = isAttacked(get(kingSquare).getColor(), kingSquare);
+
+        // reset position
+        put(mover, squareFrom);
+        put(target, squareTo);
 
         return isInCheck;
     }
@@ -244,12 +256,6 @@ public class Board implements Iterable<Square> {
         return kingSquares;
     }
 
-    public Collection<Square> getValidMoves(Square squareFrom) {
-        Piece piece = get(squareFrom);
-        if (piece == null) { return new HashSet<>(); }
-        return piece.getLegalMoves(this, squareFrom);
-    }
-
     /**
      * Returns true if a move exists such that the given square is no longer attacked, and false otherwise. The moving
      * piece must have the same color as the piece on the square to be defended.
@@ -270,9 +276,8 @@ public class Board implements Iterable<Square> {
         for (Square squareFrom : this) {
             if (isEmpty(squareFrom)) { continue; }
 
-            Piece current = get(squareFrom);
             for (Square squareTo : squaresToDefend) {
-                if (current.isPseudoLegalMove(this, squareFrom, squareTo)) {
+                if (isLegalMove(squareFrom, squareTo)) {
                     // pretend making the move. If the king is still under attack then the king cannot be defended.
                     movePiece(squareFrom, squareTo);
                     boolean canBeDefended = !isAttacked(color, square);
@@ -325,11 +330,22 @@ public class Board implements Iterable<Square> {
 
     public boolean isCheckmate(Square kingSquare) {
         Color color = get(kingSquare).getColor();
+
+
         return isAttacked(color, kingSquare)
                 && !canBeDefended(kingSquare)
-                && getValidMoves(kingSquare).isEmpty();
+                && !hasKingMove(kingSquare);
     }
 
+    public boolean hasKingMove(Square kingSquare) {
+        King king = (King)get(kingSquare);
+        for (Square pseudoMoveSquare : king.getPseudoLegalPieceMoves(this, kingSquare)) {
+            if (!isAttacked(king.getColor(), pseudoMoveSquare))
+                { return true; }
+        }
+
+        return false;
+    }
 
     /**
      * An iterator for the squares of the board

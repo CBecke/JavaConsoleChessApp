@@ -48,19 +48,18 @@ public abstract class Piece {
     @Override
     public abstract String toString();
 
+    /*
+    // TODO: remove
     public boolean canMove(Board board, Square squareFrom) {
         return !getLegalMoves(board, squareFrom).isEmpty();
     }
+    */
 
     /**
      * a move is pseudo-legal if it can be performed without considering whether the king is already or will be put
      * into check when the move is made. That is, legal moves are a subset og pseudo-legal moves and the set difference
      * between them is the moves that are illegal because the player has to prevent their king from being in check.
      */
-    public static Set<Square> getPseudoLegalMoves(Piece piece, Board board, Square squareFrom) {
-        return piece.getPseudoLegalPieceMoves(board, squareFrom);
-    }
-
     public abstract Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom);
 
     // TODO: may not be necessary
