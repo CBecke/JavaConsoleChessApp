@@ -11,15 +11,17 @@ public class MoveCalculator {
     // Prevent instantiation of the utility class with private visibility
     private MoveCalculator() {}
 
-    public static Set<Square> getValidMovesInDirection(Board board, Square squareFrom, int fileDirection, int rankDirection) {
+    public static Set<Square> getPseudoLegalMovesInDirection(Board board, Square squareFrom, Color thisPieceColor, int fileDirection, int rankDirection) {
         Set<Square> validMoves = new HashSet<>();
         int fileShift = fileDirection;
         int rankShift = rankDirection;
         boolean hasCaptured = false;
-        Color thisPieceColor = board.get(squareFrom).getColor();
 
         Square currentSquare = squareFrom.shift(fileShift, rankShift);
-        while (board.isWithinBoard(currentSquare) && (board.isEmpty(currentSquare) || !hasCaptured)) {
+        while (board.isWithinBoard(currentSquare)
+                && (board.isEmpty(currentSquare)
+                    || (board.get(currentSquare).getColor() != thisPieceColor
+                        && !hasCaptured))) {
             validMoves.add(currentSquare);
 
             // The piece can capture the first opposite color piece in its path, assuming the path was clear
@@ -41,11 +43,11 @@ public class MoveCalculator {
      * @param moveDirections an array of pairs where the first element is the file direction and the second is the rank direction.
      * @return the possible squares to move to.
      */
-    public static Set<Square> getValidMovesInDirections(Board board, Square squareFrom, int[][] moveDirections) {
+    public static Set<Square> getPseudoLegalMovesInDirections(Board board, Square squareFrom, Color thisPieceColor, int[][] moveDirections) {
         Set<Square> validMoves = new HashSet<>();
 
         for (int[] direction : moveDirections) {
-            validMoves.addAll(MoveCalculator.getValidMovesInDirection(board, squareFrom, direction[0], direction[1]));
+            validMoves.addAll(MoveCalculator.getPseudoLegalMovesInDirection(board, squareFrom, thisPieceColor, direction[0], direction[1]));
         }
 
         return validMoves;

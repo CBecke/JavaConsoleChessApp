@@ -25,7 +25,7 @@ public class Queen extends Piece {
     public Set<Square> getPseudoLegalPieceMoves(Board board, Square squareFrom) {
         int[][] moveDirections = new int[][] {{1,1}, {1,-1}, {-1,1}, {-1,-1}, // diagonal
                                               {1,0}, {-1,0}, {0,1}, {0,-1}};  // horizontal and vertical
-        return MoveCalculator.getValidMovesInDirections(board, squareFrom, moveDirections);
+        return MoveCalculator.getPseudoLegalMovesInDirections(board, squareFrom, color, moveDirections);
     }
 
 }

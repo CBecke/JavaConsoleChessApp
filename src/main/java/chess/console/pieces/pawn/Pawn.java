@@ -30,12 +30,13 @@ public abstract class Pawn extends Piece {
         Square toSquareCandidate = squareFrom.shift(0, direction);
 
         // single square forward move
-        if (board.isEmpty(toSquareCandidate)) {
+        if (board.isWithinBoard(toSquareCandidate) && board.isEmpty(toSquareCandidate)) {
             validMoves.add(toSquareCandidate);
 
             // double square forward move
             toSquareCandidate = toSquareCandidate.shift(0, direction);
-            if (board.isEmpty(toSquareCandidate)) { validMoves.add(toSquareCandidate); }
+            if (board.isWithinBoard(toSquareCandidate) && board.isEmpty(toSquareCandidate))
+                { validMoves.add(toSquareCandidate); }
         }
 
         // captures

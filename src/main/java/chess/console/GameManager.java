@@ -29,7 +29,7 @@ public class GameManager {
         do {
             printer.printBoard(board);
             whitePlayer.move(board, logger);
-            if (hasGameEnded()) { continue; }
+            if (hasGameEnded()) { break; }
 
             printer.printFlippedBoard(board);
             blackPlayer.move(board, logger);

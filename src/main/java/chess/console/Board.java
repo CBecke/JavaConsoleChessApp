@@ -73,7 +73,7 @@ public class Board implements Iterable<Square> {
      */
     public boolean putsOwnKingInCheck(Square squareFrom, Square squareTo) {
         Piece mover = get(squareFrom);
-        Piece target = get(squareFrom);
+        Piece target = get(squareTo);
         Square kingSquare = getKingSquare(mover.getColor());
 
         // make "artificial" move
@@ -161,7 +161,7 @@ public class Board implements Iterable<Square> {
         Color oppositeColor = (color == Color.WHITE) ? Color.BLACK : Color.WHITE;
         Pawn pawn = (color == Color.WHITE) ? new BlackPawn() : new WhitePawn(); // pawn of opposite color of given color
         Piece[] pieceTypes = new Piece[]
-                {pawn, new Queen(oppositeColor), new Rook(oppositeColor), new Bishop(oppositeColor) };
+                {pawn, new Queen(oppositeColor), new Rook(oppositeColor), new Bishop(oppositeColor), new Knight(oppositeColor), new King(oppositeColor)};
 
         for (Piece piece : pieceTypes) {
             // intentionally iterate over PSEUDO-legal moves; this is sufficient.
