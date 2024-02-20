@@ -74,13 +74,15 @@ public class Board implements Iterable<Square> {
     public boolean putsOwnKingInCheck(Square squareFrom, Square squareTo) {
         Piece mover = get(squareFrom);
         Piece target = get(squareTo);
-        Square kingSquare = getKingSquare(mover.getColor());
+        Color moverColor = mover.getColor();
+        Square kingSquare = getKingSquare(moverColor);
 
         // make "artificial" move
         put(mover, squareTo);
         put(null, squareFrom);
 
-        boolean isInCheck = isAttacked(get(kingSquare).getColor(), kingSquare);
+        // note we use moverColor instead of kingSquare.getColor() since the king may be the one moving
+        boolean isInCheck = isAttacked(moverColor, kingSquare);
 
         // reset position
         put(mover, squareFrom);
@@ -159,6 +161,15 @@ public class Board implements Iterable<Square> {
      */
     public boolean isAttacked(Color color, Square square) {
         Color oppositeColor = (color == Color.WHITE) ? Color.BLACK : Color.WHITE;
+        for (Square squareFrom : this) {
+            Piece potentialAttacker = get(squareFrom);
+            if (!isEmpty(squareFrom)
+                    && potentialAttacker.getColor() == oppositeColor
+                    && potentialAttacker.isPseudoLegalMove(this, squareFrom, square)) // pseudo-legal is sufficient
+                { return true; }
+        }
+        /*
+        // TODO: DELETE
         Pawn pawn = (color == Color.WHITE) ? new BlackPawn() : new WhitePawn(); // pawn of opposite color of given color
         Piece[] pieceTypes = new Piece[]
                 {pawn, new Queen(oppositeColor), new Rook(oppositeColor), new Bishop(oppositeColor), new Knight(oppositeColor), new King(oppositeColor)};
@@ -173,6 +184,7 @@ public class Board implements Iterable<Square> {
                     { return true; }
             }
         }
+        */
 
         return false;
     }
@@ -331,7 +343,6 @@ public class Board implements Iterable<Square> {
 
     public boolean isCheckmate(Square kingSquare) {
         Color color = get(kingSquare).getColor();
-
 
         return isAttacked(color, kingSquare)
                 && !canBeDefended(kingSquare)
