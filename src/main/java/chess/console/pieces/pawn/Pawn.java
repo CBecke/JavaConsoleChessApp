@@ -51,15 +51,20 @@ public abstract class Pawn extends Piece {
 
     abstract boolean isInInitialRank(Square square);
 
+    /**
+     * Determines the NON-absolute rank difference between squareFrom and squareTo. Intentionally not taking absolute
+     * rank difference to account for direction.
+     */
+    public int rankDiff(Square squareFrom, Square squareTo) {
+        return squareTo.getRank() - squareFrom.getRank();
+    }
+
     boolean isValidSingleForwardMove(Square squareFrom, Square squareTo) {
-        int rankDiff = Square.absRankDiff(squareFrom, squareTo);
-        return rankDiff == direction;
+        return rankDiff(squareFrom, squareTo) == direction;
     }
 
     boolean isValidDoubleMove(Square squareFrom, Square squareTo) {
-        // intentionally not taking absolute rank difference due to direction
-        int rankDiff = squareTo.getRank() - squareFrom.getRank();
-        return isInInitialRank(squareFrom) && rankDiff == 2*direction;
+        return isInInitialRank(squareFrom) && rankDiff(squareFrom, squareTo) == 2*direction;
     }
 
     boolean isValidCaptureDirection(Square squareFrom, Square squareTo) {
