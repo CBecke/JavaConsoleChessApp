@@ -51,10 +51,10 @@ public class Board implements Iterable<Square> {
         moveWasCapture = !isEmpty(squareTo);
         if (moveWasCapture) { lastCaptured = get(squareTo); }
 
-        movePiece(squareFrom, squareTo);
-
         // If this point is reached, the king could castle, so we can "manually" move the rook
         if (isCastles(squareFrom, squareTo)) { doRookCastles(squareFrom, squareTo); }
+
+        movePiece(squareFrom, squareTo);
 
         // Promotion
         if (isPawn(piece) && isEdgeRankMove(squareTo)) { put(new Queen(piece.getColor()), squareTo); }
@@ -104,15 +104,14 @@ public class Board implements Iterable<Square> {
 
     private boolean isKing(Piece piece) { return piece instanceof King; }
 
-    private void doRookCastles(Square squareFrom, Square squareTo) {
-        // set square where rook is coming from
-        char cornerFile = squareTo.getCharFile() < squareFrom.getCharFile() ? firstFile : lastFile;
-        Square cornerSquare = new Square(cornerFile, squareTo.getRank());
+    private void doRookCastles(Square kingFrom, Square kingTo) {
+        // find rook square
+        char cornerFile = kingTo.getCharFile() < kingFrom.getCharFile() ? firstFile : lastFile;
+        Square cornerSquare = new Square(cornerFile, kingFrom.getRank());
 
-        // set destination square based on the king's move
-        char fileTo = (char)(squareFrom.getCharFile() + ((squareFrom.getCharFile() < squareTo.getCharFile()) ? 1 : -1));
-        int rankTo = squareFrom.getRank();
-        Square destinationSquare = new Square(fileTo, rankTo);
+        // set rook destination square based on the king's move
+        int kingFileDir = (cornerFile == firstFile) ? -1 : 1;
+        Square destinationSquare = kingFrom.shift(kingFileDir, 0);
 
         movePiece(cornerSquare, destinationSquare);
     }

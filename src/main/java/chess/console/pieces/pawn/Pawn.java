@@ -68,7 +68,7 @@ public abstract class Pawn extends Piece {
     }
 
     boolean isValidCaptureDirection(Square squareFrom, Square squareTo) {
-        return squareTo.getRank() - squareFrom.getRank() == direction;
+        return rankDiff(squareFrom, squareTo) == direction;
     }
 
     boolean isValidCapture(Board board, Square squareFrom, Square squareTo) {
