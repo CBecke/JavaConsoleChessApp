@@ -77,11 +77,13 @@ public class Board implements Iterable<Square> {
         Color moverColor = mover.getColor();
         Square kingSquare = getKingSquare(moverColor);
 
+        // the king is the moving piece
+        if (kingSquare.equals(squareFrom)) { kingSquare = squareTo; }
+
         // make "artificial" move
         put(mover, squareTo);
         put(null, squareFrom);
 
-        // note we use moverColor instead of kingSquare.getColor() since the king may be the one moving
         boolean isInCheck = isAttacked(moverColor, kingSquare);
 
         // reset position

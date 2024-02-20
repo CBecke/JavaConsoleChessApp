@@ -35,6 +35,8 @@ public class GameManager {
             blackPlayer.move(board, logger);
         } while ((!hasGameEnded()));
 
+        printer.printBoard(board);
+
         printer.printResult(whiteLost, blackLost, draw);
     }
 
