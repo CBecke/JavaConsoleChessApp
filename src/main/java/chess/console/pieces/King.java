@@ -41,7 +41,6 @@ public class King extends Piece{
         return validMoves;
     }
 
-    // TODO: make sure it is consistent with the new isAttacked
     private boolean isValidCastles(Board board, Square squareFrom, Square squareTo) {
         char cornerFile = squareTo.getCharFile() < squareFrom.getCharFile() ? Board.firstFile : Board.lastFile;
         Square cornerSquare = new Square(cornerFile, squareTo.getRank());

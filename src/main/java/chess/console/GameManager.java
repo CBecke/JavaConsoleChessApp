@@ -25,7 +25,7 @@ public class GameManager {
         blackPlayer = new Player(Color.BLACK, inputHandler, printer);
     }
 
-    public void playChess() {
+    public void playChess() { // TODO: allow resignation and draw offer
         do {
             printer.printBoard(board);
             whitePlayer.move(board, logger);

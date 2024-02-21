@@ -56,7 +56,7 @@ public class Board implements Iterable<Square> {
 
         movePiece(squareFrom, squareTo);
 
-        // Promotion
+        // Promotion // TODO: let player choose piece type upon promotion
         if (isPawn(piece) && isEdgeRankMove(squareTo)) { put(new Queen(piece.getColor()), squareTo); }
 
         return true;
@@ -157,7 +157,7 @@ public class Board implements Iterable<Square> {
      * Determines if the given square is attacked by the opposite color of the given one. That is, if the given color is
      * white, the method returns true if a black piece can (pseudo-legally) move to square.
      * @param color the color which may be attacked on square
-     * @param square the square which is potentially targetted by an attack
+     * @param square the square which is potentially targeted by an attack
      * @return true if the opposite color to the given one has a piece that can move to square, and false otherwise.
      */
     public boolean isAttacked(Color color, Square square) {
@@ -169,23 +169,6 @@ public class Board implements Iterable<Square> {
                     && potentialAttacker.isPseudoLegalMove(this, squareFrom, square)) // pseudo-legal is sufficient
                 { return true; }
         }
-        /*
-        // TODO: DELETE
-        Pawn pawn = (color == Color.WHITE) ? new BlackPawn() : new WhitePawn(); // pawn of opposite color of given color
-        Piece[] pieceTypes = new Piece[]
-                {pawn, new Queen(oppositeColor), new Rook(oppositeColor), new Bishop(oppositeColor), new Knight(oppositeColor), new King(oppositeColor)};
-
-        for (Piece piece : pieceTypes) {
-            // intentionally iterate over PSEUDO-legal moves; this is sufficient.
-            for (Square pseudoMoveSquare : piece.getPseudoLegalPieceMoves(this, square)) {
-                Piece potentialAttacker = get(pseudoMoveSquare);
-                if (!isEmpty(pseudoMoveSquare)
-                        && potentialAttacker.getColor() == oppositeColor
-                        && get(pseudoMoveSquare).getClass() == piece.getClass())
-                    { return true; }
-            }
-        }
-        */
 
         return false;
     }

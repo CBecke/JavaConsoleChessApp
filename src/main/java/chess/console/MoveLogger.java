@@ -26,6 +26,7 @@ public class MoveLogger {
     }
 
     // TODO: log ambiguous move correctly (e.g. if both knights/rooks can move to the same square)
+    // TODO: log promotion correctly
     private String getMoveString(Board board, Square squareFrom, Square squareTo) {
         // the piece has already moved to squareTo when this is called
         Piece mover = board.get(squareTo);

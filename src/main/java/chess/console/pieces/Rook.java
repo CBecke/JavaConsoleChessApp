@@ -30,7 +30,6 @@ public class Rook extends Piece {
         return MoveCalculator.getPseudoLegalMovesInDirections(board, squareFrom, color, moveDirections);
     }
 
-    // TODO: make sure this is check in castling
     public boolean canCastle() { return canCastle; }
 
     public void disableCastling() { canCastle = false; }

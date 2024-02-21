@@ -18,9 +18,6 @@ public abstract class Piece {
         return color;
     }
 
-    // TODO: make sure king is not in check when a move is made (unless it stops check)
-    // TODO: make sure the current move does not put the king in check
-
     /**
      * Tests if the move from squareFrom to squareTo on board is pseudo-legal. A move is pseudo-legal if it can be
      * performed without considering whether the king is already or will be put into check when the move is made. That
