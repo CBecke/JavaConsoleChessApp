@@ -155,7 +155,7 @@ public class Board implements Iterable<Square> {
 
     /**
      * Determines if the given square is attacked by the opposite color of the given one. That is, if the given color is
-     * white, the method returns true if a black piece can (pseudo-legally) move to square
+     * white, the method returns true if a black piece can (pseudo-legally) move to square.
      * @param color the color which may be attacked on square
      * @param square the square which is potentially targetted by an attack
      * @return true if the opposite color to the given one has a piece that can move to square, and false otherwise.
@@ -293,11 +293,13 @@ public class Board implements Iterable<Square> {
             for (Square squareTo : squaresToDefend) {
                 if (isLegalMove(squareFrom, squareTo)) {
                     // pretend making the move. If the king is still under attack then the king cannot be defended.
+                    Piece target = get(squareTo);
                     movePiece(squareFrom, squareTo);
                     boolean canBeDefended = !isAttacked(color, square);
 
                     // reset the "fake" move
                     movePiece(squareTo, squareFrom);
+                    put(target, squareTo);
                     return canBeDefended;
                 }
             }
