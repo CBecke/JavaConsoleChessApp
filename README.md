@@ -5,3 +5,6 @@ To play, you need JRE (Java Runtime Environment) installed. If you can run java 
 2) Open the containing folder in cmd
 3) type "java -jar ConsoleChess.jar"
 4) Have the time of your life :)
+
+# Overview Video
+To give an overview of the project, I made the following youtube video [here](https://www.youtube.com/watch?v=PlkjZAN8tPs).
