@@ -7,4 +7,4 @@ To play, you need JRE (Java Runtime Environment) installed. If you can run java 
 4) Have the time of your life :)
 
 ## Overview Video
-To give an overview of the project, I made the following youtube video [here](https://www.youtube.com/watch?v=PlkjZAN8tPs).
+To give an overview of the project, I made a youtube video [here](https://www.youtube.com/watch?v=PlkjZAN8tPs).
